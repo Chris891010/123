@@ -35,36 +35,33 @@
   --input-text: #111827;
   --input-border: #e5e7eb;
   
-  /* 3E 流程圖專用變數 - 亮色主題 */
-  --sp3e-bg-primary: #f1f5f9;
-  --sp3e-bg-secondary: #e2e8f0;
-  --sp3e-bg-card: #ffffff;
-  --sp3e-text-primary: #1f2937;
-  --sp3e-text-secondary: #6b7280;
-  --sp3e-text-muted: #78716c;
-  --sp3e-border: #e5e7eb;
-  --sp3e-shadow: rgba(0,0,0,0.1);
-  --sp3e-arrow: #94a3b8;
+  /* 擴展通用變數 - 流程圖和表單共用 */
+  --surface: #f8fafc;
+  --surface-secondary: #e2e8f0;
+  --content: #64748b;
+  --shadow: rgba(15, 23, 42, 0.08);
+  --shadow-lg: rgba(15, 23, 42, 0.15);
   
-  /* 狀態顏色 - 成功(綠色) */
-  --sp3e-success-bg: #dcfce7;
-  --sp3e-success-border: #16a34a;
-  --sp3e-success-text: #166534;
+  /* 通用狀態顏色系統 */
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+  --success-text: #166534;
+  --success-light: #f0fdf4;
   
-  /* 狀態顏色 - 警告(黃色) */
-  --sp3e-warning-bg: #fef3c7;
-  --sp3e-warning-border: #f59e0b;
-  --sp3e-warning-text: #92400e;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --warning-text: #92400e;
+  --warning-light: #fffbeb;
   
-  /* 狀態顏色 - 危險(紅色) */
-  --sp3e-danger-bg: #fee2e2;
-  --sp3e-danger-border: #dc2626;
-  --sp3e-danger-text: #991b1b;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+  --danger-text: #991b1b;
+  --danger-light: #fef2f2;
   
-  /* 狀態顏色 - 資訊(藍色) */
-  --sp3e-info-bg: #dbeafe;
-  --sp3e-info-border: #2563eb;
-  --sp3e-info-text: #1e40af;
+  --info: #2563eb;
+  --info-bg: #dbeafe;
+  --info-text: #1e40af;
+  --info-light: #eff6ff;
 }
 
 /* 暗色主題 */
@@ -93,36 +90,33 @@
   --input-text: #f1f5f9;
   --input-border: #475569;
   
-  /* 3E 流程圖專用變數 - 暗色主題 */
-  --sp3e-bg-primary: #1e293b;
-  --sp3e-bg-secondary: #334155;
-  --sp3e-bg-card: #334155;
-  --sp3e-text-primary: #f1f5f9;
-  --sp3e-text-secondary: #cbd5e1;
-  --sp3e-text-muted: #a8a29e;
-  --sp3e-border: #475569;
-  --sp3e-shadow: rgba(0,0,0,0.3);
-  --sp3e-arrow: #64748b;
+  /* 暗主題擴展變數 */
+  --surface: #1e293b;
+  --surface-secondary: #334155;
+  --content: #94a3b8;
+  --shadow: rgba(0, 0, 0, 0.25);
+  --shadow-lg: rgba(0, 0, 0, 0.4);
   
-  /* 狀態顏色 - 成功(綠色) */
-  --sp3e-success-bg: #052e16;
-  --sp3e-success-border: #16a34a;
-  --sp3e-success-text: #4ade80;
+  /* 暗主題狀態顏色 */
+  --success: #16a34a;
+  --success-bg: #052e16;
+  --success-text: #4ade80;
+  --success-light: #064e3b;
   
-  /* 狀態顏色 - 警告(黃色) */
-  --sp3e-warning-bg: #451a03;
-  --sp3e-warning-border: #f59e0b;
-  --sp3e-warning-text: #fbbf24;
+  --warning: #f59e0b;
+  --warning-bg: #451a03;
+  --warning-text: #fbbf24;
+  --warning-light: #78350f;
   
-  /* 狀態顏色 - 危險(紅色) */
-  --sp3e-danger-bg: #450a0a;
-  --sp3e-danger-border: #dc2626;
-  --sp3e-danger-text: #f87171;
+  --danger: #dc2626;
+  --danger-bg: #450a0a;
+  --danger-text: #f87171;
+  --danger-light: #7f1d1d;
   
-  /* 狀態顏色 - 資訊(藍色) */
-  --sp3e-info-bg: #0c1e3e;
-  --sp3e-info-border: #2563eb;
-  --sp3e-info-text: #60a5fa;
+  --info: #2563eb;
+  --info-bg: #0c1e3e;
+  --info-text: #60a5fa;
+  --info-light: #1e3a8a;
 }
 
 *{box-sizing:border-box}
@@ -148,6 +142,15 @@ nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 0}
 @media(min-width:880px){.grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;color:var(--ink)}
 .hide{display:none}
+.changelog-entry{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--shadow)}
+.changelog-entry:last-child{border-bottom:none;margin-bottom:0}
+.changelog-entry h4{margin:0 0 8px 0;color:var(--content);font-size:16px}
+.changelog-tags{margin-bottom:12px}
+.changelog-tags .badge{background:var(--info);color:white;padding:2px 8px;border-radius:12px;font-size:11px;margin-right:6px;font-weight:500}
+.roadmap-content h4{margin:16px 0 8px 0;color:var(--content);font-size:14px}
+.roadmap-content h4:first-child{margin-top:0}
+.error-message{color:var(--danger);text-align:center;padding:20px}
+.loading-message{text-align:center;padding:20px;color:var(--content)}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search input,input[type="text"],input[type="date"],input[type="number"],select,textarea{width:100%;padding:.55rem .7rem;border:1px solid var(--input-border);border-radius:10px;background:var(--input-bg);color:var(--input-text)}
 fieldset.q{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--card-bg);color:var(--ink)}
@@ -168,6 +171,54 @@ a.inline{color:var(--link-color);text-decoration:none;border-bottom:1px dashed v
 a.inline:hover{color:var(--link-hover)}
 .badge{font-size:.78rem;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;background:var(--card-bg);color:var(--ink)}
 .anchor{scroll-margin-top:88px}
+
+/* 開發日誌樣式 */
+.changelog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.changelog-entry {
+  border-left: 4px solid var(--brand);
+  padding-left: 16px;
+  margin: 16px 0;
+}
+
+.changelog-entry h4 {
+  margin: 0 0 8px 0;
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+.changelog-tags {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.changelog-entry ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.changelog-entry li {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.roadmap-content h4 {
+  color: var(--brand);
+  margin: 16px 0 8px 0;
+  font-size: 1rem;
+}
+
+.roadmap-content ul {
+  margin: 8px 0 20px 0;
+  padding-left: 20px;
+}
+
 @media print{.tabs,.toolbar,.search,.filter-pills,.backonly,.hide-on-print{display:none!important}.container{max-width:none}}
 </style>
 </head>
@@ -181,6 +232,7 @@ a.inline:hover{color:var(--link-hover)}
     <button class="tab" data-tab="tools" aria-selected="false">工具庫</button>
     <button class="tab" data-tab="edu" aria-selected="false">教育訓練</button>
     <button class="tab" data-tab="qm" aria-selected="false">監測/成效</button>
+    <button class="tab" data-tab="changelog" aria-selected="false">開發日誌</button>
     <span style="margin-left:auto"></span>
     <button class="btn" type="button" id="theme-toggle" title="切換主題">
       <span id="theme-icon">🌙</span>
@@ -270,6 +322,30 @@ a.inline:hover{color:var(--link-hover)}
     </div>
   </section>
 
+  <!-- 開發日誌 -->
+  <section id="view-changelog" class="section hide">
+    <h2>開發日誌 📝</h2>
+    
+    <div id="changelog-loading" class="card">
+      <div style="text-align: center; padding: 40px;">
+        <div style="font-size: 24px; margin-bottom: 16px;">⏳</div>
+        <div>載入開發日誌中...</div>
+      </div>
+    </div>
+    
+    <div id="changelog-error" class="card hide">
+      <div style="text-align: center; padding: 40px; color: var(--danger-text);">
+        <div style="font-size: 24px; margin-bottom: 16px;">❌</div>
+        <div>開發日誌載入失敗</div>
+        <button class="btn" onclick="loadChangelog()" style="margin-top: 16px;">重新載入</button>
+      </div>
+    </div>
+    
+    <div id="changelog-content" class="hide">
+      <!-- 動態載入的內容將插入這裡 -->
+    </div>
+  </section>
+
 <script>
 /* ====== 下載 CSV ====== */
 function downloadCSV(filename, text){
@@ -301,6 +377,16 @@ function openTab(id){
       toolsSection.innerHTML = window.ToolsModuleAPI.generateContent();
     } else {
       toolsSection.innerHTML = '<div class="card"><h3>載入中...</h3></div>';
+    }
+  } else if (id === 'changelog') {
+    // 開發日誌：顯示頁面並載入資料
+    const changelogSection = document.getElementById('view-changelog');
+    changelogSection.classList.remove('hide');
+    
+    // 如果是首次載入，自動載入資料
+    const contentEl = document.getElementById('changelog-content');
+    if (contentEl && (!contentEl.innerHTML.trim() || contentEl.innerHTML.includes('動態載入的內容將插入這裡'))) {
+      loadChangelog();
     }
   } else {
     // 其他頁面：正常顯示
@@ -408,9 +494,6 @@ function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
   localStorage.setItem('theme', theme);
-  
-  // 確保工具模組樣式更新
-  injectToolThemeStyles();
 }
 
 function toggleTheme() {
@@ -422,60 +505,175 @@ function toggleTheme() {
 // 綁定主題切換按鈕
 document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 
-/* ====== 工具模組主題支援 ====== */
-// 為動態載入的工具模組提供主題變數
-function injectToolThemeStyles() {
-  if (!document.getElementById('tool-theme-styles')) {
-    const style = document.createElement('style');
-    style.id = 'tool-theme-styles';
-    style.textContent = `
-      /* 3E 決策小幫手主題支援 */
-      .sp3e-container .decision-box {
-        background-color: var(--card-bg) !important;
-        border-color: var(--line) !important;
-        color: var(--ink) !important;
-      }
-      
-      .sp3e-container .step-box {
-        background-color: var(--card-bg) !important;
-        border-color: var(--line) !important;
-        color: var(--ink) !important;
-      }
-      
-      .sp3e-container .choice-button {
-        background-color: var(--btn-bg) !important;
-        color: var(--btn-text) !important;
-        border-color: var(--btn-border) !important;
-      }
-      
-      .sp3e-container .choice-button:hover {
-        background-color: var(--brand) !important;
-        color: #ffffff !important;
-      }
-      
-      .sp3e-container .helper-form {
-        background-color: var(--card-bg) !important;
-        border-color: var(--line) !important;
-        color: var(--ink) !important;
-      }
-      
-      .sp3e-container input[type="radio"] + label {
-        color: var(--ink) !important;
-      }
-      
-      .sp3e-container .result-display {
-        background-color: var(--card-bg) !important;
-        color: var(--ink) !important;
-        border-color: var(--line) !important;
-      }
-    `;
-    document.head.appendChild(style);
+/* ====== 開發日誌載入 ====== */
+// 內嵌資料 - 用於file://協定或網路問題
+const EMBEDDED_CHANGELOG = {
+  "metadata": {
+    "title": "跌倒管理系統 - 開發日誌",
+    "lastUpdated": "2025-10-01",
+    "version": "1.2.0"
+  },
+  "releases": [
+    {
+      "version": "1.2.0",
+      "date": "2025-10-01",
+      "tags": ["重構", "主題"],
+      "changes": [
+        "🎨 統一全域CSS變數系統，簡化主題管理",
+        "🌓 優化暗主題支援，移除冗餘樣式注入", 
+        "♻️ 重構3E流程圖顏色系統，使用語義化變數",
+        "📦 建立可擴展的狀態顏色系統（success/warning/danger/info）",
+        "🧹 清理不必要的工具模組主題支援函數"
+      ]
+    },
+    {
+      "version": "1.1.0", 
+      "date": "2025-10-01",
+      "tags": ["新功能", "UI"],
+      "changes": [
+        "✨ 新増3E安全移位決策流程圖",
+        "📱 優化響應式設計，支援手機和平板",
+        "🎨 改進流程圖視覺設計"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2025-10-01", 
+      "tags": ["首版"],
+      "changes": [
+        "🚀 跌倒管理系統主控面板上線",
+        "📊 整合AHRQ Roadmap工具庫",
+        "🔧 建立模組化架構簡化程式碼",
+        "📋 完成基礎評估表單",
+        "🌙 實現明暗主題切換"
+      ]
+    }
+  ],
+  "roadmap": {
+    "nearTerm": [
+      "📊 增強數據視覺化功能",
+      "🔄 優化表單自動儲存機制", 
+      "📱 改進行動裝置使用體驗",
+      "🔍 加入全域搜尋功能"
+    ],
+    "longTerm": [
+      "🤖 整合輔助決策",
+      "📈 即時監測儀表板",
+      "📤 資料匯出與分享功能"
+    ]
+  }
+};
+
+// 內嵌資料載入函數
+function loadEmbeddedChangelog() {
+  const loadingEl = document.getElementById('changelog-loading');
+  const contentEl = document.getElementById('changelog-content');
+  const errorEl = document.getElementById('changelog-error');
+  
+  console.log('使用內嵌資料載入開發日誌');
+  
+  renderChangelog(EMBEDDED_CHANGELOG);
+  
+  if (loadingEl) loadingEl.classList.add('hide');
+  if (errorEl) errorEl.classList.add('hide');
+  if (contentEl) contentEl.classList.remove('hide');
+}
+
+// 渲染開發日誌內容
+function renderChangelog(data) {
+  const contentEl = document.getElementById('changelog-content');
+  const html = `
+    <div class="card">
+      <h3>版本更新記錄</h3>
+      <div class="changelog-content">
+        ${data.releases.map(release => `
+          <div class="changelog-entry">
+            <h4>v${release.version} - ${release.date}</h4>
+            <div class="changelog-tags">
+              ${release.tags.map(tag => `<span class="badge">${tag}</span>`).join('')}
+            </div>
+            <ul class="small">
+              ${release.changes.map(change => `<li>${change}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <h3>開發計畫 🎯</h3>
+      <div class="roadmap-content">
+        <h4>近期計畫</h4>
+        <ul class="small">
+          ${data.roadmap.nearTerm.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+        <h4>長期規劃</h4>
+        <ul class="small">
+          ${data.roadmap.longTerm.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+  contentEl.innerHTML = html;
+}
+
+async function loadChangelog() {
+  const loadingEl = document.getElementById('changelog-loading');
+  const errorEl = document.getElementById('changelog-error');
+  const contentEl = document.getElementById('changelog-content');
+  
+  // 顯示載入狀態
+  if (loadingEl) loadingEl.classList.remove('hide');
+  if (errorEl) errorEl.classList.add('hide');
+  if (contentEl) contentEl.classList.add('hide');
+  
+  try {
+    const response = await fetch('./data/changelog.json');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    // 使用共用渲染函數
+    renderChangelog(data);
+    
+    // 隱藏載入狀態，顯示內容
+    loadingEl.classList.add('hide');
+    contentEl.classList.remove('hide');
+    
+  } catch (error) {
+    // 如果是CORS錯誤（通常發生於file://協定），使用內嵌資料
+    if (error.message.includes('fetch') || error.message.includes('CORS')) {
+      console.log('偵測到CORS問題，使用內嵌資料');
+      loadEmbeddedChangelog();
+      return;
+    }
+    
+    // 其他錯誤：顯示錯誤訊息
+    const errorContent = errorEl.querySelector('div');
+    if (errorContent) {
+      errorContent.innerHTML = `
+        <div style="font-size: 24px; margin-bottom: 16px;">❌</div>
+        <div>開發日誌載入失敗</div>
+        <div style="font-size: 12px; margin-top: 8px; opacity: 0.7;">
+          錯誤: ${error.message}
+        </div>
+        <button class="btn" onclick="loadChangelog()" style="margin-top: 16px;">重新載入</button>
+        <button class="btn" onclick="loadEmbeddedChangelog()" style="margin-top: 8px;">使用內嵌資料</button>
+      `;
+    }
+    
+    // 隱藏載入狀態，顯示錯誤
+    loadingEl.classList.add('hide');
+    errorEl.classList.remove('hide');
   }
 }
 
+/* ====== 工具模組主題支援 ====== */
+// 所有工具模組現在直接使用統一的全域CSS變數，不需要特殊處理
+
 /* ====== 啟動 ====== */
 initTheme();
-injectToolThemeStyles();
 openTab('home');
 </script>
 

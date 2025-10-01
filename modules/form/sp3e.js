@@ -116,27 +116,27 @@
           max-width: 950px;
           margin: 0 auto;
           padding: 20px;
-          background: linear-gradient(135deg, var(--sp3e-bg-primary) 0%, var(--sp3e-bg-secondary) 100%);
+          background: linear-gradient(135deg, var(--surface) 0%, var(--surface-secondary) 100%);
           border-radius: 16px;
-          color: var(--sp3e-text-primary);
+          color: var(--ink);
         }
         
         .step-box, .question-box, .result-box {
-          background: var(--sp3e-bg-card);
+          background: var(--card-bg);
           border-radius: 10px;
           padding: 12px 16px;
           margin: 8px auto;
-          box-shadow: 0 3px 10px var(--sp3e-shadow);
+          box-shadow: 0 3px 10px var(--shadow);
           text-align: center;
           max-width: 280px;
-          color: var(--sp3e-text-primary);
-          border: 1px solid var(--sp3e-border);
+          color: var(--ink);
+          border: 1px solid var(--line);
         }
         
         .start-box {
           background: linear-gradient(135deg, #3b82f6, #1e40af);
           color: white;
-          border: 3px solid var(--sp3e-info-text);
+          border: 3px solid var(--info-text);
         }
         
         .step-number {
@@ -161,20 +161,20 @@
         }
         
         .question-box {
-          background: var(--sp3e-warning-bg);
-          border: 2px solid var(--sp3e-warning-border);
+          background: var(--warning-bg);
+          border: 2px solid var(--warning);
           max-width: 300px;
         }
         
         .question-text {
           font-size: 16px;
           font-weight: bold;
-          color: var(--sp3e-warning-text);
+          color: var(--warning-text);
         }
         
         .question-note {
           font-size: 13px;
-          color: var(--sp3e-text-muted);
+          color: var(--muted);
           margin-top: 4px;
         }
         
@@ -189,7 +189,7 @@
           height: 0;
           border-left: 8px solid transparent;
           border-right: 8px solid transparent;
-          border-top: 15px solid var(--sp3e-arrow);
+          border-top: 15px solid var(--content);
           margin: 15px auto;
         }
         
@@ -227,47 +227,47 @@
         }
         
         .green .path-label {
-          background: var(--sp3e-success-bg);
-          color: var(--sp3e-success-text);
-          border: 2px solid var(--sp3e-success-border);
+          background: var(--success-bg);
+          color: var(--success-text);
+          border: 2px solid var(--success);
         }
         
         .yellow .path-label {
-          background: var(--sp3e-warning-bg);
-          color: var(--sp3e-warning-text);
-          border: 2px solid var(--sp3e-warning-border);
+          background: var(--warning-bg);
+          color: var(--warning-text);
+          border: 2px solid var(--warning);
         }
         
         .red .path-label {
-          background: var(--sp3e-danger-bg);
-          color: var(--sp3e-danger-text);
-          border: 2px solid var(--sp3e-danger-border);
+          background: var(--danger-bg);
+          color: var(--danger-text);
+          border: 2px solid var(--danger);
         }
         
 
         
         .result-box.success {
-          background: var(--sp3e-success-bg);
-          border: 2px solid var(--sp3e-success-border);
-          color: var(--sp3e-success-text);
+          background: var(--success-bg);
+          border: 2px solid var(--success);
+          color: var(--success-text);
         }
         
         .result-box.info {
-          background: var(--sp3e-info-bg);
-          border: 2px solid var(--sp3e-info-border);
-          color: var(--sp3e-info-text);
+          background: var(--info-bg);
+          border: 2px solid var(--info);
+          color: var(--info-text);
         }
         
         .result-box.warning {
-          background: var(--sp3e-warning-bg);
-          border: 2px solid var(--sp3e-warning-border);
-          color: var(--sp3e-warning-text);
+          background: var(--warning-bg);
+          border: 2px solid var(--warning);
+          color: var(--warning-text);
         }
         
         .result-box.danger {
-          background: var(--sp3e-danger-bg);
-          border: 2px solid var(--sp3e-danger-border);
-          color: var(--sp3e-danger-text);
+          background: var(--danger-bg);
+          border: 2px solid var(--danger);
+          color: var(--danger-text);
         }
         
         .result-title {
@@ -288,14 +288,14 @@
           border-radius: 12px;
           font-size: 13px;
           font-weight: bold;
-          background: var(--sp3e-shadow);
-          border: 1px solid var(--sp3e-border);
-          color: var(--sp3e-text-secondary);
+          background: var(--shadow);
+          border: 1px solid var(--line);
+          color: var(--muted);
         }
         
         .sub-question {
-          background: var(--sp3e-warning-bg);
-          border: 2px solid var(--sp3e-warning-border);
+          background: var(--warning-bg);
+          border: 2px solid var(--warning);
           border-radius: 8px;
           padding: 8px;
           margin: 8px auto;
@@ -334,7 +334,7 @@
         }
         
         .sub-path .arrow-down {
-          border-top: 8px solid var(--sp3e-arrow);
+          border-top: 8px solid var(--content);
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
           margin: 8px auto;
@@ -345,7 +345,7 @@
         }
         
         .mini-question {
-          background: var(--sp3e-warning-bg);
+          background: var(--warning-light);
           border-radius: 6px;
           padding: 8px;
           margin: 5px 0;
@@ -381,13 +381,13 @@
         }
         
         .tiny-box.warning {
-          background: var(--sp3e-warning-bg);
-          border-color: var(--sp3e-warning-border);
+          background: var(--warning-bg);
+          border-color: var(--warning);
         }
         
         .tiny-box.info {
-          background: var(--sp3e-info-bg);
-          border-color: var(--sp3e-info-border);
+          background: var(--info-bg);
+          border-color: var(--info);
         }
         
         @media (max-width: 768px) {
@@ -408,15 +408,15 @@
 
         /* 狀態訊息樣式 */
         .status-success {
-          color: var(--sp3e-success-text);
+          color: var(--success-text);
         }
 
         .status-warning {
-          color: var(--sp3e-warning-text);
+          color: var(--warning-text);
         }
 
         .status-danger {
-          color: var(--sp3e-danger-text);
+          color: var(--danger-text);
         }
       </style>
       </div>
