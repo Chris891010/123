@@ -15,6 +15,69 @@
     generateHTML() {
       return `
 <div class="sp3e-container">
+<style>
+  .sp3e-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;
+    box-sizing: border-box;
+  }
+  
+  /* 滾動條美化 */
+  .decision-tree::-webkit-scrollbar,
+  .checklist-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .decision-tree::-webkit-scrollbar-track,
+  .checklist-container::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 4px;
+  }
+  
+  .decision-tree::-webkit-scrollbar-thumb,
+  .checklist-container::-webkit-scrollbar-thumb {
+    background: var(--content);
+    border-radius: 4px;
+  }
+  
+  .decision-tree::-webkit-scrollbar-thumb:hover,
+  .checklist-container::-webkit-scrollbar-thumb:hover {
+    background: var(--brand);
+  }
+  
+  @media (max-width: 768px) {
+    .sp3e-container {
+      padding: 0 8px;
+    }
+    
+    .sp3e-container .card {
+      margin: 8px 0;
+      padding: 12px;
+    }
+    
+    .sp3e-container .toolbar {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .sp3e-container .btn {
+      flex: 1;
+      min-width: 80px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sp3e-container {
+      padding: 0 4px;
+    }
+    
+    .sp3e-container .btn {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+  }
+</style>
 <div class="row backonly"><button class="btn" onclick="ToolsModuleAPI.backToTools()">← 返回工具庫</button></div>
     <h2>3E 安全移位臨床路徑（Clinical Pathway for Safe Patient Handling）</h2>
     <details open><summary><b>介紹與決策流程</b></summary>
@@ -30,6 +93,7 @@
       
       <!-- 開始 -->
       <div class="decision-tree">
+        <div class="decision-content">
         <div class="step-box start-box">
           <div class="step-number">START</div>
           <div class="step-title">病人需要移位</div>
@@ -108,17 +172,31 @@
           </div>
           
         </div>
+        </div>
       </div>
       
       <style>
         .decision-tree {
           font-family: 'Noto Sans TC', sans-serif;
-          max-width: 950px;
+          width: 100%;
           margin: 0 auto;
-          padding: 20px;
+          padding: 16px;
           background: linear-gradient(135deg, var(--surface) 0%, var(--surface-secondary) 100%);
           border-radius: 16px;
           color: var(--ink);
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          position: relative;
+        }
+        
+
+        
+        .decision-content {
+          display: flex;
+          flex-direction: column;
+          min-width: 950px;
+          align-items: center;
         }
         
         .step-box, .question-box, .result-box {
@@ -129,6 +207,8 @@
           box-shadow: 0 3px 10px var(--shadow);
           text-align: center;
           max-width: 280px;
+          width: 100%;
+          box-sizing: border-box;
           color: var(--ink);
           border: 1px solid var(--line);
         }
@@ -198,7 +278,10 @@
           gap: 12px;
           margin-top: 16px;
           justify-content: center;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
+          width: 100%;
+          min-width: 900px;
+          box-sizing: border-box;
         }
         
         .branch-path {
@@ -210,12 +293,14 @@
           flex: 0.8;
           min-width: 200px;
           max-width: 240px;
+          box-sizing: border-box;
         }
         
         .branch-path.yellow {
           flex: 1.4;
-          min-width: 320px;
+          min-width: 280px;
           max-width: 400px;
+          box-sizing: border-box;
         }
         
         .path-label {
@@ -390,19 +475,38 @@
           border-color: var(--info);
         }
         
+        /* 手機端滾動優化 */
         @media (max-width: 768px) {
+          .decision-tree {
+            padding: 8px;
+            margin: 0 -8px;
+            border-radius: 8px;
+          }
+          
+
+          
+          .decision-content {
+            min-width: 800px;
+          }
+          
           .branches-container {
-            flex-direction: column;
-            align-items: center;
+            min-width: 750px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .decision-tree {
+            margin: 0 -4px;
+            padding: 6px;
           }
           
-          .branch-path {
-            min-width: 240px;
-            max-width: 100%;
+          .decision-content {
+            min-width: 700px;
           }
           
-          .sub-branches {
-            flex-direction: column;
+          .branches-container {
+            min-width: 650px;
+            gap: 8px;
           }
         }
 
@@ -422,7 +526,7 @@
       </div>
     </details>
 
-    <div class="toolbar">
+    <div class="toolbar" style="display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0;">
       <button class="btn" onclick="Tool3E.save()">儲存</button>
       <button class="btn" onclick="Tool3E.load()">載入</button>
       <button class="btn" onclick="Tool3E.clear()">清空</button>
@@ -477,6 +581,20 @@
             margin-bottom: 16px;
           }
           
+          /* 決策網格響應式設計 */
+          @media (max-width: 768px) {
+            .decision-grid {
+              grid-template-columns: 1fr;
+              gap: 12px;
+            }
+          }
+          
+          @media (min-width: 480px) and (max-width: 768px) {
+            .decision-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+          
           .sp3e-container .decision-item {
             display: flex;
             flex-direction: column;
@@ -513,30 +631,74 @@
             line-height: 1.5;
           }
           
-          @media (max-width: 768px) {
-            .decision-grid {
-              grid-template-columns: 1fr;
-              gap: 12px;
-            }
-          }
+
             
             .q {
               padding: 16px;
             }
           }
           
-          /* 檢核表格容器樣式 */
+          /* 檢核表格容器樣式 - 網上查詢到的正確方法 */
           .sp3e-container .checklist-container {
             overflow-x: auto;
+            overflow-y: hidden;
             border-radius: 6px;
             background-color: var(--card-bg);
             border: 1px solid var(--line);
+            width: 100%;
+            position: relative;
           }
           
           .sp3e-container .checklist-container table {
             width: 100%;
             border-collapse: collapse;
             margin: 0;
+            min-width: 800px;
+            table-layout: auto;
+          }
+          
+          /* 手機版滾動 - 重要：移除內聯樣式衝突 */
+          .sp3e-container .checklist-container th[style],
+          .sp3e-container .checklist-container td[style] {
+            width: auto !important;
+          }
+          
+          .sp3e-container .checklist-container th:nth-child(1),
+          .sp3e-container .checklist-container td:nth-child(1) {
+            width: 60px;
+            min-width: 60px;
+          }
+          
+          .sp3e-container .checklist-container th:nth-child(2),
+          .sp3e-container .checklist-container td:nth-child(2) {
+            width: 250px;
+            min-width: 250px;
+          }
+          
+          .sp3e-container .checklist-container th:nth-child(3),
+          .sp3e-container .checklist-container td:nth-child(3),
+          .sp3e-container .checklist-container th:nth-child(4),
+          .sp3e-container .checklist-container td:nth-child(4) {
+            width: 100px;
+            min-width: 100px;
+          }
+          
+          .sp3e-container .checklist-container th:nth-child(5),
+          .sp3e-container .checklist-container td:nth-child(5) {
+            width: 200px;
+            min-width: 200px;
+          }
+          
+          /* 手機版特殊處理 */
+          @media (max-width: 768px) {
+            .sp3e-container .checklist-container {
+              -webkit-overflow-scrolling: touch;
+              overflow-x: scroll;
+            }
+            
+            .sp3e-container .checklist-container table {
+              min-width: 720px;
+            }
           }
           
           .sp3e-container .checklist-container th,
@@ -599,56 +761,196 @@
           .sp3e-container .checklist-container tfoot td {
             color: var(--th-text);
           }
+          
+          /* 新的檢核表樣式 - 手機優化 */
+          .sp3e-container .checklist-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--card-bg);
+          }
+          
+          .sp3e-container .checklist-table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+          }
+          
+          .sp3e-container .checklist-table th,
+          .sp3e-container .checklist-table td {
+            padding: 8px 4px;
+            border: 1px solid var(--line);
+            text-align: center;
+            font-size: 12px;
+            white-space: nowrap;
+          }
+          
+          .sp3e-container .checklist-table th {
+            background: var(--th-bg);
+            color: var(--th-text);
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+          }
+          
+          .sp3e-container .th-num {
+            width: 8%;
+            min-width: 35px;
+          }
+          
+          .sp3e-container .th-item {
+            width: 32%;
+            min-width: 100px;
+            text-align: left;
+          }
+          
+          .sp3e-container .th-yn {
+            width: 15%;
+            min-width: 50px;
+          }
+          
+          .sp3e-container .th-note {
+            width: 30%;
+            min-width: 90px;
+          }
+          
+          .sp3e-container .checklist-table tbody td:nth-child(2) {
+            text-align: left;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.3;
+          }
+          
+          .sp3e-container .checklist-table tbody td:nth-child(5),
+          .sp3e-container .checklist-table tfoot td:nth-child(5) {
+            text-align: left;
+          }
+          
+          .sp3e-container .input-note {
+            width: 100%;
+            max-width: 100%;
+            padding: 4px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            font-size: 11px;
+            box-sizing: border-box;
+          }
+          
+          .sp3e-container .row-total {
+            background: #f0f8ff;
+            font-weight: bold;
+          }
+          
+          .sp3e-container .row-total td {
+            font-size: 11px;
+          }
+          
+          .sp3e-container .row-total td:nth-child(2) {
+            text-align: left;
+          }
+          
+          .sp3e-container #E_msg {
+            text-align: left;
+            font-weight: normal;
+            font-size: 10px;
+          }
+          
+          /* 手機版專用 */
+          @media (max-width: 768px) {
+            .sp3e-container .checklist-table {
+              font-size: 11px;
+            }
+            
+            .sp3e-container .checklist-table th,
+            .sp3e-container .checklist-table td {
+              padding: 6px 3px;
+              font-size: 10px;
+            }
+            
+            .sp3e-container .input-note {
+              font-size: 10px;
+              padding: 3px;
+            }
+            
+            .sp3e-container .checklist-table input[type="radio"] {
+              transform: scale(0.9);
+            }
+          }
         </style>
       </fieldset>
 
       <fieldset class="q checklist-fieldset">
         <h3 class="fieldset-title">完成檢核（是/否）</h3>
-        <div class="checklist-container">
-          <table>
-            <thead><tr><th style="width:36px">#</th><th>項目</th><th style="width:90px">是</th><th style="width:90px">否</th><th>備註</th></tr></thead>
+        <div class="checklist-scroll">
+          <table class="checklist-table">
+            <thead>
+              <tr>
+                <th class="th-num">#</th>
+                <th class="th-item">項目</th>
+                <th class="th-yn">是</th>
+                <th class="th-yn">否</th>
+                <th class="th-note">備註</th>
+              </tr>
+            </thead>
             <tbody id="E_rows">
               <tr>
-                <td>1</td><td>評估病人承重能力</td>
+                <td>1</td>
+                <td>評估病人承重能力</td>
                 <td><input type="radio" name="E_check1" value="是" onchange="window.Tool3E && Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check1" value="否" onchange="window.Tool3E && Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note1" placeholder="備註"></td>
+                <td><input type="text" name="E_note1" placeholder="備註" class="input-note"></td>
               </tr>
               <tr>
-                <td>2</td><td>確認病人配合意願</td>
+                <td>2</td>
+                <td>確認病人配合意願</td>
                 <td><input type="radio" name="E_check2" value="是" onchange="Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check2" value="否" onchange="Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note2" placeholder="備註"></td>
+                <td><input type="text" name="E_note2" placeholder="備註" class="input-note"></td>
               </tr>
               <tr>
-                <td>3</td><td>評估上肢力量</td>
+                <td>3</td>
+                <td>評估上肢力量</td>
                 <td><input type="radio" name="E_check3" value="是" onchange="Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check3" value="否" onchange="Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note3" placeholder="備註"></td>
+                <td><input type="text" name="E_note3" placeholder="備註" class="input-note"></td>
               </tr>
               <tr>
-                <td>4</td><td>準備適當輔具</td>
+                <td>4</td>
+                <td>準備適當輔具</td>
                 <td><input type="radio" name="E_check4" value="是" onchange="Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check4" value="否" onchange="Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note4" placeholder="備註"></td>
+                <td><input type="text" name="E_note4" placeholder="備註" class="input-note"></td>
               </tr>
               <tr>
-                <td>5</td><td>確保足夠人力</td>
+                <td>5</td>
+                <td>確保足夠人力</td>
                 <td><input type="radio" name="E_check5" value="是" onchange="Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check5" value="否" onchange="Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note5" placeholder="備註"></td>
+                <td><input type="text" name="E_note5" placeholder="備註" class="input-note"></td>
               </tr>
               <tr>
-                <td>6</td><td>環境安全檢查</td>
+                <td>6</td>
+                <td>環境安全檢查</td>
                 <td><input type="radio" name="E_check6" value="是" onchange="Tool3E.updateChecklist()"></td>
                 <td><input type="radio" name="E_check6" value="否" onchange="Tool3E.updateChecklist()"></td>
-                <td><input type="text" name="E_note6" placeholder="備註"></td>
+                <td><input type="text" name="E_note6" placeholder="備註" class="input-note"></td>
               </tr>
             </tbody>
-            <tfoot><tr><td></td><td><b>合計</b></td><td id="E_yes">0</td><td id="E_no">0</td><td id="E_msg" class="small">請完成檢核</td></tr></tfoot>
+            <tfoot>
+              <tr class="row-total">
+                <td></td>
+                <td><b>合計</b></td>
+                <td id="E_yes">0</td>
+                <td id="E_no">0</td>
+                <td id="E_msg">請完成檢核</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
-            </fieldset>
+      </fieldset>
 </div>
     `;
     }

@@ -19,7 +19,7 @@
   --mgmt-50: #f5f3ff;
   --tools-50: #f8fafc;
   --ass-50: #ecfdf5;
-  --edu-50: #fff7ed;
+  --edu-50: #fff7e
   
   /* 按鈕和連結顏色 */
   --btn-text: #374151;
@@ -129,10 +129,10 @@ nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 0}
 .tab:hover{opacity:0.8}
 .tab.active{background:var(--brand);color:#ffffff;border-color:var(--brand)}
 .hero,.section{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px;color:var(--ink)}
-.section.management{background:var(--mgmt-50);border-color:var(--line)}
-.section.tools{background:var(--tools-50);border-color:var(--line)}
-.section.assessment{background:var(--ass-50);border-color:var(--line)}
-.section.education{background:var(--edu-50);border-color:var(--line)}
+.section.management{background:var(--mgmt-50)}
+.section.tools{background:var(--tools-50)}
+.section.assessment{background:var(--ass-50)}
+.section.education{background:var(--edu-50)}
 .btn{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-text);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-weight:700;transition:all 0.2s ease}
 .btn:hover{background:var(--muted);opacity:0.9}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -225,7 +225,7 @@ a.inline:hover{color:var(--link-hover)}
 <body>
 <header class="container">
   <h1>跌倒管理 Frontpage</h1>
-  <div class="small">單一頁面整合：<b>1B 利害關係人</b>、<b>1C 管理支持度</b>、<b>1E 資源盤點＋設備盤點</b>、<b>1F 組織準備度</b>、<b>2B 品質改善流程</b>，保留原有功能（儲存/載入/清空/CSV）。</div>
+  <div class="small">BETA測試版</div>
   <nav class="tabs" role="tablist" aria-label="主選單">
     <button class="tab active" data-tab="home" aria-selected="true">概覽</button>
     <button class="tab" data-tab="roadmap" aria-selected="false">Roadmap</button>
@@ -349,13 +349,12 @@ a.inline:hover{color:var(--link-hover)}
 <script>
 /* ====== 下載 CSV ====== */
 function downloadCSV(filename, text){
-  const BOM='\\ufeff';
-  const blob=new Blob([BOM+text],{type:'text/csv;charset=utf-8;'});
+  const blob=new Blob(['\\ufeff'+text],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');
-  const url=(window.URL||window.webkitURL).createObjectURL(blob);
+  const url=URL.createObjectURL(blob);
   a.href=url;a.download=filename;a.style.display='none';
   document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=> (window.URL||window.webkitURL).revokeObjectURL(url),800);
+  setTimeout(()=>URL.revokeObjectURL(url),800);
 }
 
 /* ====== Tabs ====== */
@@ -408,63 +407,58 @@ function loadToolsModule(filter = null) {
   }
 }
 
-/* ====== 教育子分頁 ====== */
-function openSub(id){
-  document.querySelectorAll('.subtab').forEach(b=>{
-    const on=b.dataset.sub===id;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));
-  });
-  ['edu-overview','edu-hsops'].forEach(x=>document.getElementById(x).classList.add('hide'));
-  document.getElementById(id).classList.remove('hide');
-}
-document.querySelectorAll('.subtab').forEach(b=>b.addEventListener('click',()=>openSub(b.dataset.sub)));
-// openHSOPS 已移除 - 使用工具庫模組
 
-/* ====== 快速入口 ====== */
-// openStakeholder 已移除 - 使用工具庫模組
-// openLeadership1C 已移除 - 使用工具庫模組
-// openResource1E 已移除 - 使用工具庫模組
-// openOrganizational1F 已移除 - 使用工具庫模組
-// openQI2B 已移除 - 使用工具庫模組
+
+
 
 /* ====== Assessment 通用 ====== */
 const ass=(function(){
-  function f(id){return document.querySelector(`form[data-form-id="${id}"]`)}
+  const getForm=id=>document.querySelector(`form[data-form-id="${id}"]`);
+  const getKey=id=>`FRONT_${id}`;
+  
   function toObj(id){
-    const form=f(id),obj={};
+    const form=getForm(id),obj={};
     form.querySelectorAll('input,select,textarea').forEach(el=>{
       const n=el.name;if(!n)return;
-      if(el.type==='radio'){if(el.checked){obj[n]=el.value;}}
-      else if(el.type==='checkbox'){obj[n]=el.checked?'1':'';}
-      else{obj[n]=el.value;}
+      if(el.type==='radio'){if(el.checked)obj[n]=el.value;}
+      else if(el.type==='checkbox')obj[n]=el.checked?'1':'';
+      else obj[n]=el.value;
     });
     return obj;
   }
-  const key=id=>`FRONT_${id}`;
-  function save(id){localStorage.setItem(key(id),JSON.stringify(toObj(id)));alert('已儲存');}
+  
+  function save(id){localStorage.setItem(getKey(id),JSON.stringify(toObj(id)));alert('已儲存');}
+  
   function load(id){
-    const raw=localStorage.getItem(key(id));if(!raw){alert('尚無資料');return}
-    const data=JSON.parse(raw),form=f(id);
+    const raw=localStorage.getItem(getKey(id));if(!raw){alert('尚無資料');return}
+    const data=JSON.parse(raw),form=getForm(id);
     form.querySelectorAll('input,select,textarea').forEach(el=>{
       const n=el.name;if(!(n in data))return;
-      if(el.type==='radio'){el.checked=(data[n]===el.value);}
-      else if(el.type==='checkbox'){el.checked=!!data[n];}
-      else{el.value=data[n];}
+      if(el.type==='radio')el.checked=(data[n]===el.value);
+      else if(el.type==='checkbox')el.checked=!!data[n];
+      else el.value=data[n];
     });
-    // 評分函數已移至工具庫模組
-    // qi2b 相關功能已移至工具庫
-    if(id==='fk2e' && typeof FK2E!=='undefined'){FK2E.score && FK2E.score();}
+    if(id==='fk2e' && window.FK2E?.score)FK2E.score();
   }
-  function clear(id){if(!confirm('清空本表單？'))return;const form=f(id);form.reset();form.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el=>el.checked=false);if(id==='fk2e'){const r=document.getElementById('fk2eResult'); if(r) r.textContent=''; const p=document.getElementById('fk2ePass'); if(p) p.value=80;}}
-
-  function asciiize(s){return String(s).replace(/\\u2013|\\u2014|\\u2015/g,'-');}
-  function csvRow(arr){return arr.map(v=>`"${asciiize(v??'').replace(/"/g,'""')}"`).join(',')}
-  function exportCSV(id){const obj=toObj(id);const header=Object.keys(obj);const values=header.map(k=>obj[k]??'');const csv=[csvRow(header),csvRow(values)].join('\\r\\n');downloadCSV(`${id}.csv`,csv);}
+  
+  function clear(id){
+    if(!confirm('清空本表單？'))return;
+    const form=getForm(id);form.reset();
+    form.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el=>el.checked=false);
+  }
+  
+  function exportCSV(id){
+    const obj=toObj(id),keys=Object.keys(obj);
+    const csvRow=arr=>arr.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',');
+    const csv=[csvRow(keys),csvRow(keys.map(k=>obj[k]??''))].join('\\r\\n');
+    downloadCSV(`${id}.csv`,csv);
+  }
+  
   return {save,load,clear,exportCSV};
 })();
 
-// 所有表單實作已移至工具庫模組
 
-/* ====== 事件監聽 ====== */
+/* ====== 初始化與事件 ====== */
 // 監聽工具庫動作
 document.addEventListener('toolsModuleAction', function(event) {
   const { action } = event.detail;
@@ -474,22 +468,6 @@ document.addEventListener('toolsModuleAction', function(event) {
 });
 
 /* ====== 主題切換 ====== */
-function initTheme() {
-  // 檢查系統偏好或保存的主題
-  const savedTheme = localStorage.getItem('theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const defaultTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-  
-  setTheme(defaultTheme);
-  
-  // 監聽系統主題變化
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-      setTheme(e.matches ? 'dark' : 'light');
-    }
-  });
-}
-
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
@@ -497,86 +475,41 @@ function setTheme(theme) {
 }
 
 function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setTheme(newTheme);
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  setTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (systemDark ? 'dark' : 'light');
+  
+  setTheme(theme);
+  
+  // 監聽系統主題變化
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!saved) setTheme(e.matches ? 'dark' : 'light');
+  });
 }
 
 // 綁定主題切換按鈕
 document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 
-/* ====== 開發日誌載入 ====== */
-// 內嵌資料 - 用於file://協定或網路問題
-const EMBEDDED_CHANGELOG = {
-  "metadata": {
-    "title": "跌倒管理系統 - 開發日誌",
-    "lastUpdated": "2025-10-01",
-    "version": "1.2.0"
-  },
-  "releases": [
-    {
-      "version": "1.2.0",
-      "date": "2025-10-01",
-      "tags": ["重構", "主題"],
-      "changes": [
-        "🎨 統一全域CSS變數系統，簡化主題管理",
-        "🌓 優化暗主題支援，移除冗餘樣式注入", 
-        "♻️ 重構3E流程圖顏色系統，使用語義化變數",
-        "📦 建立可擴展的狀態顏色系統（success/warning/danger/info）",
-        "🧹 清理不必要的工具模組主題支援函數"
-      ]
-    },
-    {
-      "version": "1.1.0", 
-      "date": "2025-10-01",
-      "tags": ["新功能", "UI"],
-      "changes": [
-        "✨ 新増3E安全移位決策流程圖",
-        "📱 優化響應式設計，支援手機和平板",
-        "🎨 改進流程圖視覺設計"
-      ]
-    },
-    {
-      "version": "1.0.0",
-      "date": "2025-10-01", 
-      "tags": ["首版"],
-      "changes": [
-        "🚀 跌倒管理系統主控面板上線",
-        "📊 整合AHRQ Roadmap工具庫",
-        "🔧 建立模組化架構簡化程式碼",
-        "📋 完成基礎評估表單",
-        "🌙 實現明暗主題切換"
-      ]
-    }
-  ],
-  "roadmap": {
-    "nearTerm": [
-      "📊 增強數據視覺化功能",
-      "🔄 優化表單自動儲存機制", 
-      "📱 改進行動裝置使用體驗",
-      "🔍 加入全域搜尋功能"
-    ],
-    "longTerm": [
-      "🤖 整合輔助決策",
-      "📈 即時監測儀表板",
-      "📤 資料匯出與分享功能"
-    ]
+// JS模組載入
+function loadJSModuleChangelog() {
+  const [loadingEl, contentEl, errorEl] = ['changelog-loading','changelog-content','changelog-error']
+    .map(id => document.getElementById(id));
+  
+  if (window.ChangelogAPI) {
+    renderChangelog(window.ChangelogAPI.getData());
+    loadingEl?.classList.add('hide');
+    errorEl?.classList.add('hide');
+    contentEl?.classList.remove('hide');
+  } else {
+    setTimeout(() => {
+      window.ChangelogAPI ? loadJSModuleChangelog() : showChangelogError('無法載入開發日誌模組');
+    }, 500);
   }
-};
-
-// 內嵌資料載入函數
-function loadEmbeddedChangelog() {
-  const loadingEl = document.getElementById('changelog-loading');
-  const contentEl = document.getElementById('changelog-content');
-  const errorEl = document.getElementById('changelog-error');
-  
-  console.log('使用內嵌資料載入開發日誌');
-  
-  renderChangelog(EMBEDDED_CHANGELOG);
-  
-  if (loadingEl) loadingEl.classList.add('hide');
-  if (errorEl) errorEl.classList.add('hide');
-  if (contentEl) contentEl.classList.remove('hide');
 }
 
 // 渲染開發日誌內容
@@ -588,7 +521,7 @@ function renderChangelog(data) {
       <div class="changelog-content">
         ${data.releases.map(release => `
           <div class="changelog-entry">
-            <h4>v${release.version} - ${release.date}</h4>
+            <h4>v${release.version} - ${release.date} - </h4>
             <div class="changelog-tags">
               ${release.tags.map(tag => `<span class="badge">${tag}</span>`).join('')}
             </div>
@@ -616,68 +549,67 @@ function renderChangelog(data) {
   contentEl.innerHTML = html;
 }
 
+// 顯示錯誤訊息
+function showChangelogError(message) {
+  const [loadingEl, errorEl, contentEl] = ['changelog-loading','changelog-error','changelog-content']
+    .map(id => document.getElementById(id));
+  
+  const errorContent = errorEl?.querySelector('div');
+  if (errorContent) {
+    errorContent.innerHTML = `
+      <div style="font-size: 24px; margin-bottom: 16px;">❌</div>
+      <div>開發日誌載入失敗</div>
+      <div style="font-size: 12px; margin-top: 8px; opacity: 0.7;">錯誤: ${message}</div>
+      <button class="btn" onclick="loadChangelog()" style="margin-top: 16px;">重新載入</button>
+      <button class="btn" onclick="loadJSModuleChangelog()" style="margin-top: 8px;">使用JS模組</button>`;
+  }
+  
+  loadingEl?.classList.add('hide');
+  contentEl?.classList.add('hide');
+  errorEl?.classList.remove('hide');
+}
+
 async function loadChangelog() {
-  const loadingEl = document.getElementById('changelog-loading');
-  const errorEl = document.getElementById('changelog-error');
-  const contentEl = document.getElementById('changelog-content');
+  const [loadingEl, errorEl, contentEl] = ['changelog-loading','changelog-error','changelog-content']
+    .map(id => document.getElementById(id));
   
   // 顯示載入狀態
-  if (loadingEl) loadingEl.classList.remove('hide');
-  if (errorEl) errorEl.classList.add('hide');
-  if (contentEl) contentEl.classList.add('hide');
+  loadingEl?.classList.remove('hide');
+  errorEl?.classList.add('hide');
+  contentEl?.classList.add('hide');
   
+  // 優先使用JS模組
+  if (window.ChangelogAPI) {
+    renderChangelog(window.ChangelogAPI.getData());
+    loadingEl?.classList.add('hide');
+    contentEl?.classList.remove('hide');
+    return;
+  }
+  
+  // 嘗試fetch JSON
   try {
     const response = await fetch('./data/changelog.json');
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     
-    const data = await response.json();
-    
-    // 使用共用渲染函數
-    renderChangelog(data);
-    
-    // 隱藏載入狀態，顯示內容
-    loadingEl.classList.add('hide');
-    contentEl.classList.remove('hide');
-    
+    renderChangelog(await response.json());
+    loadingEl?.classList.add('hide');
+    contentEl?.classList.remove('hide');
   } catch (error) {
-    // 如果是CORS錯誤（通常發生於file://協定），使用內嵌資料
-    if (error.message.includes('fetch') || error.message.includes('CORS')) {
-      console.log('偵測到CORS問題，使用內嵌資料');
-      loadEmbeddedChangelog();
-      return;
-    }
-    
-    // 其他錯誤：顯示錯誤訊息
-    const errorContent = errorEl.querySelector('div');
-    if (errorContent) {
-      errorContent.innerHTML = `
-        <div style="font-size: 24px; margin-bottom: 16px;">❌</div>
-        <div>開發日誌載入失敗</div>
-        <div style="font-size: 12px; margin-top: 8px; opacity: 0.7;">
-          錯誤: ${error.message}
-        </div>
-        <button class="btn" onclick="loadChangelog()" style="margin-top: 16px;">重新載入</button>
-        <button class="btn" onclick="loadEmbeddedChangelog()" style="margin-top: 8px;">使用內嵌資料</button>
-      `;
-    }
-    
-    // 隱藏載入狀態，顯示錯誤
-    loadingEl.classList.add('hide');
-    errorEl.classList.remove('hide');
+    loadJSModuleChangelog();
   }
 }
 
 /* ====== 工具模組主題支援 ====== */
 // 所有工具模組現在直接使用統一的全域CSS變數，不需要特殊處理
 
-/* ====== 啟動 ====== */
+// 啟動系統
 initTheme();
 openTab('home');
 </script>
 
 <!-- 工具庫模組 -->
 <script src="modules/tools-module.js"></script>
+<!-- 開發日誌模組 -->
+<script src="data/changelog.js"></script>
 </body>
 </html>

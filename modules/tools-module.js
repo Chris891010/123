@@ -8,10 +8,11 @@
   class ToolsModule {
     constructor() {
       this.activeCat = 'all';
+      this.registeredTools = new Map(); // 新增：註冊的工具
       // 工具配置：添加 module 指向檔案路徑，實現通用載入
       this.tools = [
         {id:'sp3e',title:'3E 安全移位臨床路徑',desc:'站-轉/動力站立/全身吊帶 決策提示＋檢核',cats:['form','education'],module:'./modules/form/sp3e.js',className:'Tool3E'},
-        {id:'es3c',title:'3C 床邊環境安全巡檢表',desc:'房/床巡檢，指派與備註',cats:['form','management'],module:'./modules/form/3c.js',className:'Tool3C'},
+        {id:'es3c',title:'3C 床邊環境安全巡檢表',desc:'房/床巡檢，指派與備註',cats:['form','management'],module:'./modules/form/es3c.js',className:'ES3C'},
         {id:'mc2g',title:'2G 變革管理檢核表',desc:'Managing Change Checklist（季檢視）',cats:['management','form'],module:'./modules/management/2g.js',className:'Tool2G'},
         {id:'cp3a',title:'3A 跌倒照護流程圖',desc:'住院病人臨床路徑＋完成檢核',cats:['form','management'],module:'./modules/form/3a.js',className:'Tool3A'},
         {id:'fk2e',title:'2E 防跌知識測驗',desc:'員工防跌知識多選題，自動計分',cats:['assessment','education'],module:'./modules/assessment/2e.js',className:'Tool2E'},
@@ -123,9 +124,16 @@
     loadTool(toolConfig) {
       console.log(`載入工具: ${toolConfig.title}`);
       
-      // 檢查是否已載入
+      // 檢查新註冊系統
+      if (this.registeredTools.has(toolConfig.id)) {
+        console.log(`${toolConfig.title} 已在註冊系統中，直接顯示`);
+        this.showRegisteredTool(toolConfig.id);
+        return;
+      }
+      
+      // 檢查舊的className系統
       const globalClassName = toolConfig.className;
-      if (typeof window[globalClassName] !== 'undefined') {
+      if (globalClassName && typeof window[globalClassName] !== 'undefined') {
         console.log(`${toolConfig.title} 已載入，直接顯示`);
         this.showTool(toolConfig);
         return;
@@ -138,7 +146,14 @@
       const self = this;
       script.onload = () => {
         console.log(`${toolConfig.title} 腳本載入成功`);
-        self.showTool(toolConfig);
+        // 給一點時間讓模組註冊
+        setTimeout(() => {
+          if (self.registeredTools.has(toolConfig.id)) {
+            self.showRegisteredTool(toolConfig.id);
+          } else {
+            self.showTool(toolConfig);
+          }
+        }, 50);
       };
       
       script.onerror = () => {
@@ -147,6 +162,23 @@
       };
       
       document.head.appendChild(script);
+    }
+
+    // 顯示註冊的工具
+    showRegisteredTool(toolId) {
+      const tool = this.registeredTools.get(toolId);
+      if (tool && tool.generateContent) {
+        const container = document.getElementById('view-tools');
+        if (container) {
+          container.innerHTML = tool.generateContent();
+        }
+      }
+    }
+
+    // 註冊工具（供新模組使用）
+    registerTool(toolConfig) {
+      console.log(`註冊工具: ${toolConfig.title}`);
+      this.registeredTools.set(toolConfig.id, toolConfig);
     }
 
     // 通用工具顯示方法
@@ -273,6 +305,11 @@
     // 通用工具顯示方法
     showTool(toolConfig) {
       return this.instance.showTool(toolConfig);
+    },
+
+    // 註冊工具（供新模組使用）
+    registerTool(toolConfig) {
+      return this.instance.registerTool(toolConfig);
     }
   };
 
