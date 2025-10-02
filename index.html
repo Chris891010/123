@@ -232,6 +232,7 @@ a.inline:hover{color:var(--link-hover)}
     <button class="tab" data-tab="tools" aria-selected="false">工具庫</button>
     <button class="tab" data-tab="edu" aria-selected="false">教育訓練</button>
     <button class="tab" data-tab="qm" aria-selected="false">監測/成效</button>
+    <button class="tab" data-tab="CGA" aria-selected="false">CGA表單測試</button>
     <button class="tab" data-tab="changelog" aria-selected="false">開發日誌</button>
     <span style="margin-left:auto"></span>
     <button class="btn" type="button" id="theme-toggle" title="切換主題">
@@ -359,6 +360,12 @@ function downloadCSV(filename, text){
 
 /* ====== Tabs ====== */
 function openTab(id){
+  // CGA表單：在新分頁打開
+  if (id === 'CGA') {
+    window.open('CGA/CGA2.html', '_blank');
+    return;
+  }
+  
   // 更新標籤狀態
   document.querySelectorAll('.tabs .tab').forEach(t=>{
     const on=t.dataset.tab===id;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on));
