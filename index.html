@@ -126,6 +126,16 @@
   box-sizing: border-box;
 }
 
+/* 主題切換平滑過渡 - 所有元素 */
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
 body {
   margin: 0;
   background: var(--bg);
