@@ -4,46 +4,515 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>CGA – 全量表（修正版）</title>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f8fb;--ink:#0f172a;--muted:#64748b;--line:#e5e7eb;--blue:#1d4ed8;--card:#fff;--soft:#f8fafc}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--ink)}
-.container{max-width:1440px;margin:0 auto;padding:14px}
-h1{margin:.2rem 0 .8rem}
-.grid{display:grid;gap:12px}
-@media(min-width:980px){ .grid.cols-2{grid-template-columns:3fr 1fr} }
-.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-#stepbar{display:flex;gap:8px;flex-wrap:wrap;margin:.2rem 0 .8rem}
-.step{padding:.32rem .6rem;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;font-size:.85rem}
-.step.active{background:#eef2ff;border-color:#c7d2fe}
-.controls{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.8rem 0}
-.btn{border:1px solid var(--line);border-radius:10px;background:#fff;padding:.52rem .8rem;font-weight:700;cursor:pointer}
-.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
-.btn.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
-.hint{color:var(--muted);font-size:.85rem}
-.page{display:none}.page.show{display:block}
-.form{display:grid;grid-template-columns:repeat(12,1fr);gap:.8rem}.field{grid-column:span 3}.col-2{grid-column:span 2}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
-label{display:block;color:var(--muted);font-size:.86rem;margin-bottom:.25rem}
-input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:.56rem .65rem;background:#fff}
-.sec{border:1px solid var(--line);border-radius:12px;padding:12px;margin:.8rem 0;background:#fff}
-.sec h3{margin:.1rem 0 .5rem}
-.badge{display:inline-flex;align-items:center;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#1e3a8a;padding:.12rem .55rem;font-size:.78rem;font-weight:700}
-.tag{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:#f8fafc;padding:.18rem .5rem;margin:.2rem .25rem;font-size:.85rem}
-.table{width:100%;border-collapse:separate;border-spacing:0}
-.table th,.table td{border-bottom:1px solid var(--line);padding:.5rem .5rem;vertical-align:top}
-.table thead th{background:var(--soft)}
-/* CCI chips 改良，避免重疊 */
-.cci-wrap{display:flex;flex-wrap:wrap;gap:.5rem}
-.cci{min-width:138px;max-width:180px;padding:.45rem .6rem;border:1px solid var(--line);border-radius:20px;background:#fff;display:flex;justify-content:space-between;align-items:center}
-.helper h2{margin:.2rem 0 .5rem}.helper .card{border:1px solid var(--line);border-radius:12px;padding:.75rem;margin:.6rem 0}
-.tool a{display:flex;justify-content:space-between;gap:8px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:.5rem .6rem;background:#fafbff}
-.tool a:hover{background:#f0f4ff;border-color:#c7d2fe}
-.pop{font-size:.85rem;color:#1e3a8a}
+  /* CSS 變數定義 */
+  :root {
+    /* 亮色主題變數 */
+    --bg: #f6f8fb;
+    --ink: #0f172a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --card-bg: #ffffff;
+    --card: #ffffff;
+    --brand: #1d4ed8;
+    --blue: #1d4ed8;
+    --brand-50: #eef2ff;
+    --soft: #f8fafc;
+    
+    /* 按鈕和連結顏色 */
+    --btn-text: #374151;
+    --btn-bg: #ffffff;
+    --btn-border: #e5e7eb;
+    --link-color: #1d4ed8;
+    --link-hover: #1e40af;
+    
+    /* 表格和表單顏色 */
+    --th-bg: #f3f4f6;
+    --th-text: #374151;
+    --input-bg: #ffffff;
+    --input-text: #111827;
+    --input-border: #e5e7eb;
+    
+    /* 擴展通用變數 */
+    --surface: #f8fafc;
+    --surface-secondary: #e2e8f0;
+    --content: #64748b;
+    --shadow: rgba(15, 23, 42, 0.08);
+    --shadow-lg: rgba(15, 23, 42, 0.15);
+    
+    /* 通用狀態顏色系統 */
+    --success: #16a34a;
+    --success-bg: #dcfce7;
+    --success-text: #166534;
+    --success-light: #f0fdf4;
+    
+    --warning: #f59e0b;
+    --warning-bg: #fef3c7;
+    --warning-text: #92400e;
+    --warning-light: #fffbeb;
+    
+    --danger: #dc2626;
+    --danger-bg: #fee2e2;
+    --danger-text: #991b1b;
+    --danger-light: #fef2f2;
+    
+    --info: #2563eb;
+    --info-bg: #dbeafe;
+    --info-text: #1e40af;
+    --info-light: #eff6ff;
+  }
+
+  /* 暗色主題 */
+  [data-theme="dark"] {
+    --bg: #0f172a;
+    --ink: #f1f5f9;
+    --muted: #94a3b8;
+    --line: #334155;
+    --card-bg: #1e293b;
+    --card: #1e293b;
+    --brand: #3b82f6;
+    --blue: #3b82f6;
+    --brand-50: #1e293b;
+    --soft: #1e293b;
+    
+    --btn-text: #f1f5f9;
+    --btn-bg: #334155;
+    --btn-border: #475569;
+    --link-color: #60a5fa;
+    --link-hover: #93c5fd;
+    
+    --th-bg: #334155;
+    --th-text: #f1f5f9;
+    --input-bg: #1e293b;
+    --input-text: #f1f5f9;
+    --input-border: #475569;
+    
+    --surface: #1e293b;
+    --surface-secondary: #334155;
+    --content: #94a3b8;
+    --shadow: rgba(0, 0, 0, 0.25);
+    --shadow-lg: rgba(0, 0, 0, 0.4);
+    
+    /* 暗主題狀態顏色 */
+    --success: #16a34a;
+    --success-bg: #052e16;
+    --success-text: #4ade80;
+    --success-light: #064e3b;
+    
+    --warning: #f59e0b;
+    --warning-bg: #451a03;
+    --warning-text: #fbbf24;
+    --warning-light: #78350f;
+    
+    --danger: #dc2626;
+    --danger-bg: #450a0a;
+    --danger-text: #f87171;
+    --danger-light: #7f1d1d;
+    
+    --info: #2563eb;
+    --info-bg: #0c1e3e;
+    --info-text: #60a5fa;
+    --info-light: #1e3a8a;
+  }
+
+  /* 基礎重置 */
+/* #region 基礎樣式 */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* 主題切換平滑過渡 */
+  :root {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Noto Sans TC", system-ui, sans-serif;
+    color: var(--ink);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* 為所有使用CSS變數的元素添加過渡效果 */
+  *:not(script):not(style) {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+
+  /* 容器與網格 */
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 14px;
+  }
+
+  h1 {
+    margin: 0.2rem 0 0.8rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 980px) {
+    .grid.cols-2 {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+
+  /* 面板 */
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  /* 步驟條 */
+  #stepbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0.2rem 0 0.8rem;
+  }
+
+  .step {
+    padding: 0.32rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card-bg);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .step.active {
+    background: var(--brand-50);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  /* 控制按鈕 */
+  .controls {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0.8rem 0;
+  }
+
+  /* 按鈕變體樣式（統一在後面定義） */
+  .btn.primary {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+
+  .btn.warn {
+    background: var(--warning-light);
+    border-color: var(--warning);
+    color: var(--warning-text);
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* 頁面切換 */
+  .page {
+    display: none;
+  }
+
+  .page.show {
+    display: block;
+  }
+
+  /* 表單布局 */
+  .form {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0.8rem;
+  }
+
+  .field {
+    grid-column: span 3;
+  }
+
+  .col-2 {
+    grid-column: span 2;
+  }
+
+  .col-4 {
+    grid-column: span 4;
+  }
+
+  .col-6 {
+    grid-column: span 6;
+  }
+
+  .col-8 {
+    grid-column: span 8;
+  }
+
+  .col-12 {
+    grid-column: span 12;
+  }
+
+  /* 表單元素 */
+  label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.86rem;
+    margin-bottom: 0.25rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 0.56rem 0.65rem;
+    background: var(--input-bg);
+    color: var(--input-text);
+  }
+
+  /* 區塊 */
+  .sec {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 0.8rem 0;
+    background: var(--card-bg);
+  }
+
+  .sec h3 {
+    margin: 0.1rem 0 0.5rem;
+  }
+
+  /* 標籤 */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--brand);
+    background: var(--brand-50);
+    color: var(--brand);
+    padding: 0.12rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 0.18rem 0.5rem;
+    margin: 0.2rem 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  /* 表格 */
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .table th,
+  .table td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.5rem 0.5rem;
+    vertical-align: top;
+  }
+
+  .table thead th {
+    background: var(--th-bg);
+    color: var(--th-text);
+  }
+
+  /* CCI chips - 改良避免重疊 */
+  .cci-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .cci {
+    min-width: 138px;
+    max-width: 180px;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--card-bg);
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* 輔助工具 */
+  .helper h2 {
+    margin: 0.2rem 0 0.5rem;
+  }
+
+  .helper .card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.75rem;
+    margin: 0.6rem 0;
+  }
+
+  .tool a {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.5rem 0.6rem;
+    background: var(--surface);
+  }
+
+  .tool a:hover {
+    background: var(--brand-50);
+    border-color: var(--brand);
+  }
+
+  .pop {
+    font-size: 0.85rem;
+    color: #1e3a8a;
+  }
+
+  /* =========================== */
+  /* 按鈕系統 */
+  /* =========================== */
+  
+  /* 基礎按鈕樣式 */
+  .btn {
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 10px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Hover 狀態 */
+  .btn:hover {
+    background: var(--surface-secondary);
+    border-color: var(--brand);
+    opacity: 0.9;
+  }
+
+  /* Active/選中 狀態 */
+  .btn.active {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #ffffff;
+  }
+
+  .btn.active:hover {
+    opacity: 0.9;
+  }
+
+  /* Primary 變體 */
+  .btn.primary {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #ffffff;
+  }
+
+  .btn.primary:hover {
+    opacity: 0.9;
+  }
+
+  /* Warning 變體 */
+  .btn.warn {
+    background: var(--warning-light);
+    border-color: var(--warning);
+    color: var(--warning-text);
+  }
+
+  .btn.warn:hover {
+    opacity: 0.9;
+  }
+
+  /* Success 變體 */
+  .btn.success {
+    background: var(--success-light);
+    border-color: var(--success);
+    color: var(--success-text);
+  }
+
+  .btn.success:hover {
+    opacity: 0.9;
+  }
+
+  /* Danger 變體 */
+  .btn.danger {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: var(--danger-text);
+  }
+
+  .btn.danger:hover {
+    opacity: 0.9;
+  }
+
+  /* Header 樣式 */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  @media (max-width: 768px) {
+    header {
+      gap: 8px;
+    }
+    
+    .btn {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+    }
+  }
 </style>
 </head>
 <body>
-<header class="container"><h1>綜合老年評估（CGA）— 修正版</h1></header>
+<header class="container">
+  <h1>綜合老年評估（CGA）— 修正版</h1>
+  <button class="btn" type="button" id="themeToggle" title="切換主題">
+    <span id="themeIcon">🌙</span>
+  </button>
+</header>
 
 <main class="container grid cols-2">
   <!-- LEFT -->
@@ -51,381 +520,78 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
     <div id="stepbar"></div>
 
     <!-- 1 基本資料 -->
-    <div class="page show" data-title="基本資料">
-      <div class="form">
-        <div class="field"><label>姓名</label><input id="pname"></div>
-        <div class="field"><label>病歷號/索引</label><input id="pid"></div>
-        <div class="field"><label>床號</label><input id="bed"></div>
-        <div class="field"><label>性別</label><select id="sex"><option></option><option>女</option><option>男</option></select></div>
-
-        <div class="field"><label>年齡</label><input id="age" type="number" min="0" max="120"></div>
-        <div class="field"><label>住院日</label><input id="adm" type="date"></div>
-        <div class="field"><label>出院日</label><input id="dis" type="date"></div>
-        <div class="field"><label>初評日期</label><input id="iDate" type="date"></div>
-
-        <div class="field"><label>複評日期</label><input id="fDate" type="date"></div>
-        <div class="field"><label>教育程度</label><select id="edu"><option></option><option>不識字</option><option>識字未就學</option><option>國小</option><option>國中</option><option>高中</option><option>大專以上</option></select></div>
-        <div class="field"><label>婚姻狀態</label><select id="marital"><option></option><option>未婚</option><option>已婚</option><option>喪偶</option><option>離婚</option><option>其他</option></select></div>
-        <div class="field"><label>居住狀況</label><select id="living"><option></option><option>獨居</option><option>與配偶</option><option>與家人</option><option>機構/安養</option><option>其他</option></select></div>
-
-        <div class="field col-6"><label>住所</label><input id="address"></div>
-        <div class="field"><label>居住樓層</label><select id="floor"><option></option><option>一樓</option><option>二樓以上無電梯</option><option>二樓以上有電梯</option></select></div>
-        <div class="field"><label>宗教信仰</label><select id="religion"><option></option><option>無</option><option>佛教</option><option>道教</option><option>基督教</option><option>天主教</option><option>其他</option></select></div>
-        <div class="field"><label>工作</label><select id="job"><option></option><option>退休</option><option>家管</option><option>目前有工作</option></select></div>
-
-        <div class="field"><label>家庭經濟狀況</label><select id="economy"><option></option><option>富裕</option><option>小康</option><option>貧窮</option><option>其他</option></select></div>
-        <div class="field"><label>主要照顧者</label><select id="caregiver"><option></option><option>配偶</option><option>子女</option><option>外籍照服</option><option>其他</option></select></div>
-        <div class="field"><label>主要醫療決定者</label><select id="decision"><option></option><option>自己</option><option>配偶</option><option>子女</option><option>機構人員</option><option>其他</option></select></div>
-        <div class="field"><label>安寧/預立醫療書</label><select id="ad"><option></option><option>無</option><option>有</option><option>不知道</option><option>無法評估</option></select></div>
-
-        <div class="field"><label>身高（cm）</label><input id="ht" type="number" step="0.1"></div>
-        <div class="field"><label>體重（kg）</label><input id="wt" type="number" step="0.1"></div>
-        <div class="field"><label>BMI</label><input id="bmi" readonly></div>
-        <div class="field"><label>體脂肪（BIA %）</label><input id="bia" type="number" step="0.1"></div>
-        <div class="field"><label>IBW(22×BH²)</label><input id="ibw" readonly></div>
-        <div class="field"><label>與 IBW 差</label><input id="ibwDiff" readonly></div>
-      </div>
-      <div class="hint">身高/體重即時計算 BMI、IBW、與 IBW 差值。</div>
+    <div class="page" data-title="基本資料">
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 2 個人史 / 家系圖 / 重大疾病 / 功能回顧 / 跌倒記事 -->
     <div class="page" data-title="個人史/家系圖/功能回顧">
-      <div class="sec"><h3>個人史</h3>
-        <div class="form">
-          <div class="field"><label>吸菸</label><select id="smoke"><option></option><option>不吸菸</option><option>已戒菸</option><option>吸菸中</option></select></div>
-          <div class="field"><label>菸齡/戒菸年</label><input id="smokeY" type="number"></div>
-          <div class="field col-4"><label>吸菸型態</label><input id="smokeType" placeholder="偶爾/經常/朋友勸誘…"></div>
-          <div class="field"><label>飲酒</label><select id="alcohol"><option></option><option>不喝</option><option>已戒酒</option><option>偶喝</option><option>經常</option></select></div>
-          <div class="field"><label>酒齡/戒酒年</label><input id="alcoholY" type="number"></div>
-          <div class="field col-6"><label>平均（杯/瓶/週）</label><input id="alcoholAvg"></div>
-          <div class="field"><label>檳榔</label><select id="betel"><option></option><option>不嚼</option><option>已戒</option><option>習慣性嚼食</option></select></div>
-          <div class="field"><label>年數</label><input id="betelY" type="number"></div>
-          <div class="field col-6"><label>過敏/重大事故</label><input id="allergy" placeholder="無 / 具體說明"></div>
-          <div class="field col-12"><label>疫苗史</label>
-            <div class="tag"><input type="checkbox" id="v_flu"> 最近一年流感</div>
-            <div class="tag"><input type="checkbox" id="v_pcv"> 肺炎鏈球菌</div>
-            <div class="tag"><input type="checkbox" id="v_covid"> COVID-19</div>
-            <div class="tag"><input type="checkbox" id="v_tdap"> Td/Tdap</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec"><h3>家系圖（簡易）</h3>
-        <div class="form">
-          <div class="field"><label>角色</label><select id="famRole"><option></option><option>父親</option><option>母親</option><option>配偶</option><option>兄弟姊妹</option><option>子女</option><option>其他</option></select></div>
-          <div class="field"><label>姓名</label><input id="famName"></div>
-          <div class="field"><label>性別</label><select id="famSex"><option></option><option>男</option><option>女</option></select></div>
-          <div class="field"><label>年齡</label><input id="famAge" type="number"></div>
-          <div class="field"><label>狀態</label><select id="famStatus"><option></option><option>在世</option><option>過世</option></select></div>
-          <div class="field col-6"><label>重要疾病/備註</label><input id="famDx"></div>
-        </div>
-        <div class="controls"><button class="btn" id="addFam">新增成員</button><span class="hint">以膠囊列呈現，可點 × 刪除。</span></div>
-        <div id="famRows">
-          <div><b>父母</b><div id="rowParent"></div></div>
-          <div><b>配偶</b><div id="rowSpouse"></div></div>
-          <div><b>兄弟姊妹</b><div id="rowSibling"></div></div>
-          <div><b>子女</b><div id="rowChild"></div></div>
-          <div><b>其他</b><div id="rowOther"></div></div>
-        </div>
-      </div>
-
-      <div class="sec"><h3>重大疾病史</h3>
-        <div class="tag"><input type="checkbox" id="hx_none"> 無</div>
-        <div class="tag"><input type="checkbox" id="hx_ca"> 惡性腫瘤</div>
-        <div class="tag"><input type="checkbox" id="hx_ca_meta"> 伴遠端轉移</div>
-        <div class="tag"><input type="checkbox" id="hx_auto"> 免疫風濕疾病</div>
-        <div class="tag"><input type="checkbox" id="hx_hiv"> HIV/AIDS</div>
-        <div class="tag"><input type="checkbox" id="hx_deform"> 病致畸形/殘狀</div>
-        <div class="form"><div class="field col-12"><label>其他</label><input id="hx_note"></div></div>
-      </div>
-
-      <div class="sec"><h3>功能性回顧（視/聽/語/牙/睡/便祕/尿失禁）</h3>
-        <div class="form">
-          <div class="field"><label>視覺</label><select id="rv_v"><option></option><option>無</option><option>有</option><option>無法評估</option></select></div>
-          <div class="field"><label>配戴眼鏡</label><select id="rv_glass"><option></option><option>無</option><option>有</option></select></div>
-          <div class="field"><label>聽覺</label><select id="rv_h"><option></option><option>無</option><option>有</option><option>無法評估</option></select></div>
-          <div class="field"><label>助聽器</label><select id="rv_aid"><option></option><option>無</option><option>左</option><option>右</option><option>雙側</option></select></div>
-          <div class="field col-6"><label>語言/溝通備註</label><input id="rv_comm"></div>
-          <div class="field"><label>牙齒問題</label><select id="rv_teeth"><option></option><option>無</option><option>有</option></select></div>
-          <div class="field"><label>假牙</label><select id="rv_denture"><option></option><option>無</option><option>活動</option><option>固定</option></select></div>
-          <div class="field"><label>睡眠問題</label><select id="rv_sleep"><option></option><option>無</option><option>有</option><option>無法評估</option></select></div>
-          <div class="field"><label>助眠藥</label><select id="rv_sleepmed"><option></option><option>無</option><option>有</option></select></div>
-          <div class="field"><label>便祕</label><select id="rv_const"><option></option><option>無</option><option>有</option></select></div>
-          <div class="field"><label>瀉藥</label><select id="rv_lax"><option></option><option>無</option><option>有</option></select></div>
-        </div>
-      </div>
-
-      <div class="sec"><h3>跌倒事件簿</h3>
-        <div class="form">
-          <div class="field"><label>近一年曾跌倒</label><select id="fallAny"><option></option><option>否</option><option>是</option></select></div>
-          <div class="field"><label>次數</label><input id="fallCnt" type="number" min="0"></div>
-          <div class="field col-8"><label>概述</label><input id="fallBrief" placeholder="地點/情境/傷害…"></div>
-          <div class="col-12"></div>
-          <div class="field"><label>日期</label><input id="feDate" type="date"></div>
-          <div class="field"><label>地點</label><input id="fePlace"></div>
-          <div class="field"><label>情境</label><input id="feCtx"></div>
-          <div class="field"><label>結果</label><input id="feOut"></div>
-          <div class="field col-12"><label>備註</label><input id="feNote"></div>
-        </div>
-        <div class="controls"><button class="btn" id="addFall">新增事件</button></div>
-        <div id="fallList"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 3 ADL -->
     <div class="page" data-title="ADL（Barthel）">
-      <div class="sec"><h3>ADL – Barthel <span class="badge">總分：<span id="adlTotal">0</span>/100</span></h3>
-        <table class="table"><thead><tr><th>項目</th><th>選項</th><th style="width:90px">分數</th></tr></thead><tbody id="adlBody"></tbody></table>
-        <div id="adlFlags"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 4 IADL -->
     <div class="page" data-title="IADL（Lawton）">
-      <div class="sec"><h3>IADL – Lawton <span class="badge">總分：<span id="iadlTotal">0</span>/<span id="iadlMax">8</span></span></h3>
-        <div class="controls"><label class="hint"><input type="checkbox" id="iadlMaleSkip"> 男性：不計食物製備/家務/洗衣</label></div>
-        <div class="form" id="iadlGrid"></div>
-        <div id="iadlFlags"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 5 Mini-Cog + CDT + MMSE -->
     <div class="page" data-title="Mini-Cog / MMSE">
-      <div class="sec">
-        <h3>Mini-Cog（0–5） + 畫時鐘試驗（CDT）</h3>
-        <div class="pop">指引：請說出 3 個不相關名詞→分心作業→畫時鐘「10:10」→回憶 3 詞。總分=回憶(0–3)+CDT(0/2)。</div>
-        <div class="form">
-          <div class="field"><label>回憶（0–3）</label><input id="miniRecall" type="number" min="0" max="3"></div>
-          <div class="field"><label>CDT（0=異常/1=部分/2=正常）</label>
-            <select id="miniCDT"><option></option><option value="0">0 異常</option><option value="1">1 部分</option><option value="2">2 正常</option></select></div>
-          <div class="field"><label>總分</label><input id="miniTotal" readonly></div>
-          <div class="field"><label>Mini-Cog 判讀</label>
-            <select id="miniBinary"><option></option><option>0 正常</option><option>1 異常</option><option>9 拒絕</option><option>999 無法評估</option></select></div>
-        </div>
-      </div>
-
-      <div class="sec"><h3>MMSE（逐題；預設空白） <span class="badge">總分：<span id="mmseTotal">0</span>/30</span></h3>
-        <div class="form">
-          <div class="col-12"><b>定向力 – 時間（5）</b></div>
-          <div class="field"><label>年</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>月</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>日</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>星期</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>季節</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>定向力 – 地點（5）</b></div>
-          <div class="field"><label>國家/城市</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>縣市/區</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>醫院/機構</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>科別/病房</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>樓層</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>登錄（3）</b></div>
-          <div class="field"><label>詞 1</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>詞 2</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>詞 3</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>系列減七（0–5）</b></div>
-          <div class="field"><label>正確題數</label><select id="mmseSerial"><option></option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-
-          <div class="col-12"><b>延遲回憶（0–3）</b></div>
-          <div class="field"><label>回憶分數</label><select id="mmseRecall"><option></option><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
-
-          <div class="col-12"><b>語言/指令（8）</b></div>
-          <div class="field"><label>命名兩物（0–2）</label><select class="mmse name"><option></option><option>0</option><option>1</option><option>2</option></select></div>
-          <div class="field"><label>覆誦（0–1）</label><select class="mmse rep"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>三段指令（0–3）</label><select class="mmse step3"><option></option><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
-          <div class="field"><label>閱讀（0–1）</label><select class="mmse read"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>書寫（0–1）</label><select class="mmse write"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>摹寫（0–1）</label><select class="mmse copy"><option></option><option>0</option><option>1</option></select></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 6 MoCA -->
     <div class="page" data-title="MoCA">
-      <div class="sec"><h3>MoCA（0–30） <span class="badge">總分：<span id="mocaTotal">0</span>/30</span></h3>
-        <div class="form">
-          <div class="col-12"><b>視空/執行（5）</b></div>
-          <div class="field"><label>連線</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>立方體</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>時鐘–外框</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>時鐘–數字</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>時鐘–指針</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>命名（3）</b></div>
-          <div class="field"><label>動物 1</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>動物 2</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>動物 3</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>注意力（6）</b></div>
-          <div class="field"><label>順背</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>倒背</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>Vigilance</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>減七 1</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>減七 2</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>減七 3</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>語言（3）</b></div>
-          <div class="field"><label>覆誦 1</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>覆誦 2</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>語詞流暢</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>抽象（2）</b></div>
-          <div class="field"><label>相似 1</label><select class="moca abst"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>相似 2</label><select class="moca abst"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="col-12"><b>延遲回憶（0–5）</b></div>
-          <div class="field"><label>五詞</label><select id="mocaRecall"><option></option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-
-          <div class="col-12"><b>定向（6）</b></div>
-          <div class="field"><label>日期</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>月份</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>年份</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>星期</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>地點</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-          <div class="field"><label>城市</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-
-          <div class="field"><label>教育加分（≤12 年 +1）</label><input id="eduBonus" readonly></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 7 GDS-5 / CAM / Braden -->
     <div class="page" data-title="GDS-5 / CAM / Braden">
-      <div class="sec"><h3>GDS-5 老年憂鬱量表 <span class="badge">總分：<span id="gdsTotal">0</span>/5</span></h3>
-        <table class="table"><thead><tr><th>#</th><th>題目</th><th>是/否</th></tr></thead><tbody id="gdsBody"></tbody></table>
-        <div id="gdsFlags"></div>
-      </div>
-
-      <div class="sec"><h3>CAM 譫妄評估</h3>
-        <div class="pop">條件：①急性起病/波動 + ②注意力不集中 + (③思維紊亂 或 ④意識改變) ⇒ 譫妄。</div>
-        <div class="form">
-          <div class="field col-6"><label>① 急性起病或波動</label><select id="cam1"><option></option><option>否</option><option>是</option></select></div>
-          <div class="field col-6"><label>② 注意力不集中</label><select id="cam2"><option></option><option>否</option><option>是</option></select></div>
-          <div class="field col-6"><label>③ 思維紊亂</label><select id="cam3"><option></option><option>否</option><option>是</option></select></div>
-          <div class="field col-6"><label>④ 意識改變</label><select id="cam4"><option></option><option>否</option><option>是</option></select></div>
-          <div class="field col-6"><label>結論</label><input id="camResult" readonly></div>
-        </div>
-      </div>
-
-      <div class="sec"><h3>Braden 壓傷風險（6–23） <span class="badge">總分：<span id="bradenTotal">0</span></span></h3>
-        <div class="form" id="bradenGrid"></div>
-        <div id="bradenFlags"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 8 營養 -->
     <div class="page" data-title="營養（MNA-SF）">
-      <div class="sec"><h3>MNA-SF（0–14） <span class="badge">總分：<span id="mnaTotal">0</span>/14</span></h3>
-        <div id="mnaBox"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 9 行動/肌少 -->
     <div class="page" data-title="行動/肌少（CHS）">
-      <div class="sec"><h3>行動功能</h3>
-        <div class="form">
-          <div class="field"><label>TUG（秒）</label><input id="tug" type="number" step="0.1"></div>
-          <div class="field"><label>4 公尺（秒）</label><input id="gsSec" type="number" step="0.1"></div>
-          <div class="field"><label>步速（m/s）</label><input id="gaitSpeed" readonly></div>
-          <div class="field"><label>近一年跌倒（次）</label><input id="falls" type="number" min="0"></div>
-          <div class="field"><label>慣用手</label><select id="gripHand"><option></option><option>右</option><option>左</option></select></div>
-          <div class="field"><label>握力 1（kg）</label><input id="grip1" type="number" step="0.1"></div>
-          <div class="field"><label>握力 2（kg）</label><input id="grip2" type="number" step="0.1"></div>
-          <div class="field"><label>握力 3（kg）</label><input id="grip3" type="number" step="0.1"></div>
-          <div class="field"><label>握力最大（kg）</label><input id="gripMax" readonly></div>
-          <div class="field"><label>CFS（1–9）</label><select id="cfs"><option></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
-        </div>
-        <div id="mobFlags"></div>
-      </div>
-
-      <div class="sec"><h3>CHS（衰弱五指標） <span class="badge">總分：<span id="chsTotal">0</span>/5</span></h3>
-        <div class="form">
-          <div class="field col-6"><label>握力低下（Weakness）</label><select id="chsWeak"><option></option><option>0 正常</option><option>1 異常</option></select></div>
-          <div class="field col-6"><label>步行緩慢（Slowness）</label><select id="chsSlow"><option></option><option>0 小於門檻</option><option>1 大於門檻</option></select></div>
-          <div class="field col-6"><label>體重減輕（≥5kg/年）</label><select id="chsWL"><option></option><option>0 無</option><option>1 有</option></select></div>
-          <div class="field col-6"><label>易疲勞（Exhaustion）</label><select id="chsExh"><option></option><option>0 無</option><option>1 有</option></select></div>
-          <div class="field col-6"><label>低活動量</label><select id="chsLow"><option></option><option>0 高於標準</option><option>1 低於標準</option></select></div>
-          <div class="field col-6"><label>結論</label><input id="chsResult" readonly></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 10 跌倒評估 -->
     <div class="page" data-title="跌倒評估（STRATIFY / Morse）">
-      <div class="sec"><h3>STRATIFY（0–5） <span class="badge">總分：<span id="stratifyTotal">0</span></span></h3>
-        <div id="stratifyBox"></div>
-      </div>
-      <div class="sec"><h3>Morse Fall Scale（0–125） <span class="badge">總分：<span id="morseTotal">0</span></span></h3>
-        <div id="morseBox"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 11 B9 EQ-5D-3L / VAS -->
     <div class="page" data-title="B9 生活品質（EQ-5D-3L / VAS）">
-      <div class="sec"><h3>EQ-5D-3L</h3>
-        <div class="form" id="eq5d"></div>
-      </div>
-      <div class="sec"><h3>EQ-VAS（0–100）</h3>
-        <div class="form">
-          <div class="field col-6"><label>今日健康狀態（0–100）</label><input id="eqVAS" type="range" min="0" max="100" step="1" value="50" oninput="eqVASVal.value=this.value"></div>
-          <div class="field col-2"><label>數值</label><input id="eqVASVal" readonly value="50"></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 12 B11 嚴重度指數 -->
     <div class="page" data-title="B11 嚴重度指數">
-      <div class="sec"><h3>B11 嚴重度指數（簡化）</h3>
-        <div class="form">
-          <div class="field"><label>a：有 ≥1 分之系統數</label><input id="b11a" type="number" min="0"></div>
-          <div class="field"><label>b：項目加總分</label><input id="b11b" type="number" min="0" step="0.1"></div>
-          <div class="field"><label>c：≥3 分之項目數</label><input id="b11c" type="number" min="0"></div>
-          <div class="field"><label>d：≥4 分之項目數</label><input id="b11d" type="number" min="0"></div>
-          <div class="field"><label>e：嚴重度指數 e=b/a</label><input id="b11e" readonly></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 13 CCI -->
     <div class="page" data-title="CCI 共病指數">
-      <div class="sec"><h3>Charlson 共病指數（CCI） <span class="badge">總分：<span id="cciTotal">0</span></span></h3>
-        <div class="cci-wrap" id="cciWrap"></div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 14 出院狀況 -->
     <div class="page" data-title="出院狀況">
-      <div class="sec"><h3>出院狀況</h3>
-        <div class="form">
-          <div class="field"><label>出院去向</label><select id="dcDest"><option></option><option>返家</option><option>返家（居服/復健）</option><option>轉介機構</option><option>安寧/長照機構</option><option>其他</option></select></div>
-          <div class="field"><label>功能與照顧需求</label><select id="dcNeed"><option></option><option>維持</option><option>改善</option><option>惡化</option></select></div>
-          <div class="field"><label>DNR/AD 註記</label><select id="dcAD"><option></option><option>無</option><option>有</option></select></div>
-          <div class="field col-6"><label>主要出院衛教</label><input id="dcEdu"></div>
-          <div class="field col-12"><label>備註</label><input id="dcNote"></div>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <!-- 15 摘要/輸出 -->
     <div class="page" data-title="摘要 / 匯出">
-      <div class="sec"><h3>摘要與輸出</h3>
-        <div id="riskTags"></div>
-        <div class="form">
-          <div class="field col-12"><label>文字摘要</label><textarea id="summary" rows="4" placeholder="系統自動產生；可補充。"></textarea></div>
-        </div>
-        <div class="controls">
-          <button class="btn primary" id="recalc">計算/更新</button>
-          <span class="hint" style="flex:1">可儲存於瀏覽器、匯出 JSON/CSV、列印。</span>
-          <button class="btn primary" id="save">儲存</button>
-          <button class="btn" id="load">載入</button>
-          <button class="btn" id="exportJson">匯出 JSON</button>
-          <button class="btn" id="exportCsv">匯出 CSV</button>
-          <button class="btn" onclick="window.print()">列印</button>
-          <button class="btn warn" id="clear">清除</button>
-        </div>
-      </div>
+      <!-- 表單內容將動態載入 -->
     </div>
 
     <div class="controls" style="justify-content:space-between">
@@ -453,6 +619,9 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
   </aside>
 </main>
 
+<!-- CGA 表單模組載入器（必須在主腳本之前載入） -->
+<script src="cga-module-loader.js"></script>
+
 <script>
 (() => {
   const pages=[...document.querySelectorAll('.page')];
@@ -466,10 +635,38 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
     });
     document.getElementById('stepLabel').textContent=`第 ${step+1}/${pages.length} 步：${pages[step].dataset.title}`;
   }
-  function show(i){
+  async function show(i){
     if(i<0||i>=pages.length) return;
+    
+    console.log(`📍 show(${i}) 開始執行`);
+    console.log(`📍 CGAModuleLoader 存在:`, !!window.CGAModuleLoader);
+    
+    // 先載入表單模組（如果尚未載入）
+    try {
+      console.log(`📍 開始載入模組 ${i}...`);
+      await window.CGAModuleLoader.loadModule(i);
+      console.log(`✅ 模組 ${i} 載入完成`);
+      
+      // 檢查內容是否已注入
+      const pageElement = pages[i];
+      console.log(`📍 頁面 ${i} 內容長度:`, pageElement.innerHTML.length);
+      
+    } catch (error) {
+      console.error(`❌ 載入模組 ${i+1} 失敗:`, error);
+      alert(`⚠️ 載入表單失敗：${error.message}\n\n請確認使用 HTTP 伺服器開啟此頁面`);
+      return;
+    }
+    
+    // 切換顯示
+    console.log(`📍 切換到頁面 ${i}`);
     pages.forEach((p,idx)=>p.classList.toggle('show',idx===i));
     step=i; renderSteps(); window.scrollTo({top:0,behavior:'smooth'});
+    
+    // 每次切換頁面時綁定事件和重新計算
+    console.log(`📍 綁定事件和重新計算`);
+    bindAllEvents();
+    recomputeAll();
+    console.log(`✅ show(${i}) 完成`);
   }
   document.getElementById('prev').onclick=()=>show(step-1);
   document.getElementById('next').onclick=()=>show(step+1);
@@ -486,282 +683,140 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
     const h=num($('#ht')), w=num($('#wt'));
     if(h&&w){ const m=h/100, bmi=w/(m*m), ibw=22*m*m; $('#bmi').value=bmi.toFixed(1); $('#ibw').value=ibw.toFixed(1); $('#ibwDiff').value=(w-ibw).toFixed(1); }
     else { $('#bmi').value=''; $('#ibw').value=''; $('#ibwDiff').value=''; }
-    autoMNA_BMI();
+    // 自動填充 MNA BMI 項目
+    if (window.CGAForm08 && typeof window.CGAForm08.autoMNA_BMI === 'function') {
+      window.CGAForm08.autoMNA_BMI();
+    }
   }
-  ['input','change'].forEach(ev=>{
-    $('#ht').addEventListener(ev,syncAnthro);
-    $('#wt').addEventListener(ev,syncAnthro);
-  });
+  function bindAnthroEvents(){
+    const ht = $('#ht'), wt = $('#wt');
+    if(ht && wt) {
+      ['input','change'].forEach(ev=>{
+        ht.addEventListener(ev,syncAnthro);
+        wt.addEventListener(ev,syncAnthro);
+      });
+    }
+  }
 
   // ==== Family
   const fam={rows:[]};
   function bucket(role){ if(role==='父親'||role==='母親')return'Parent'; if(role==='配偶')return'Spouse'; if(role==='兄弟姊妹')return'Sibling'; if(role==='子女')return'Child'; return'Other'; }
   function renderFam(){
     const map={Parent:'#rowParent',Spouse:'#rowSpouse',Sibling:'#rowSibling',Child:'#rowChild',Other:'#rowOther'};
-    Object.values(map).forEach(s=>$(s).innerHTML='');
+    // 檢查元素是否存在（表單可能尚未載入）
+    const firstElement = $(Object.values(map)[0]);
+    if (!firstElement) return; // 表單未載入時跳過
+    
+    Object.values(map).forEach(s=>{
+      const el = $(s);
+      if (el) el.innerHTML = '';
+    });
     fam.rows.forEach((m,i)=>{
       const pill=document.createElement('span'); pill.className='tag'; pill.innerHTML=`${m.name||'（未名）'}・${m.sex||'?'}・${m.age||'?'}・${m.status||''} <small>${m.role}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`;
-      $(map[bucket(m.role)]).appendChild(pill);
+      const target = $(map[bucket(m.role)]);
+      if (target) target.appendChild(pill);
     });
     $$('#famRows span[data-i]').forEach(x=>x.onclick=()=>{ fam.rows.splice(+x.dataset.i,1); renderFam(); });
   }
-  $('#addFam').onclick=()=>{
-    const m={role:nv($('#famRole')),name:nv($('#famName')),sex:nv($('#famSex')),age:nv($('#famAge')),status:nv($('#famStatus')),dx:nv($('#famDx'))};
-    if(!m.role) return alert('請選角色'); fam.rows.push(m);
-    ['famRole','famName','famSex','famAge','famStatus','famDx'].forEach(id=>$('#'+id).value=''); renderFam();
-  };
+  // addFam 事件綁定移至 bindAllEvents()
 
   // ==== Fall log
   const fall={list:[]};
-  function renderFall(){ const box=$('#fallList'); box.innerHTML=''; fall.list.forEach((e,i)=>{ const pill=document.createElement('span'); pill.className='tag'; pill.innerHTML=`${e.date||''}・${e.place||''}・${e.context||''}・${e.outcome||''} <small>${e.note||''}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`; box.appendChild(pill); }); $$('#fallList span[data-i]').forEach(x=>x.onclick=()=>{ fall.list.splice(+x.dataset.i,1); renderFall(); }); }
-  $('#addFall').onclick=()=>{ const e={date:nv($('#feDate')),place:nv($('#fePlace')),context:nv($('#feCtx')),outcome:nv($('#feOut')),note:nv($('#feNote'))}; if(!e.date && !e.place) return alert('請至少填 日期或地點'); fall.list.push(e); ['feDate','fePlace','feCtx','feOut','feNote'].forEach(id=>$('#'+id).value=''); renderFall(); };
-
-  // ==== ADL
-  const BARTHEL=[
-    {k:'feeding',t:'進食',opts:[{s:10,txt:'獨立（可用輔具）'},{s:5,txt:'部分協助'},{s:0,txt:'完全依賴/經管'}]},
-    {k:'bathing',t:'洗澡',opts:[{s:5,txt:'獨立'},{s:0,txt:'需協助'}]},
-    {k:'grooming',t:'修飾',opts:[{s:5,txt:'獨立'},{s:0,txt:'需協助'}]},
-    {k:'dressing',t:'穿衣',opts:[{s:10,txt:'獨立'},{s:5,txt:'部分協助'},{s:0,txt:'完全依賴'}]},
-    {k:'bowels',t:'腸道控制',opts:[{s:10,txt:'完全控制'},{s:5,txt:'偶發失禁'},{s:0,txt:'經常失禁'}]},
-    {k:'bladder',t:'膀胱控制',opts:[{s:10,txt:'完全控制'},{s:5,txt:'偶發/間歇'},{s:0,txt:'持續失禁'}]},
-    {k:'toilet',t:'如廁',opts:[{s:10,txt:'獨立'},{s:5,txt:'部分協助'},{s:0,txt:'完全依賴'}]},
-    {k:'transfer',t:'床椅轉位',opts:[{s:15,txt:'獨立'},{s:10,txt:'輕度協助'},{s:5,txt:'大量協助'},{s:0,txt:'無法'}]},
-    {k:'mobility',t:'平地行走',opts:[{s:15,txt:'獨立≥50m'},{s:10,txt:'少量協助/輪椅獨立'},{s:5,txt:'大量協助/短距離'},{s:0,txt:'無法'}]},
-    {k:'stairs',t:'上下樓梯',opts:[{s:10,txt:'獨立'},{s:5,txt:'部分協助'},{s:0,txt:'無法'}]},
-  ];
-  (function buildADL(){
-    const tb=$('#adlBody'); tb.innerHTML='';
-    BARTHEL.forEach((it,i)=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${i+1}）${it.t}</td><td>${it.opts.map(o=>`<label class="tag"><input type="radio" name="adl.${it.k}" value="${o.s}"> ${o.txt}（${o.s}）</label>`).join(' ')}</td><td id="adl_${it.k}" class="right">0</td>`;
-      tb.appendChild(tr);
-    });
-  })();
-  function scoreADL(){
-    let t=0; BARTHEL.forEach(it=>{ const sel=$(`input[name="adl.${it.k}"]:checked`); const s=sel?+sel.value:0; t+=s; $(`#adl_${it.k}`).textContent=s; });
-    $('#adlTotal').textContent=t;
-    const flags=$('#adlFlags'); flags.innerHTML='';
-    const mark=t===100?'獨立':t>=91?'輕度依賴':t>=61?'中度依賴':t>=21?'重度依賴':'全依賴'; tag(flags,'等級：'+mark);
+  function renderFall(){ 
+    const box=$('#fallList'); 
+    if (!box) return; // 表單未載入時跳過
+    box.innerHTML=''; 
+    fall.list.forEach((e,i)=>{ 
+      const pill=document.createElement('span'); 
+      pill.className='tag'; 
+      pill.innerHTML=`${e.date||''}・${e.place||''}・${e.context||''}・${e.outcome||''} <small>${e.note||''}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`; 
+      box.appendChild(pill); 
+    }); 
+    $$('#fallList span[data-i]').forEach(x=>x.onclick=()=>{ fam.rows.splice(+x.dataset.i,1); renderFall(); }); 
   }
+  // addFall 事件綁定移至 bindAllEvents()
+
+  // ==== ADL - 已移至 modules/forms/03-form.js
+  // 使用 window.CGAForm03.initialize() 和 window.CGAForm03.compute()
 
   // ==== IADL
-  const IADL_ITEMS=[
-    {k:'shopping',t:'購物',opts:['可獨立','需陪同','無法']},
-    {k:'housework',t:'家務',opts:['繁重家務','僅簡單','需協助','依賴'],skip:true},
-    {k:'finances',t:'理財',opts:['獨立','部分','無法']},
-    {k:'food',t:'食物製備',opts:['可計畫/煮','僅加熱','需他人煮'],skip:true},
-    {k:'transport',t:'交通',opts:['可自理','需陪同/計程車','無法外出']},
-    {k:'phone',t:'電話',opts:['查號/撥號','僅接聽/熟號','不會']},
-    {k:'laundry',t:'洗衣',opts:['自行','部分','依賴'],skip:true},
-    {k:'med',t:'用藥',opts:['可自行','需提示/協助','無法']},
-  ];
-  (function buildIADL(){
-    const grid=$('#iadlGrid'); grid.innerHTML='';
-    IADL_ITEMS.forEach((it,idx)=>{
-      const div=document.createElement('div'); div.className='field col-6';
-      div.innerHTML=`<label>${idx+1}）${it.t}</label><div>${it.opts.map((o,i)=>`<label class="tag"><input type="radio" name="iadl.${it.k}" value="${i===0?1:0}" data-skip="${it.skip?'1':'0'}"> ${o}${i===0?'（1）':'（0）'}</label>`).join(' ')}</div>`;
-      grid.appendChild(div);
-    });
-  })();
-  function scoreIADL(){
-    const maleSkip=$('#iadlMaleSkip').checked || nv($('#sex'))==='男';
-    let t=0,den=0;
-    IADL_ITEMS.forEach(it=>{
-      const sel=$(`input[name="iadl.${it.k}"]:checked`);
-      if(it.skip && maleSkip) return;
-      t+= sel ? +sel.value : 0; den++;
-    });
-    $('#iadlTotal').textContent=t; $('#iadlMax').textContent=den||8;
-    $('#iadlFlags').innerHTML='';
-    if(den && t<=Math.floor(den*0.5)) tag($('#iadlFlags'),'IADL 低分（功能受限）');
-  }
+  // ==== IADL - 已移至 modules/forms/04-form.js
+  // 使用 window.CGAForm04.initialize() 和 window.CGAForm04.compute()
 
-  // ==== Mini-Cog + MMSE
-  function scoreMini(){
-    const r=num($('#miniRecall'))||0, c=parseInt(nv($('#miniCDT'))||'0',10)||0, t=r+c; $('#miniTotal').value=t;
-  }
-  function scoreMMSE(){
-    let s=0; $$('.mmse.time').forEach(x=>s+=parseInt(nv(x)||'0',10)||0);
-    $$('.mmse.place').forEach(x=>s+=parseInt(nv(x)||'0',10)||0);
-    $$('.mmse.reg').forEach(x=>s+=parseInt(nv(x)||'0',10)||0);
-    s+=parseInt(nv($('#mmseSerial'))||'0',10)||0;
-    s+=parseInt(nv($('#mmseRecall'))||'0',10)||0;
-    ['name','rep','step3','read','write','copy'].forEach(cls=>{ const el=$('.mmse.'+cls); if(el) s+=parseInt(nv(el)||'0',10)||0; });
-    $('#mmseTotal').textContent=s;
-  }
+  // ==== Mini-Cog + MMSE - 已移至 modules/forms/05-form.js
+  // 使用 window.CGAForm05.compute()
 
-  // ==== MoCA
-  function scoreMoCA(){
-    let t=0; $$('.moca.visu,.moca.name,.moca.attn,.moca.lang,.moca.abst,.moca.ori').forEach(x=>t+=parseInt(nv(x)||'0',10)||0);
-    t+= parseInt(nv($('#mocaRecall'))||'0',10)||0;
-    const eduMap={'不識字':1,'識字未就學':1,'國小':1,'國中':1,'高中':1,'大專以上':0};
-    const bonus=eduMap[nv($('#edu'))]; $('#eduBonus').value = (bonus===undefined)?'':String(bonus); if(bonus!==undefined) t+=bonus;
-    $('#mocaTotal').textContent=t;
-  }
+  // ==== MoCA - 已移至 modules/forms/06-form.js
+  // 使用 window.CGAForm06.compute()
 
-  // ==== GDS-5
-  const GDS5=[
-    {n:1,txt:'過去一星期，基本上，您對現在的生活滿意嗎？',rev:true},
-    {n:2,txt:'您是否常感到厭煩？'},
-    {n:3,txt:'您是否經常感到無助做什麼都沒有用？'},
-    {n:4,txt:'您是否比較樂於在家裡而較不喜歡外出？'},
-    {n:5,txt:'您是否感覺現在生活得很沒有價值？'}
-  ];
-  (function buildGDS(){
-    const tb=$('#gdsBody'); tb.innerHTML='';
-    GDS5.forEach(it=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${it.n}</td><td>${it.txt}</td><td><label class="tag"><input type="radio" name="gds${it.n}" value="Y"> 是</label><label class="tag"><input type="radio" name="gds${it.n}" value="N"> 否</label></td>`;
-      tb.appendChild(tr);
-    });
-  })();
-  function scoreGDS(){
-    let t=0; GDS5.forEach(it=>{ const v=(($(`input[name="gds${it.n}"]:checked`)||{}).value)||''; if(!v) return; t+= it.rev ? (v==='N'?1:0) : (v==='Y'?1:0); });
-    $('#gdsTotal').textContent=t; const f=$('#gdsFlags'); f.innerHTML=''; if(t>=2) tag(f,'GDS-5 ≥2 可能憂鬱');
-  }
 
-  // ==== CAM
-  function scoreCAM(){
-    const v=[nv($('#cam1'))==='是',nv($('#cam2'))==='是',nv($('#cam3'))==='是',nv($('#cam4'))==='是'];
-    const pos = v[0]&&v[1]&&(v[2]||v[3]);
-    $('#camResult').value = (v.some(x=>nv(x)==='')) ? '' : (pos?'譫妄':'非譫妄');
-  }
+  // ==== GDS-5 / CAM - 已移至 modules/forms/07-form.js
+  // 使用 window.CGAForm07.initialize() 和 window.CGAForm07.compute()
 
-  // ==== Braden
-  const BRADEN=[
-    {k:'sensory',t:'感覺知覺'},{k:'moist',t:'濕度'},{k:'activity',t:'活動'},{k:'mobility',t:'移動'},{k:'nutrition',t:'營養'},{k:'friction',t:'摩擦/剪力'}
-  ];
-  (function buildBraden(){
-    const grid=$('#bradenGrid'); grid.innerHTML='';
-    BRADEN.forEach(it=>{
-      const d=document.createElement('div'); d.className='field col-4';
-      d.innerHTML=`<label>${it.t}（1–4）</label><select class="braden" data-k="${it.k}"><option></option><option>1</option><option>2</option><option>3</option><option>4</option></select>`;
-      grid.appendChild(d);
-    });
-  })();
-  function scoreBraden(){
-    let t=0,ok=0; $$('.braden').forEach(s=>{ const v=parseInt(nv(s)||'0',10)||0; if(v){t+=v; ok++;} });
-    $('#bradenTotal').textContent=t||0; const f=$('#bradenFlags'); f.innerHTML='';
-    if(ok===6){ if(t<=12) tag(f,'高風險（≤12）'); else if(t<=16) tag(f,'中度風險（13–16）'); else tag(f,'低風險'); }
-  }
+  // ==== CAM - 已移至 modules/forms/07-form.js
 
-  // ==== MNA-SF
-  const MNA_ITEMS=[
-    {id:'A',title:'食慾/進食減少',opts:[{t:'無減少',s:2},{t:'中等減少',s:1},{t:'重度減少',s:0}]},
-    {id:'B',title:'最近 3 個月體重減輕',opts:[{t:'>3kg',s:0},{t:'1–3kg',s:1},{t:'不確定',s:1},{t:'無',s:3}]},
-    {id:'C',title:'行動能力',opts:[{t:'臥床/輪椅',s:0},{t:'能下床但不能外出',s:1},{t:'可外出',s:2}]},
-    {id:'D',title:'近期心理壓力或急性病',opts:[{t:'是',s:0},{t:'否',s:2}]},
-    {id:'E',title:'神經心理問題',opts:[{t:'重度失智/憂鬱',s:0},{t:'輕度失智',s:1},{t:'無',s:2}]},
-    {id:'F',title:'BMI（>23=3；21–23=2；19–21=1；<19=0）',opts:[{t:'BMI>23',s:3},{t:'21–23',s:2},{t:'19–21',s:1},{t:'<19',s:0}]},
-  ];
-  (function buildMNA(){
-    const box=$('#mnaBox'); box.innerHTML='';
-    MNA_ITEMS.forEach(it=>{
-      const wrap=document.createElement('div'); wrap.className='sec'; wrap.style.margin='.4rem 0'; wrap.innerHTML=`<b>${it.title}</b><div>${it.opts.map(o=>`<label class="tag"><input type="radio" name="mna.${it.id}" value="${o.s}" data-lbl="${o.t}"> ${o.t}（${o.s}）</label>`).join(' ')}</div>`;
-      box.appendChild(wrap);
-    });
-  })();
-  function scoreMNA(){
-    let t=0; MNA_ITEMS.forEach(it=>{ const sel=$(`input[name="mna.${it.id}"]:checked`); t+= sel? +sel.value : 0; });
-    $('#mnaTotal').textContent=t;
-  }
-  function autoMNA_BMI(){
-    const bmi=parseFloat($('#bmi').value||''); if(!bmi) return;
-    const map = bmi>23?0 : bmi>=21?1 : bmi>=19?2 : 3; // 對應 F 項索引
-    const radios=$$('input[name="mna.F"]'); radios.forEach(r=>r.checked=false); if(radios[map]){ radios[map].checked=true; scoreMNA(); }
-  }
+  // ==== Braden - 已移至 modules/forms/07-form.js
 
-  // ==== 行動 / CHS
-  function scoreMob(){
-    const s=num($('#gsSec')); $('#gaitSpeed').value = (s && s>0 ? (4/s).toFixed(2) : '');
-    const arr=[num($('#grip1')),num($('#grip2')),num($('#grip3'))].filter(x=>x!=null); $('#gripMax').value=arr.length?Math.max(...arr).toFixed(1):'';
-    const flags=$('#mobFlags'); flags.innerHTML='';
-    const sp=parseFloat($('#gaitSpeed').value||''); if(sp && sp<0.8) tag(flags,'步速 <0.8 m/s');
-    const tug=num($('#tug')); if(tug!=null && tug>=20) tag(flags,'TUG ≥20s');
-    const gmax=parseFloat($('#gripMax').value||''); const sex=nv($('#sex')); if(gmax && ((sex==='男'&&gmax<26)||(sex==='女'&&gmax<18))) tag(flags,'握力偏低');
-    const falls=parseInt(nv($('#fallCnt'))||'0',10)||0; if(falls>=2) tag(flags,'近一年跌倒 ≥2');
-  }
-  function scoreCHS(){
-    const vals=['#chsWeak','#chsSlow','#chsWL','#chsExh','#chsLow'].map(id=> parseInt((nv($(id)).match(/\d+/)||['0'])[0],10)||0 );
-    const t=vals.reduce((a,b)=>a+b,0); $('#chsTotal').textContent=t; $('#chsResult').value = t>=3?'衰弱':t>=1?'前衰弱':'健壯';
-  }
+  // ==== MNA-SF - 已移至 modules/forms/08-form.js
+  // 使用 window.CGAForm08.initialize() 和 window.CGAForm08.compute()
 
-  // ==== STRATIFY / Morse
-  const STRA=[
-    {k:'prevFall',t:'病人是否曾跌倒或住院期間有跌倒？',s:1},
-    {k:'agitated',t:'是否十分激動焦躁？',s:1},
-    {k:'visu',t:'視力不好影響日常功能？',s:1},
-    {k:'needToilet',t:'是否需要常常上下廁所？',s:1},
-    {k:'transferDiff',t:'在站立或移位方面有困難？',s:1},
-  ];
-  (function buildStra(){
-    const box=$('#stratifyBox'); box.innerHTML='';
-    STRA.forEach((it,i)=>{
-      const row=document.createElement('div'); row.className='sec'; row.style.margin='.4rem 0';
-      row.innerHTML=`${i+1}）${it.t} <label class="tag"><input type="radio" name="stra.${it.k}" value="1"> 是(1)</label> <label class="tag"><input type="radio" name="stra.${it.k}" value="0"> 否(0)</label>`;
-      box.appendChild(row);
-    });
-  })();
-  function scoreStra(){ let t=0; STRA.forEach(it=>{ const sel=$(`input[name="stra.${it.k}"]:checked`); t+= sel? +sel.value : 0; }); $('#stratifyTotal').textContent=t; }
+  // ==== 行動 / CHS - 已移至 modules/forms/09-form.js
+  // 使用 window.CGAForm09.compute()
 
-  const MORSE=[
-    {k:'history',t:'最近3月是否曾跌倒？',opts:[{t:'是',s:25},{t:'否',s:0}]},
-    {k:'dx',t:'是否有需住院的內科病症？',opts:[{t:'是',s:15},{t:'否',s:0}]},
-    {k:'aid',t:'行走時是否使用輔具/需人協助？',opts:[{t:'拐杖/架/家具',s:30},{t:'輪椅/床上',s:0},{t:'無/護士協助',s:15}]},
-    {k:'iv',t:'是否有靜脈留置或注射點？',opts:[{t:'是',s:20},{t:'否',s:0}]},
-    {k:'gait',t:'步態/轉移',opts:[{t:'障礙嚴重',s:20},{t:'有點虛弱',s:10},{t:'正常/臥床/不能行走',s:0}]},
-    {k:'mental',t:'對自身能力是否了解？',opts:[{t:'不清楚',s:15},{t:'清楚',s:0}]},
-  ];
-  (function buildMorse(){
-    const box=$('#morseBox'); box.innerHTML='';
-    MORSE.forEach((it,i)=>{
-      const row=document.createElement('div'); row.className='sec'; row.style.margin='.4rem 0';
-      row.innerHTML=`${i+1}）${it.t} `+it.opts.map(o=>`<label class="tag"><input type="radio" name="morse.${it.k}" value="${o.s}"> ${o.t}（${o.s}）</label>`).join(' ');
-      box.appendChild(row);
-    });
-  })();
-  function scoreMorse(){ let t=0; MORSE.forEach(it=>{ const sel=$(`input[name="morse.${it.k}"]:checked`); t+= sel? +sel.value : 0; }); $('#morseTotal').textContent=t; }
 
-  // ==== EQ5D
-  const EQ5D=[
-    {k:'mob',t:'行動：',opts:['我可以四處走動','我行動有些不便','我臥病在床']},
-    {k:'self',t:'自我照顧：',opts:['我能照顧自己','我在盥洗/穿衣方面有些問題','我無法自己盥洗/穿衣']},
-    {k:'usual',t:'平常活動：',opts:['可正常活動','有些困難','無法進行']},
-    {k:'pain',t:'疼痛/不舒服：',opts:['沒有任何疼痛或不舒服','中度疼痛或不舒服','極度疼痛或不舒服']},
-    {k:'anx',t:'焦慮/沮喪：',opts:['不覺得焦慮沮喪','中度焦慮沮喪','極度焦慮沮喪']},
-  ];
-  (function buildEQ(){
-    const grid=$('#eq5d'); grid.innerHTML='';
-    EQ5D.forEach((it,idx)=>{
-      const d=document.createElement('div'); d.className='field col-12';
-      d.innerHTML=`<label>${String.fromCharCode(97+idx)}.${it.t}</label>`+it.opts.map((o,i)=>`<label class="tag"><input type="radio" name="eq.${it.k}" value="${i+1}"> ${i+1} ${o}</label>`).join(' ');
-      grid.appendChild(d);
-    });
-  })();
+  // ==== STRATIFY / Morse - 已移至 modules/forms/10-form.js
+  // 使用 window.CGAForm10.initialize() 和 window.CGAForm10.compute()
 
-  // ==== B11
-  function scoreB11(){ const a=num($('#b11a')); const b=num($('#b11b')); $('#b11e').value = (a&&b)? (b/a).toFixed(2) : ''; }
+  // ==== EQ5D - 已移至 modules/forms/11-form.js
+  // 使用 window.CGAForm11.initialize()
 
-  // ==== CCI
-  const CCI=[ // key, text, score
-    ['mi','心肌梗塞',1],['chf','充血性心衰竭',1],['pvd','周邊血管病',1],['cva','腦血管病',1],['dem','失智症',1],['copd','慢性肺病',1],['ctd','結締組織病',1],['ulcer','消化性潰瘍',1],['liver_m','輕度肝病',1],['dm','糖尿病（無併發）',1],['dm_c','糖尿病（有併發）',2],['ckd','中重度慢腎',2],['hemi','偏癱',2],['tumor','腫瘤（5年內）',2],['leuk','白血病',2],['lymph','淋巴瘤',2],['liver_s','重度肝病',3],['meta','轉移性腫瘤',6],['aids','AIDS',6]
-  ];
-  (function buildCCI(){
-    const wrap=$('#cciWrap'); wrap.innerHTML='';
-    CCI.forEach(([k,t,s])=>{
-      const item=document.createElement('label'); item.className='cci'; item.innerHTML=`<span>${t}<br><small>（${s}分）</small></span><input type="checkbox" data-s="${s}" id="cci_${k}">`;
-      wrap.appendChild(item);
-    });
-  })();
-  function scoreCCI(){ let t=0; $$('#cciWrap input[type=checkbox]').forEach(c=>{ if(c.checked) t+= +c.dataset.s; }); $('#cciTotal').textContent=t; }
+  // ==== B11 - 已移至 modules/forms/12-form.js
+  // 使用 window.CGAForm12.compute()
+
+  // ==== CCI - 已移至 modules/forms/13-form.js
+  // 使用 window.CGAForm13.initialize() 和 window.CGAForm13.compute()
+
 
   // ==== 摘要 / 標籤
   function recomputeAll(){
-    syncAnthro(); scoreADL(); scoreIADL(); scoreMini(); scoreMMSE(); scoreMoCA();
-    scoreGDS(); scoreCAM(); scoreBraden(); scoreMNA(); scoreMob(); scoreCHS();
-    scoreStra(); scoreMorse(); scoreB11(); scoreCCI();
+    syncAnthro(); 
+    
+    // 使用模組的 compute 方法（已重構的模組）
+    if (window.CGAForm03 && typeof window.CGAForm03.compute === 'function') {
+      window.CGAForm03.compute();
+    }
+    if (window.CGAForm04 && typeof window.CGAForm04.compute === 'function') {
+      window.CGAForm04.compute();
+    }
+    if (window.CGAForm05 && typeof window.CGAForm05.compute === 'function') {
+      window.CGAForm05.compute();
+    }
+    if (window.CGAForm06 && typeof window.CGAForm06.compute === 'function') {
+      window.CGAForm06.compute();
+    }
+    if (window.CGAForm07 && typeof window.CGAForm07.compute === 'function') {
+      window.CGAForm07.compute();
+    }
+    if (window.CGAForm08 && typeof window.CGAForm08.compute === 'function') {
+      window.CGAForm08.compute();
+    }
+    if (window.CGAForm09 && typeof window.CGAForm09.compute === 'function') {
+      window.CGAForm09.compute();
+    }
+    if (window.CGAForm10 && typeof window.CGAForm10.compute === 'function') {
+      window.CGAForm10.compute();
+    }
+    if (window.CGAForm12 && typeof window.CGAForm12.compute === 'function') {
+      window.CGAForm12.compute();
+    }
+    if (window.CGAForm13 && typeof window.CGAForm13.compute === 'function') {
+      window.CGAForm13.compute();
+    }
+    
     // 標籤
-    const box=$('#riskTags'); box.innerHTML='';
+    const box=$('#riskTags'); 
+    if (!box) return; // 摘要頁未載入時跳過
+    box.innerHTML='';
     const gds=+$('#gdsTotal').textContent||0; if(gds>=2) tag(box,'GDS-5 ≥2');
     const cam=nv($('#camResult')); if(cam==='譫妄') tag(box,'CAM 譫妄');
     const br=+$('#bradenTotal').textContent||0; if(br && br<=12) tag(box,'Braden 高風險');
@@ -777,7 +832,6 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
     const sum=`${nm}（${age}歲${sex}）。ADL ${adl}/100；IADL ${$('#iadlTotal').textContent}/${$('#iadlMax').textContent}；Mini-Cog ${$('#miniTotal').value||'NA'}/5（${nv($('#miniBinary'))||'NA'}）；MMSE ${mmse||'NA'}/30；MoCA ${moca||'NA'}/30；GDS-5 ${gds}/5；MNA-SF ${mna}/14；步速 ${nv($('#gaitSpeed'))||'NA'} m/s；TUG ${nv($('#tug'))||'NA'} s；握力最大 ${nv($('#gripMax'))||'NA'} kg；CFS ${nv($('#cfs'))||'NA'}；STRATIFY ${$('#stratifyTotal').textContent}；Morse ${morse}；EQ-VAS ${nv($('#eqVASVal'))||'NA'}；CCI ${cci}；出院：${nv($('#dcDest'))||'NA'}。`;
     $('#summary').value=sum;
   }
-  $('#recalc').onclick=recomputeAll;
 
   // ==== Storage / Export
   function snapshot(){
@@ -802,20 +856,136 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px
     try{ fall.list=JSON.parse(obj.falls||'[]'); }catch{}
     renderFam(); renderFall(); recomputeAll();
   }
-  $('#save').onclick=()=>{ localStorage.setItem('cga_full', JSON.stringify(snapshot())); alert('已儲存'); };
-  $('#load').onclick=()=>{ const raw=localStorage.getItem('cga_full'); if(!raw) return alert('尚無資料'); loadshot(JSON.parse(raw)); };
-  $('#clear').onclick=()=>{ if(confirm('清除所有內容？')){ localStorage.removeItem('cga_full'); location.reload(); } };
-  $('#exportJson').onclick=()=>{ const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cga.json'; a.click(); };
-  $('#exportCsv').onclick=()=>{ const obj=snapshot(); const keys=Object.keys(obj); const row=keys.map(k=>JSON.stringify(obj[k]??'')).join(','); const csv=keys.join(',')+'\n'+row+'\n'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='cga.csv'; a.click(); };
+  
+  // ==== 統一事件綁定函數
+  let eventsBindingInitialized = false;
+  
+  function bindAllEvents() {
+    // 初始化所有動態表單（調用模組的 initialize 方法）
+    // 只初始化已載入的模組
+    if (window.CGAForm03 && typeof window.CGAForm03.initialize === 'function') {
+      window.CGAForm03.initialize();
+    }
+    if (window.CGAForm04 && typeof window.CGAForm04.initialize === 'function') {
+      window.CGAForm04.initialize();
+    }
+    if (window.CGAForm07 && typeof window.CGAForm07.initialize === 'function') {
+      window.CGAForm07.initialize();
+    }
+    if (window.CGAForm08 && typeof window.CGAForm08.initialize === 'function') {
+      window.CGAForm08.initialize();
+    }
+    if (window.CGAForm10 && typeof window.CGAForm10.initialize === 'function') {
+      window.CGAForm10.initialize();
+    }
+    if (window.CGAForm11 && typeof window.CGAForm11.initialize === 'function') {
+      window.CGAForm11.initialize();
+    }
+    if (window.CGAForm13 && typeof window.CGAForm13.initialize === 'function') {
+      window.CGAForm13.initialize();
+    }
+    
+    // 基本資料頁的事件
+    bindAnthroEvents();
+    
+    // 家系圖和跌倒事件
+    const addFam = $('#addFam');
+    if (addFam) {
+      addFam.onclick = () => {
+        const m={role:nv($('#famRole')),name:nv($('#famName')),sex:nv($('#famSex')),age:nv($('#famAge')),status:nv($('#famStatus')),dx:nv($('#famDx'))};
+        if(!m.role) return alert('請選角色'); fam.rows.push(m);
+        ['famRole','famName','famSex','famAge','famStatus','famDx'].forEach(id=>$('#'+id).value=''); renderFam();
+      };
+    }
+    
+    const addFall = $('#addFall');
+    if (addFall) {
+      addFall.onclick = () => { 
+        const e={date:nv($('#feDate')),place:nv($('#fePlace')),context:nv($('#feCtx')),outcome:nv($('#feOut')),note:nv($('#feNote'))}; 
+        if(!e.date && !e.place) return alert('請至少填 日期或地點'); 
+        fall.list.push(e); 
+        ['feDate','fePlace','feCtx','feOut','feNote'].forEach(id=>$('#'+id).value=''); 
+        renderFall(); 
+      };
+    }
+    
+    // 摘要頁的事件（這些按鈕只綁定一次）
+    if (!eventsBindingInitialized) {
+      const recalc = $('#recalc');
+      if (recalc) recalc.onclick = recomputeAll;
+      
+      const save = $('#save');
+      if (save) save.onclick = () => { localStorage.setItem('cga_full', JSON.stringify(snapshot())); alert('已儲存'); };
+      
+      const load = $('#load');
+      if (load) load.onclick = () => { const raw=localStorage.getItem('cga_full'); if(!raw) return alert('尚無資料'); loadshot(JSON.parse(raw)); };
+      
+      const clear = $('#clear');
+      if (clear) clear.onclick = () => { if(confirm('清除所有內容？')){ localStorage.removeItem('cga_full'); location.reload(); } };
+      
+      const exportJson = $('#exportJson');
+      if (exportJson) exportJson.onclick = () => { const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cga.json'; a.click(); };
+      
+      const exportCsv = $('#exportCsv');
+      if (exportCsv) exportCsv.onclick = () => { const obj=snapshot(); const keys=Object.keys(obj); const row=keys.map(k=>JSON.stringify(obj[k]??'')).join(','); const csv=keys.join(',')+'\n'+row+'\n'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='cga.csv'; a.click(); };
+      
+      // IADL 男性跳過選項
+      const iadlMaleSkip = $('#iadlMaleSkip');
+      if (iadlMaleSkip) iadlMaleSkip.onchange = () => {
+        if (window.CGAForm04 && typeof window.CGAForm04.compute === 'function') {
+          window.CGAForm04.compute();
+        }
+      };
+      
+      eventsBindingInitialized = true;
+    }
+  }
 
-  // ==== Wiring
+  // ==== Wiring（全域事件）
   document.addEventListener('change',recomputeAll,true);
   document.addEventListener('input',recomputeAll,true);
-  $('#iadlMaleSkip').onchange=scoreIADL;
 
-  // 初始
-  show(0); renderSteps(); renderFam(); renderFall(); recomputeAll();
+  // 初始化（異步載入第一個表單）
+  (async function init() {
+    renderSteps(); renderFam(); renderFall();
+    
+    // 確保 CGAModuleLoader 已載入
+    if (!window.CGAModuleLoader) {
+      console.error('❌ CGAModuleLoader 尚未載入！');
+      alert('載入器初始化失敗，請重新整理頁面');
+      return;
+    }
+    
+    console.log('✅ 開始載入第一個表單...');
+    await show(0); // 載入第一個表單並顯示
+    console.log('✅ 第一個表單載入完成');
+  })();
+
+  // ==== 主題切換功能（與 index.html 共享設定）
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const htmlElement = document.documentElement;
+  
+  // 同步主題圖示（主題已在 <head> 中套用）
+  const currentTheme = htmlElement.getAttribute('data-theme');
+  if (themeIcon) {
+    themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  }
+  
+  // 主題切換事件
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      htmlElement.setAttribute('data-theme', newTheme);
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      // 使用與 index.html 相同的 key，實現跨頁面主題記憶
+      localStorage.setItem('theme', newTheme);
+    });
+  }
 })();
 </script>
+
 </body>
 </html>
