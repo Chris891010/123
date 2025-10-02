@@ -12,6 +12,15 @@ window.CHANGELOG_DATA = {
   },
   "releases": [
     {
+      "version": "1.5.0",
+      "date": "2025-10-02 - 22:30:00",
+      "tags": ["新功能", "UI"],
+      "changes": [
+        "📄 CGA 檔案重寫模組化",
+        "⚠️ 儲存/載入功能暫時標記為開發中"
+      ]
+    },
+    {
       "version": "1.4.0",
       "date": "2025-10-02 - 18:00:00",
       "tags": ["新功能"],
@@ -78,6 +87,19 @@ window.CHANGELOG_DATA = {
       "📤 多格式資料匯出與分享功能",
       "👥 多使用者協作與權限管理"
     ]
+  },
+  "todoList": {
+    "inProgress": [
+      "實作ES3C表單的儲存與載入功能",
+      "優化SP3E手機版表格橫向滾動體驗",
+      "整合CGA表單新分頁開啟功能",
+      "建立LocalStorage資料持久化方案",
+      "統一所有工具表單的UI與UX風格",
+      "新增資料統計與視覺化圖表功能",
+      "實作工具庫智能搜尋與篩選",
+      "完善工具使用說明文件與範例",
+      "完善CGA功能",
+    ],
   }
 };
 
@@ -85,7 +107,9 @@ window.CHANGELOG_DATA = {
 window.ChangelogAPI = {
   getData: () => window.CHANGELOG_DATA,
   getVersion: () => window.CHANGELOG_DATA.metadata.version,
-  getLastUpdated: () => window.CHANGELOG_DATA.metadata.lastUpdated
+  getLastUpdated: () => window.CHANGELOG_DATA.metadata.lastUpdated,
+  getTodoList: () => window.CHANGELOG_DATA.todoList,
+  getRoadmap: () => window.CHANGELOG_DATA.roadmap
 };
 
 console.log('開發日誌模組載入完成，版本:', window.ChangelogAPI.getVersion());

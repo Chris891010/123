@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
 <style>
+/* #region CSS變數定義 */
 :root {
   /* 亮色主題變數 */
   --bg: #f6f8fb;
@@ -118,59 +119,355 @@
   --info-text: #60a5fa;
   --info-light: #1e3a8a;
 }
+/* #endregion */
 
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
-h1,h2{font-family:"Noto Serif TC","Noto Sans TC",serif;margin:.25rem 0 .7rem}
-.small{color:var(--muted);font-size:.92rem}
-.container{max-width:1200px;margin:0 auto;padding:16px}
-nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 0}
-.tab{border:1px solid var(--line);background:var(--card-bg);color:var(--ink);border-radius:999px;padding:.5rem .9rem;cursor:pointer;transition:all 0.2s ease}
-.tab:hover{opacity:0.8}
-.tab.active{background:var(--brand);color:#ffffff;border-color:var(--brand)}
-.hero,.section{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px;color:var(--ink)}
-.section.management{background:var(--mgmt-50)}
-.section.tools{background:var(--tools-50)}
-.section.assessment{background:var(--ass-50)}
-.section.education{background:var(--edu-50)}
-.btn{border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-text);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-weight:700;transition:all 0.2s ease}
-.btn:hover{background:var(--muted);opacity:0.9}
-.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn.primary:hover{opacity:0.9}
-.grid{display:grid;gap:12px}
-.grid.cols-4{grid-template-columns:repeat(1,minmax(0,1fr))}
-@media(min-width:880px){.grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;color:var(--ink)}
-.hide{display:none}
-.changelog-entry{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--shadow)}
-.changelog-entry:last-child{border-bottom:none;margin-bottom:0}
-.changelog-entry h4{margin:0 0 8px 0;color:var(--content);font-size:16px}
-.changelog-tags{margin-bottom:12px}
-.changelog-tags .badge{background:var(--info);color:white;padding:2px 8px;border-radius:12px;font-size:11px;margin-right:6px;font-weight:500}
-.roadmap-content h4{margin:16px 0 8px 0;color:var(--content);font-size:14px}
-.roadmap-content h4:first-child{margin-top:0}
-.error-message{color:var(--danger);text-align:center;padding:20px}
-.loading-message{text-align:center;padding:20px;color:var(--content)}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.search input,input[type="text"],input[type="date"],input[type="number"],select,textarea{width:100%;padding:.55rem .7rem;border:1px solid var(--input-border);border-radius:10px;background:var(--input-bg);color:var(--input-text)}
-fieldset.q{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--card-bg);color:var(--ink)}
-.q legend{font-weight:700;color:var(--ink)}
-.options{display:grid;grid-template-columns:repeat(5,minmax(90px,1fr));gap:.45rem;margin-top:.35rem}
-.opt{display:flex;gap:.35rem;align-items:center;border:1px solid var(--line);border-radius:10px;padding:.3rem .55rem;background:var(--card-bg);color:var(--ink)}
-.toolbar{display:flex;gap:.5rem;align-items:center;margin:.5rem 0;flex-wrap:wrap}
-.filter-pills{display:flex;gap:.35rem;flex-wrap:wrap}
-.pill{border:1px solid var(--line);background:var(--card-bg);color:var(--ink);border-radius:999px;padding:.25rem .6rem;cursor:pointer;transition:all 0.2s ease}
-.pill:hover{opacity:0.8}
-.pill.active{background:var(--brand);color:#ffffff;border-color:var(--brand)}
-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card-bg)}
-th,td{border-top:1px solid var(--line);border-right:1px solid var(--line);padding:.5rem .6rem;vertical-align:top;color:var(--ink)}
-th:last-child,td:last-child{border-right:none}
-thead th{background:var(--th-bg);font-weight:700;color:var(--th-text)}
-tfoot td{background:var(--th-bg);color:var(--th-text)}
-a.inline{color:var(--link-color);text-decoration:none;border-bottom:1px dashed var(--link-color)}
-a.inline:hover{color:var(--link-hover)}
-.badge{font-size:.78rem;border:1px solid var(--line);border-radius:999px;padding:.1rem .5rem;background:var(--card-bg);color:var(--ink)}
-.anchor{scroll-margin-top:88px}
+/* #region 基礎樣式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+h1, h2 {
+  font-family: "Noto Serif TC", "Noto Sans TC", serif;
+  margin: 0.25rem 0 0.7rem;
+}
+
+.small {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+/* #endregion */
+
+/* #region 導航標籤 */
+nav.tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0;
+}
+.tab {
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  opacity: 0.8;
+}
+
+.tab.active {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+}
+/* #endregion */
+
+/* #region 區塊樣式 */
+.hero, .section {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 12px;
+  color: var(--ink);
+}
+
+.section.management {
+  background: var(--mgmt-50);
+}
+
+.section.tools {
+  background: var(--tools-50);
+}
+
+.section.assessment {
+  background: var(--ass-50);
+}
+
+.section.education {
+  background: var(--edu-50);
+}
+/* #endregion */
+
+/* #region 按鈕樣式 */
+.btn {
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 10px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--muted);
+  opacity: 0.9;
+}
+
+.btn.primary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.btn.primary:hover {
+  opacity: 0.9;
+}
+/* #endregion */
+
+/* #region 網格系統 */
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.grid.cols-4 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 880px) {
+  .grid.cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+/* #endregion */
+
+/* #region 卡片樣式 */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.hide {
+  display: none;
+}
+/* #endregion */
+
+/* #region 開發日誌樣式 */
+.changelog-entry {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--shadow);
+}
+
+.changelog-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.changelog-entry h4 {
+  margin: 0 0 8px 0;
+  color: var(--content);
+  font-size: 16px;
+}
+
+.changelog-tags {
+  margin-bottom: 12px;
+}
+
+.changelog-tags .badge {
+  background: var(--info);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-right: 6px;
+  font-weight: 500;
+}
+
+.roadmap-content h4 {
+  margin: 16px 0 8px 0;
+  color: var(--content);
+  font-size: 14px;
+}
+
+.roadmap-content h4:first-child {
+  margin-top: 0;
+}
+
+.error-message {
+  color: var(--danger);
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 20px;
+  color: var(--content);
+}
+
+/* 表單與輸入 */
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search input,
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--input-text);
+}
+
+fieldset.q {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  background: var(--card-bg);
+  color: var(--ink);
+}
+
+.q legend {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(90px, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.opt {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.3rem 0.55rem;
+  background: var(--card-bg);
+  color: var(--ink);
+}
+
+/* 工具列與過濾器 */
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+  flex-wrap: wrap;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  opacity: 0.8;
+}
+
+.pill.active {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+}
+
+/* 表格樣式 */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+th, td {
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  padding: 0.5rem 0.6rem;
+  vertical-align: top;
+  color: var(--ink);
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+thead th {
+  background: var(--th-bg);
+  font-weight: 700;
+  color: var(--th-text);
+}
+
+tfoot td {
+  background: var(--th-bg);
+  color: var(--th-text);
+}
+
+/* 連結與徽章 */
+a.inline {
+  color: var(--link-color);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--link-color);
+}
+
+a.inline:hover {
+  color: var(--link-hover);
+}
+
+.badge {
+  font-size: 0.78rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  background: var(--card-bg);
+  color: var(--ink);
+}
+
+.anchor {
+  scroll-margin-top: 88px;
+}
 
 /* 開發日誌樣式 */
 .changelog-content {
@@ -220,6 +517,8 @@ a.inline:hover{color:var(--link-hover)}
 }
 
 @media print{.tabs,.toolbar,.search,.filter-pills,.backonly,.hide-on-print{display:none!important}.container{max-width:none}}
+/* #endregion */
+
 </style>
 </head>
 <body>
@@ -232,7 +531,7 @@ a.inline:hover{color:var(--link-hover)}
     <button class="tab" data-tab="tools" aria-selected="false">工具庫</button>
     <button class="tab" data-tab="edu" aria-selected="false">教育訓練</button>
     <button class="tab" data-tab="qm" aria-selected="false">監測/成效</button>
-    <button class="tab" data-tab="CGA" aria-selected="false">CGA表單測試</button>
+    <button class="tab" data-tab="CGA" aria-selected="false">CGA表單測試 🔗</button>
     <button class="tab" data-tab="changelog" aria-selected="false">開發日誌</button>
     <span style="margin-left:auto"></span>
     <button class="btn" type="button" id="theme-toggle" title="切換主題">
@@ -540,15 +839,11 @@ function renderChangelog(data) {
       </div>
     </div>
     <div class="card">
-      <h3>開發計畫 🎯</h3>
+      <h3>開發計畫</h3>
       <div class="roadmap-content">
-        <h4>近期計畫</h4>
+        <h4>TODO清單</h4>
         <ul class="small">
-          ${data.roadmap.nearTerm.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-        <h4>長期規劃</h4>
-        <ul class="small">
-          ${data.roadmap.longTerm.map(item => `<li>${item}</li>`).join('')}
+          ${data.todoList.inProgress.map(item => `<li>${item}</li>`).join('')}
         </ul>
       </div>
     </div>
