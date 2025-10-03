@@ -15,161 +15,17 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+
+<!-- 共用樣式模組 -->
+<link href="styles/theme-variables.css" rel="stylesheet">
+<link href="styles/base.css" rel="stylesheet">
+<link href="styles/buttons.css" rel="stylesheet">
+<link href="styles/forms.css" rel="stylesheet">
+
 <style>
-/* #region CSS變數定義 */
-:root {
-  /* 亮色主題變數 */
-  --bg: #f6f8fb;
-  --ink: #0f172a;
-  --muted: #6b7280;
-  --line: #e5e7eb;
-  --card-bg: #ffffff;
-  --brand: #1d4ed8;
-  --brand-50: #eef2ff;
-  --mgmt-50: #f5f3ff;
-  --tools-50: #f8fafc;
-  --ass-50: #ecfdf5;
-  --edu-50: #fff7e
-  
-  /* 按鈕和連結顏色 */
-  --btn-text: #374151;
-  --btn-bg: #ffffff;
-  --btn-border: #e5e7eb;
-  --link-color: #1d4ed8;
-  --link-hover: #1e40af;
-  
-  /* 表格和表單顏色 */
-  --th-bg: #f3f4f6;
-  --th-text: #374151;
-  --input-bg: #ffffff;
-  --input-text: #111827;
-  --input-border: #e5e7eb;
-  
-  /* 擴展通用變數 - 流程圖和表單共用 */
-  --surface: #f8fafc;
-  --surface-secondary: #e2e8f0;
-  --content: #64748b;
-  --shadow: rgba(15, 23, 42, 0.08);
-  --shadow-lg: rgba(15, 23, 42, 0.15);
-  
-  /* 通用狀態顏色系統 */
-  --success: #16a34a;
-  --success-bg: #dcfce7;
-  --success-text: #166534;
-  --success-light: #f0fdf4;
-  
-  --warning: #f59e0b;
-  --warning-bg: #fef3c7;
-  --warning-text: #92400e;
-  --warning-light: #fffbeb;
-  
-  --danger: #dc2626;
-  --danger-bg: #fee2e2;
-  --danger-text: #991b1b;
-  --danger-light: #fef2f2;
-  
-  --info: #2563eb;
-  --info-bg: #dbeafe;
-  --info-text: #1e40af;
-  --info-light: #eff6ff;
-}
+/* #region index.html 專屬樣式 */
 
-/* 暗色主題 */
-[data-theme="dark"] {
-  --bg: #0f172a;
-  --ink: #f1f5f9;
-  --muted: #94a3b8;
-  --line: #334155;
-  --card-bg: #1e293b;
-  --brand: #3b82f6;
-  --brand-50: #1e293b;
-  --mgmt-50: #1e293b;
-  --tools-50: #1e293b;
-  --ass-50: #1e293b;
-  --edu-50: #1e293b;
-  
-  --btn-text: #f1f5f9;
-  --btn-bg: #334155;
-  --btn-border: #475569;
-  --link-color: #60a5fa;
-  --link-hover: #93c5fd;
-  
-  --th-bg: #334155;
-  --th-text: #f1f5f9;
-  --input-bg: #1e293b;
-  --input-text: #f1f5f9;
-  --input-border: #475569;
-  
-  /* 暗主題擴展變數 */
-  --surface: #1e293b;
-  --surface-secondary: #334155;
-  --content: #94a3b8;
-  --shadow: rgba(0, 0, 0, 0.25);
-  --shadow-lg: rgba(0, 0, 0, 0.4);
-  
-  /* 暗主題狀態顏色 */
-  --success: #16a34a;
-  --success-bg: #052e16;
-  --success-text: #4ade80;
-  --success-light: #064e3b;
-  
-  --warning: #f59e0b;
-  --warning-bg: #451a03;
-  --warning-text: #fbbf24;
-  --warning-light: #78350f;
-  
-  --danger: #dc2626;
-  --danger-bg: #450a0a;
-  --danger-text: #f87171;
-  --danger-light: #7f1d1d;
-  
-  --info: #2563eb;
-  --info-bg: #0c1e3e;
-  --info-text: #60a5fa;
-  --info-light: #1e3a8a;
-}
-/* #endregion */
-
-/* #region 基礎樣式 */
-* {
-  box-sizing: border-box;
-}
-
-/* 主題切換平滑過渡 - 所有元素 */
-*,
-*::before,
-*::after {
-  transition: background-color 0.3s ease, 
-              color 0.3s ease, 
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
-}
-
-h1, h2 {
-  font-family: "Noto Serif TC", "Noto Sans TC", serif;
-  margin: 0.25rem 0 0.7rem;
-}
-
-.small {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px;
-}
-/* #endregion */
-
-/* #region 導航標籤 */
+/* 導航標籤 */
 nav.tabs {
   display: flex;
   gap: 0.5rem;
@@ -221,34 +77,6 @@ nav.tabs {
 
 .section.education {
   background: var(--edu-50);
-}
-/* #endregion */
-
-/* #region 按鈕樣式 */
-.btn {
-  border: 1px solid var(--btn-border);
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  border-radius: 10px;
-  padding: 0.5rem 0.8rem;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  background: var(--muted);
-  opacity: 0.9;
-}
-
-.btn.primary {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: #fff;
-}
-
-.btn.primary:hover {
-  opacity: 0.9;
 }
 /* #endregion */
 

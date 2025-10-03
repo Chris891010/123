@@ -1,0 +1,77 @@
+/* ========================================
+   基礎樣式（共用）
+   適用於所有頁面
+   ======================================== */
+
+/* 基礎重置 */
+* {
+  box-sizing: border-box;
+}
+
+/* 主題切換平滑過渡 */
+:root {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 為所有使用CSS變數的元素添加過渡效果 */
+*:not(script):not(style) {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Noto Sans TC", system-ui, sans-serif;
+  color: var(--ink);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 標題階層 */
+h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  line-height: 1.4;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+
+/* 容器 */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+/* 響應式調整 */
+@media (max-width: 979px) {
+  .container {
+    padding: 16px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
+}

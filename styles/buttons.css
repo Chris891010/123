@@ -1,0 +1,118 @@
+/* ========================================
+   按鈕系統（共用）
+   適用於所有頁面
+   ======================================== */
+
+/* 基礎按鈕樣式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover 狀態 */
+.btn:hover {
+  background: var(--surface-secondary);
+  border-color: var(--brand);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Active/選中 狀態 */
+.btn.active {
+  background: linear-gradient(135deg, var(--brand) 0%, #2563eb 100%);
+  border-color: var(--brand);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+.btn.active:hover {
+  background: linear-gradient(135deg, var(--brand) 0%, #2563eb 100%);
+  opacity: 0.95;
+  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.4);
+}
+
+/* Primary 變體 */
+.btn.primary {
+  background: linear-gradient(135deg, var(--brand) 0%, #2563eb 100%);
+  border-color: var(--brand);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+.btn.primary:hover {
+  background: linear-gradient(135deg, #1e40af 0%, var(--brand) 100%);
+  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.4);
+}
+
+/* Warning 變體 */
+.btn.warn {
+  background: var(--warning-light);
+  border-color: var(--warning);
+  color: var(--warning-text);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+}
+
+.btn.warn:hover {
+  background: var(--warning-bg);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Success 變體 */
+.btn.success {
+  background: var(--success-light);
+  border-color: var(--success);
+  color: var(--success-text);
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.2);
+}
+
+.btn.success:hover {
+  background: var(--success-bg);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+/* Danger 變體 */
+.btn.danger {
+  background: var(--danger-light);
+  border-color: var(--danger);
+  color: var(--danger-text);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+}
+
+.btn.danger:hover {
+  background: var(--danger-bg);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* 小尺寸按鈕 */
+.btn.sm {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+  }
+}

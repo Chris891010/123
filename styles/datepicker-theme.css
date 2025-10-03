@@ -1,0 +1,199 @@
+/* ========================================
+   Flowbite Datepicker 中文化主題樣式
+   ======================================== */
+
+/* 容器樣式 */
+.datepicker-picker {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: 0 4px 12px var(--shadow-lg) !important;
+  padding: 12px !important;
+  max-width: 300px !important;
+}
+
+/* 標題區域 */
+.datepicker-header {
+  background-color: var(--surface) !important;
+  padding: 8px 12px 4px !important;
+}
+
+.datepicker-title {
+  color: var(--ink) !important;
+}
+
+/* 控制區間距 */
+.datepicker-controls {
+  margin-bottom: 4px !important;
+}
+
+/* 緊湊佈局 */
+.datepicker-view {
+  padding: 4px 0 !important;
+}
+
+.datepicker-grid {
+  gap: 2px !important;
+}
+
+/* 日期/月份/年份單元格 */
+.datepicker-cell,
+.datepicker-cell.hover\:bg-gray-100,
+.datepicker-cell.dark\:hover\:bg-gray-600 {
+  height: 32px !important;
+  line-height: 32px !important;
+  font-size: 13px !important;
+  color: var(--ink) !important;
+  background-color: transparent !important;
+}
+
+.datepicker-cell:not(.disabled):hover {
+  background-color: var(--surface) !important;
+}
+
+.datepicker-cell.selected,
+.datepicker-cell.selected:hover {
+  background-color: var(--brand) !important;
+  color: white !important;
+}
+
+.datepicker-cell.today {
+  background-color: var(--brand-50) !important;
+  color: var(--brand) !important;
+}
+
+.datepicker-cell.today.selected {
+  background-color: var(--brand) !important;
+  color: white !important;
+}
+
+.datepicker-cell.disabled {
+  color: var(--muted) !important;
+  opacity: 0.4;
+}
+
+/* 星期標題 */
+.datepicker-view .dow {
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 12px !important;
+  color: var(--muted) !important;
+}
+
+/* 導航按鈕（左右箭頭） */
+.datepicker-controls .prev-btn,
+.datepicker-controls .next-btn,
+button.prev-btn,
+button.next-btn {
+  background-color: var(--surface) !important;
+  color: var(--ink) !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+}
+
+.datepicker-controls .prev-btn:hover,
+.datepicker-controls .next-btn:hover {
+  background-color: var(--brand) !important;
+  color: white !important;
+}
+
+.datepicker-controls .prev-btn svg,
+.datepicker-controls .next-btn svg,
+button.prev-btn svg,
+button.next-btn svg {
+  color: var(--ink) !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.datepicker-controls .prev-btn:hover svg,
+.datepicker-controls .next-btn:hover svg {
+  color: white !important;
+}
+
+/* 月份/年份切換按鈕 */
+.datepicker-controls .view-switch,
+button.view-switch,
+.view-switch.bg-white,
+.view-switch.dark\:bg-gray-700 {
+  background-color: var(--surface) !important;
+  color: var(--ink) !important;
+  height: 28px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 0 16px !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.datepicker-controls .view-switch:hover,
+button.view-switch:hover {
+  background-color: var(--brand) !important;
+  color: white !important;
+}
+
+/* 底部按鈕區域 */
+.datepicker-footer,
+.datepicker-footer.flex {
+  border-top: 1px solid var(--line) !important;
+  padding: 8px 12px !important;
+  background-color: var(--card-bg) !important;
+}
+
+.datepicker-footer .button,
+.datepicker-footer button,
+.datepicker-footer .today-btn,
+.datepicker-footer .clear-btn {
+  color: var(--ink) !important;
+  background-color: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  height: 32px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+}
+
+.datepicker-footer .button:hover,
+.datepicker-footer button:hover {
+  background-color: var(--brand) !important;
+  color: white !important;
+}
+
+/* ========================================
+   中文化樣式（使用 CSS 偽元素）
+   ======================================== */
+
+/* 底部按鈕中文化 */
+.datepicker-footer .today-btn,
+.datepicker-footer .clear-btn {
+  font-size: 0 !important;
+}
+
+.datepicker-footer .today-btn::after {
+  content: "今天";
+  font-size: 14px;
+}
+
+.datepicker-footer .clear-btn::after {
+  content: "清除";
+  font-size: 14px;
+}
+
+/* 星期標題中文化 */
+.datepicker-view .dow {
+  font-size: 0 !important;
+}
+
+.datepicker-view .dow:nth-child(1)::after { content: "日"; font-size: 12px; }
+.datepicker-view .dow:nth-child(2)::after { content: "一"; font-size: 12px; }
+.datepicker-view .dow:nth-child(3)::after { content: "二"; font-size: 12px; }
+.datepicker-view .dow:nth-child(4)::after { content: "三"; font-size: 12px; }
+.datepicker-view .dow:nth-child(5)::after { content: "四"; font-size: 12px; }
+.datepicker-view .dow:nth-child(6)::after { content: "五"; font-size: 12px; }
+.datepicker-view .dow:nth-child(7)::after { content: "六"; font-size: 12px; }
