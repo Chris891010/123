@@ -11,6 +11,18 @@ window.CHANGELOG_DATA = {
     "version": "1.4.0"
   },
   "releases": [
+            {
+      "version": "1.7.0",
+      "date": "2025-10-04 15:00:00",
+      "tags": ["重構", "UI"],
+      "changes": [
+        "🎨 ADL 重新設計UI/UX",
+        "🎨 IADL重新設計UI/UX",
+        "🎨 index及CGA統一使用模組化生成背景、標題、按鈕、分隔線等樣式",
+        "🎨 統一使用模組化生成器 InfoBoxBuilder 和 CardRadioBuilder 來建立說明框和卡片式單選按鈕"
+
+      ]
+    },
         {
       "version": "1.6.0",
       "date": "2025-10-03 23:00:00",
@@ -111,6 +123,9 @@ window.CHANGELOG_DATA = {
       "實作工具庫智能搜尋與篩選",
       "完善工具使用說明文件與範例",
       "完善CGA功能",
+      "CGA 基本資料填寫病歷號碼自動帶入資料",
+      "IADL 性別自動切換計分模式",
+      "模組化以方便維護及修改"
     ],
   }
 };

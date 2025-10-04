@@ -37,33 +37,59 @@
     }
 
     generateHTML() {
-      return `<div class="sec"><h3>ADL – Barthel <span class="badge">總分：<span id="adlTotal">0</span>/100</span></h3>
-  <table class="table"><thead><tr><th>項目</th><th>選項</th><th style="width:90px">分數</th></tr></thead><tbody id="adlBody"></tbody></table>
-  <div id="adlFlags"></div>
+      return `
+<!-- ========================================
+     日常生活活動能力量表 (ADL - Barthel Index)
+     ======================================== -->
+<h3 style="color: var(--brand); font-size: 1.125rem; font-weight: 700; margin: 1.5rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid var(--line);">
+  🏃 日常生活活動能力 (ADL - Barthel Index)
+</h3>
+
+<!-- 量表說明 -->
+${InfoBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
+  • 評估基本日常生活自我照顧能力<br>
+  • 總分範圍：0-100 分，分數越高表示功能越好<br>
+  • <strong>分級標準：</strong>100 分=完全獨立 / 91-99=輕度依賴 / 61-90=中度依賴 / 21-60=重度依賴 / 0-20=完全依賴`)}
+
+<!-- ADL 評估項目 -->
+<div id="adlBody"></div>
+
+<!-- 評估結果 -->
+<div style="margin-top: 2rem; padding: 1.5rem; background: var(--surface); border-radius: 12px; border: 2px solid var(--line);">
+  <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+    <span style="font-size: 1.125rem; font-weight: 700; color: var(--brand);">📊 評估結果</span>
+    <span style="font-size: 1.5rem; font-weight: 700; color: var(--brand);">
+      <span id="adlTotal">0</span> / 100 分
+    </span>
+  </div>
+  <div id="adlFlags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
 </div>`;
     }
     
-    // 初始化：建立動態表格
+    // 初始化：建立動態卡片式表單
     initialize() {
-      const tb = this.$('#adlBody');
-      if (!tb) return; // 表單未載入時跳過
+      const container = this.$('#adlBody');
+      if (!container) return;
       
-      tb.innerHTML = '';
-      this.BARTHEL.forEach((it, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${i+1}）${it.t}</td><td>${it.opts.map(o => 
-          `<label class="tag"><input type="radio" name="adl.${it.k}" value="${o.s}"> ${o.txt}（${o.s}）</label>`
-        ).join(' ')}</td><td id="adl_${it.k}" class="right">0</td>`;
-        tb.appendChild(tr);
-      });
+      // 使用 CardRadioBuilder 建立卡片式佈局
+      if (window.CardRadioBuilder) {
+        const builder = new CardRadioBuilder({
+          columns: 2,
+          gap: '1.5rem',
+          showScore: true
+        });
+        builder.build(this.BARTHEL, 'adl', container);
+      } else {
+        console.error('CardRadioBuilder 未載入');
+      }
       
-      console.log('✅ ADL 表格已初始化');
+      console.log('✅ ADL 表單已初始化');
     }
     
     // 計算分數
     compute() {
       const totalEl = this.$('#adlTotal');
-      if (!totalEl) return; // 表單未載入時跳過
+      if (!totalEl) return;
       
       let t = 0;
       this.BARTHEL.forEach(it => {
@@ -71,7 +97,7 @@
         const s = sel ? +sel.value : 0;
         t += s;
         const scoreEl = this.$(`#adl_${it.k}`);
-        if (scoreEl) scoreEl.textContent = s;
+        if (scoreEl) scoreEl.textContent = s + ' 分';
       });
       
       totalEl.textContent = t;
@@ -79,14 +105,43 @@
       const flags = this.$('#adlFlags');
       if (flags) {
         flags.innerHTML = '';
-        const mark = t === 100 ? '獨立' : 
-                     t >= 91 ? '輕度依賴' : 
-                     t >= 61 ? '中度依賴' : 
-                     t >= 21 ? '重度依賴' : '全依賴';
-        this.tag(flags, '等級：' + mark);
+        
+        // 功能分級
+        let statusText = '';
+        let statusColor = '';
+        
+        if (t === 100) {
+          statusText = '✅ 完全獨立（無需協助）';
+          statusColor = '#22c55e';
+        } else if (t >= 91) {
+          statusText = '🟢 輕度依賴（極少協助）';
+          statusColor = '#84cc16';
+        } else if (t >= 61) {
+          statusText = '🟡 中度依賴（需部分協助）';
+          statusColor = '#eab308';
+        } else if (t >= 21) {
+          statusText = '🟠 重度依賴（需大量協助）';
+          statusColor = '#f97316';
+        } else {
+          statusText = '🔴 完全依賴（幾乎全面協助）';
+          statusColor = '#ef4444';
+        }
+        
+        const badge = document.createElement('span');
+        badge.style.cssText = `display: inline-block; padding: 0.5rem 1rem; background: ${statusColor}; color: white; border-radius: 6px; font-weight: 600; font-size: 0.9375rem;`;
+        badge.textContent = statusText;
+        flags.appendChild(badge);
+        
+        // 額外提示
+        if (t < 61) {
+          const hint = document.createElement('span');
+          hint.style.cssText = 'display: inline-block; padding: 0.5rem 1rem; background: var(--surface-secondary); color: var(--ink); border-radius: 6px; font-size: 0.875rem; border: 1px solid var(--line);';
+          hint.textContent = '💡 建議安排照護計畫或復健評估';
+          flags.appendChild(hint);
+        }
       }
       
-      return t; // 返回總分供其他模組使用
+      return t;
     }
   }
 

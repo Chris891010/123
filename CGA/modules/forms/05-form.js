@@ -1,5 +1,5 @@
 // CGA 表單模組 5: Mini-Cog / MMSE
-// 自動生成，請勿手動編輯
+// MMSE 因版權因素僅提供外部連結
 
 (function() {
   'use strict';
@@ -17,20 +17,6 @@
       const t = r + c;
       const miniTotal = this.$('#miniTotal');
       if (miniTotal) miniTotal.value = t;
-
-      // MMSE
-      let s = 0;
-      this.$$('.mmse.time').forEach(x => s += parseInt(this.nv(x) || '0', 10) || 0);
-      this.$$('.mmse.place').forEach(x => s += parseInt(this.nv(x) || '0', 10) || 0);
-      this.$$('.mmse.reg').forEach(x => s += parseInt(this.nv(x) || '0', 10) || 0);
-      s += parseInt(this.nv(this.$('#mmseSerial')) || '0', 10) || 0;
-      s += parseInt(this.nv(this.$('#mmseRecall')) || '0', 10) || 0;
-      ['name', 'rep', 'step3', 'read', 'write', 'copy'].forEach(cls => {
-        const el = this.$('.mmse.' + cls);
-        if (el) s += parseInt(this.nv(el) || '0', 10) || 0;
-      });
-      const mmseTotal = this.$('#mmseTotal');
-      if (mmseTotal) mmseTotal.textContent = s;
     }
 
     $(sel) { return document.querySelector(sel); }
@@ -39,53 +25,50 @@
     num(el) { const v = parseFloat(this.nv(el)); return isNaN(v) ? null : v; }
 
     generateHTML() {
-      return `<div class="sec">
-  <h3>Mini-Cog（0–5） + 畫時鐘試驗（CDT）</h3>
-  <div class="pop">指引：請說出 3 個不相關名詞→分心作業→畫時鐘「10:10」→回憶 3 詞。總分=回憶(0–3)+CDT(0/2)。</div>
-  <div class="form">
-    <div class="field"><label>回憶（0–3）</label><input id="miniRecall" type="number" min="0" max="3"></div>
-    <div class="field"><label>CDT（0=異常/1=部分/2=正常）</label>
-      <select id="miniCDT"><option></option><option value="0">0 異常</option><option value="1">1 部分</option><option value="2">2 正常</option></select></div>
-    <div class="field"><label>總分</label><input id="miniTotal" readonly></div>
-    <div class="field"><label>Mini-Cog 判讀</label>
-      <select id="miniBinary"><option></option><option>0 正常</option><option>1 異常</option><option>9 拒絕</option><option>999 無法評估</option></select></div>
-  </div>
-</div>
+      return `
+<!-- MMSE 版權說明區 -->
+<div style="margin-bottom: 2rem;">
+  <h4 style="color: var(--brand); font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">
+    📝 簡易心智狀態問卷（MMSE）
+  </h4>
+  
+  <!-- 版權警告 -->
+  ${InfoBoxBuilder.warning(`<div style="display: flex; align-items: start; gap: 0.75rem;">
+      <span style="font-size: 1.5rem;">⚠️</span>
+      <div>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.5rem;">版權聲明</strong>
+        MMSE（Mini-Mental State Examination）為受版權保護之評估工具。<br>
+        <strong>使用前須確認貴機構已取得版權授權。</strong><br>
+        未經授權使用可能涉及侵權行為。
+      </div>
+    </div>`)}
 
-<div class="sec"><h3>MMSE（逐題；預設空白） <span class="badge">總分：<span id="mmseTotal">0</span>/30</span></h3>
-  <div class="form">
-    <div class="col-12"><b>定向力 – 時間（5）</b></div>
-    <div class="field"><label>年</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>月</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>日</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>星期</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>季節</label><select class="mmse time"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>定向力 – 地點（5）</b></div>
-    <div class="field"><label>國家/城市</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>縣市/區</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>醫院/機構</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>科別/病房</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>樓層</label><select class="mmse place"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>登錄（3）</b></div>
-    <div class="field"><label>詞 1</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>詞 2</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>詞 3</label><select class="mmse reg"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>系列減七（0–5）</b></div>
-    <div class="field"><label>正確題數</label><select id="mmseSerial"><option></option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-
-    <div class="col-12"><b>延遲回憶（0–3）</b></div>
-    <div class="field"><label>回憶分數</label><select id="mmseRecall"><option></option><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
-
-    <div class="col-12"><b>語言/指令（8）</b></div>
-    <div class="field"><label>命名兩物（0–2）</label><select class="mmse name"><option></option><option>0</option><option>1</option><option>2</option></select></div>
-    <div class="field"><label>覆誦（0–1）</label><select class="mmse rep"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>三段指令（0–3）</label><select class="mmse step3"><option></option><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
-    <div class="field"><label>閱讀（0–1）</label><select class="mmse read"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>書寫（0–1）</label><select class="mmse write"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>摹寫（0–1）</label><select class="mmse copy"><option></option><option>0</option><option>1</option></select></div>
+  <!-- 外部資源連結 -->
+  <div style="background: var(--surface); border: 2px solid var(--line); border-radius: 12px; padding: 1.5rem;">
+    <h5 style="color: var(--brand); font-weight: 700; margin-bottom: 1rem; font-size: 0.9375rem;">
+      📚 MMSE 評估工具參考資源
+    </h5>
+    
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <!-- 官方 PDF 連結 -->
+      ${InfoBoxBuilder.link('https://cgatoolkit.ca/Uploads/ContentDocuments/MMSE.pdf', `<span style="font-size: 1.5rem;">🔗</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 700; color: var(--brand); margin-bottom: 0.25rem;">
+            MMSE 評估表單 (PDF)
+          </div>
+          <div style="font-size: 0.8125rem; color: var(--muted);">
+            CGA Toolkit - 完整評估表單與計分說明
+          </div>
+        </div>
+        <span style="color: var(--brand); font-size: 1.25rem;">→</span>`)}
+      
+      <!-- 說明文字 -->
+      ${InfoBoxBuilder.info(`<strong>💡 使用提示：</strong><br>
+        • 點擊上方連結可查看完整 MMSE 評估表單<br>
+        • 總分範圍：0–30 分<br>
+        • 評估面向：定向力、記憶力、注意力、語言、視覺空間能力<br>
+        • 建議由受過訓練的專業人員執行評估`)}
+    </div>
   </div>
 </div>`;
     }

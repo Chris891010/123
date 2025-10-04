@@ -262,13 +262,12 @@
 </div>
 
 <!-- 提示訊息 -->
-<div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; padding: 1rem 1.25rem; border-radius: 8px; margin: 1.5rem 0; color: #1e40af; font-size: 0.9rem; line-height: 1.6;">
-  <strong>💡 系統自動計算說明：</strong><br>
+${InfoBoxBuilder.info(
+  `<strong>💡 系統自動計算說明：</strong><br>
   • <strong>年齡</strong>：根據出生日期自動計算<br>
   • <strong>BMI</strong>：體重(kg) ÷ 身高²(m²)<br>
   • <strong>理想體重 (IBW)</strong>：22 × 身高²(m²)<br>
-  • <strong>與 IBW 差異</strong>：實際體重 - 理想體重
-</div>`;
+  • <strong>與 IBW 差異</strong>：實際體重 - 理想體重`)}`;
     }
 
     /**

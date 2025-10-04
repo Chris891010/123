@@ -4,8 +4,29 @@
    ======================================== */
 
 /* 基礎重置 */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 可輸入的元素允許文字選取和文字游標 */
+input:not([type="button"]):not([type="submit"]):not([type="reset"]),
+textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+
+/* 可點擊的元素顯示手指游標 */
+button,
+select,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  cursor: pointer;
 }
 
 /* 主題切換平滑過渡 */
