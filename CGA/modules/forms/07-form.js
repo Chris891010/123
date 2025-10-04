@@ -9,148 +9,224 @@
       this.id = 7;
       this.title = "GDS-5 / CAM / Braden";
       
-      // GDS-5 憂鬱量表定義
+      // GDS-5 憂鬱量表定義（5 題，第 1 題反向計分）
       this.GDS5 = [
-        {n:1, txt:'過去一星期，基本上，您對現在的生活滿意嗎？', rev:true},
-        {n:2, txt:'您是否常感到厭煩？'},
-        {n:3, txt:'您是否經常感到無助做什麼都沒有用？'},
-        {n:4, txt:'您是否比較樂於在家裡而較不喜歡外出？'},
-        {n:5, txt:'您是否感覺現在生活得很沒有價值？'}
+        {k: 'gds1', t: '過去一星期，基本上，您對現在的生活滿意嗎？', opts: ['是（0分）', '否（1分）'], rev: true},
+        {k: 'gds2', t: '您是否常感到厭煩？', opts: ['否（0分）', '是（1分）']},
+        {k: 'gds3', t: '您是否經常感到無助做什麼都沒有用？', opts: ['否（0分）', '是（1分）']},
+        {k: 'gds4', t: '您是否比較樂於在家裡而較不喜歡外出？', opts: ['否（0分）', '是（1分）']},
+        {k: 'gds5', t: '您是否感覺現在生活得很沒有價值？', opts: ['否（0分）', '是（1分）']}
       ];
       
-      // Braden 壓傷量表定義
-      this.BRADEN = [
-        {k:'sensory', t:'感覺知覺'},
-        {k:'moist', t:'濕度'},
-        {k:'activity', t:'活動'},
-        {k:'mobility', t:'移動'},
-        {k:'nutrition', t:'營養'},
-        {k:'friction', t:'摩擦/剪力'}
+      // Braden 壓傷量表詳細選項（6 個向度，每個 1-4 分）
+      this.BRADEN_OPTIONS = [
+        {s: 1, txt: '1 分 - 完全受限/非常潮濕/臥床/完全不能移動/攝取不足/問題'},
+        {s: 2, txt: '2 分 - 非常受限/常常潮濕/限於椅子/非常受限/可能不足/潛在問題'},
+        {s: 3, txt: '3 分 - 輕微受限/偶爾潮濕/偶爾走動/輕微受限/足夠/無明顯問題'},
+        {s: 4, txt: '4 分 - 無受限/很少潮濕/經常走動/無受限/非常好/無問題'}
       ];
-    }
-    
-    // 輔助函數
-    $(selector) {
-      return document.querySelector(selector);
-    }
-    
-    nv(el) {
-      return (el?.value ?? '').trim();
-    }
-    
-    tag(wrap, txt) {
-      const t = document.createElement('span');
-      t.className = 'tag';
-      t.textContent = txt;
-      wrap.appendChild(t);
+      
+      this.BRADEN_ITEMS = [
+        {k: 'sensory', t: '感覺知覺'},
+        {k: 'moist', t: '濕度'},
+        {k: 'activity', t: '活動'},
+        {k: 'mobility', t: '移動'},
+        {k: 'nutrition', t: '營養'},
+        {k: 'friction', t: '摩擦/剪力'}
+      ];
     }
 
     generateHTML() {
-      return `<div class="sec"><h3>GDS-5 老年憂鬱量表 <span class="badge">總分：<span id="gdsTotal">0</span>/5</span></h3>
-  <table class="table"><thead><tr><th>#</th><th>題目</th><th>是/否</th></tr></thead><tbody id="gdsBody"></tbody></table>
-  <div id="gdsFlags"></div>
+      return `
+<!-- ========================================
+     GDS-5 老年憂鬱量表（0-5 分）
+     ======================================== -->
+<div class="sec">
+  <h3>
+    <span style="font-size: 1.5rem;">😔</span> 
+    GDS-5 老年憂鬱量表
+    <span class="badge">總分：<span id="gds5Total" style="font-weight: 700; color: var(--brand);">0</span> / 5</span>
+  </h3>
+  
+  ${MessageBoxBuilder.info('5 題簡易憂鬱篩檢，≥2 分可能有憂鬱傾向，建議進一步評估。')}
+  
+  <div id="gds5Body" style="margin-top: 1rem;"></div>
+  <div id="gds5Result" style="margin-top: 1rem;"></div>
 </div>
 
-<div class="sec"><h3>CAM 譫妄評估</h3>
-  <div class="pop">條件：①急性起病/波動 + ②注意力不集中 + (③思維紊亂 或 ④意識改變) ⇒ 譫妄。</div>
-  <div class="form">
-    <div class="field col-6"><label>① 急性起病或波動</label><select id="cam1"><option></option><option>否</option><option>是</option></select></div>
-    <div class="field col-6"><label>② 注意力不集中</label><select id="cam2"><option></option><option>否</option><option>是</option></select></div>
-    <div class="field col-6"><label>③ 思維紊亂</label><select id="cam3"><option></option><option>否</option><option>是</option></select></div>
-    <div class="field col-6"><label>④ 意識改變</label><select id="cam4"><option></option><option>否</option><option>是</option></select></div>
-    <div class="field col-6"><label>結論</label><input id="camResult" readonly></div>
+<!-- ========================================
+     CAM 譫妄評估
+     ======================================== -->
+<div class="sec">
+  <h3>
+    <span style="font-size: 1.5rem;">🧠</span> 
+    CAM 譫妄評估
+  </h3>
+  
+  ${MessageBoxBuilder.warning('診斷標準：① 急性起病或波動 + ② 注意力不集中 + (③ 思維紊亂 或 ④ 意識改變)')}
+  
+  <div class="form" style="margin-top: 1rem;">
+    ${DropdownBuilder.createMultiple([
+      {id: 'cam1', label: '① 急性起病或波動', options: ['否', '是']},
+      {id: 'cam2', label: '② 注意力不集中', options: ['否', '是']},
+      {id: 'cam3', label: '③ 思維紊亂', options: ['否', '是']},
+      {id: 'cam4', label: '④ 意識改變', options: ['否', '是']}
+    ], 'col-6')}
   </div>
+  
+  <div id="camResult" style="margin-top: 1rem;"></div>
 </div>
 
-<div class="sec"><h3>Braden 壓傷風險（6–23） <span class="badge">總分：<span id="bradenTotal">0</span></span></h3>
-  <div class="form" id="bradenGrid"></div>
-  <div id="bradenFlags"></div>
+<!-- ========================================
+     Braden 壓傷風險量表（6-24 分）
+     ======================================== -->
+<div class="sec">
+  <h3>
+    <span style="font-size: 1.5rem;">🛡️</span> 
+    Braden 壓傷風險量表
+    <span class="badge">總分：<span id="bradenTotal" style="font-weight: 700; color: var(--brand);">0</span> / 24</span>
+  </h3>
+  
+  ${MessageBoxBuilder.info('評估 6 個向度，每個 1-4 分。總分 ≤12 高風險，13-16 中度風險，≥17 低風險。')}
+  
+  <div id="bradenBody" style="margin-top: 1rem;"></div>
+  <div id="bradenResult" style="margin-top: 1rem;"></div>
 </div>`;
     }
-    
-    // 初始化：建立動態表格
+
     initialize() {
-      // 初始化 GDS-5 表格
-      const gdsBody = this.$('#gdsBody');
-      if (gdsBody) {
-        gdsBody.innerHTML = '';
-        this.GDS5.forEach(it => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${it.n}</td><td>${it.txt}</td><td><label class="tag"><input type="radio" name="gds${it.n}" value="Y"> 是</label><label class="tag"><input type="radio" name="gds${it.n}" value="N"> 否</label></td>`;
-          gdsBody.appendChild(tr);
-        });
+      console.log('🔧 初始化 Form 07 (GDS-5 / CAM / Braden)');
+      
+      // 初始化 GDS-5（使用 ChoiceCardBuilder，單欄，不顯示分數）
+      const gds5Body = document.querySelector('#gds5Body');
+      if (gds5Body) {
+        const builder = new ChoiceCardBuilder({columns: 1, gap: '1rem', showScore: false});
+        builder.build(this.GDS5, 'gds', gds5Body);
       }
       
-      // 初始化 Braden 表格
-      const bradenGrid = this.$('#bradenGrid');
-      if (bradenGrid) {
-        bradenGrid.innerHTML = '';
-        this.BRADEN.forEach(it => {
-          const d = document.createElement('div');
-          d.className = 'field col-4';
-          d.innerHTML = `<label>${it.t}（1–4）</label><select class="braden" data-k="${it.k}"><option></option><option>1</option><option>2</option><option>3</option><option>4</option></select>`;
-          bradenGrid.appendChild(d);
-        });
-      }
-      
-      console.log('✅ GDS/CAM/Braden 表格已初始化');
-    }
-    
-    // 計算分數
-    compute() {
-      // 計算 GDS-5
-      const gdsTotal = this.$('#gdsTotal');
-      if (gdsTotal) {
-        let t = 0;
-        this.GDS5.forEach(it => {
-          const sel = this.$(`input[name="gds${it.n}"]:checked`);
-          const v = sel ? sel.value : '';
-          if (!v) return;
-          t += it.rev ? (v === 'N' ? 1 : 0) : (v === 'Y' ? 1 : 0);
-        });
-        gdsTotal.textContent = t;
+      // 初始化 Braden（使用 ChoiceCardBuilder，雙欄，顯示分數）
+      const bradenBody = document.querySelector('#bradenBody');
+      if (bradenBody) {
+        const bradenItems = this.BRADEN_ITEMS.map(item => ({
+          k: item.k,
+          t: item.t,
+          opts: this.BRADEN_OPTIONS
+        }));
         
-        const gdsFlags = this.$('#gdsFlags');
-        if (gdsFlags) {
-          gdsFlags.innerHTML = '';
-          if (t >= 2) this.tag(gdsFlags, 'GDS-5 ≥2 可能憂鬱');
+        const builder = new ChoiceCardBuilder({columns: 2, gap: '1.5rem', showScore: true});
+        builder.build(bradenItems, 'braden', bradenBody);
+      }
+      
+      console.log('✅ GDS-5 / CAM / Braden 已初始化');
+    }
+
+    compute() {
+      // ===== GDS-5 計算 =====
+      const gds5Total = document.querySelector('#gds5Total');
+      const gds5Result = document.querySelector('#gds5Result');
+      
+      if (gds5Total && gds5Result) {
+        let total = 0;
+        let answered = 0;
+        
+        this.GDS5.forEach((item, index) => {
+          const checked = document.querySelector(`input[name="gds.${item.k}"]:checked`);
+          if (checked) {
+            answered++;
+            const value = parseInt(checked.value);
+            // 第 1 題反向計分
+            if (index === 0) {
+              total += value === 0 ? 1 : 0;
+            } else {
+              total += value;
+            }
+          }
+        });
+        
+        gds5Total.textContent = total;
+        
+        // 顯示結果
+        if (answered === 5) {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          if (total >= 2) {
+            tag.style = 'background: #fef3c7; color: #92400e; font-weight: 600;';
+            tag.textContent = '⚠️ GDS-5 ≥2 分，可能有憂鬱傾向，建議進一步評估';
+          } else {
+            tag.style = 'background: #d1fae5; color: #065f46; font-weight: 600;';
+            tag.textContent = '✅ GDS-5 <2 分，情緒狀態良好';
+          }
+          gds5Result.innerHTML = '';
+          gds5Result.appendChild(tag);
+        } else {
+          gds5Result.innerHTML = '';
         }
       }
       
-      // 計算 CAM
-      const camResult = this.$('#camResult');
+      // ===== CAM 計算 =====
+      const camResult = document.querySelector('#camResult');
+      
       if (camResult) {
-        const v = [
-          this.nv(this.$('#cam1')) === '是',
-          this.nv(this.$('#cam2')) === '是',
-          this.nv(this.$('#cam3')) === '是',
-          this.nv(this.$('#cam4')) === '是'
-        ];
-        const pos = v[0] && v[1] && (v[2] || v[3]);
-        const cam1 = this.$('#cam1');
-        const hasEmpty = !cam1 || [1,2,3,4].some(i => !this.nv(this.$(`#cam${i}`)));
-        camResult.value = hasEmpty ? '' : (pos ? '譫妄' : '非譫妄');
+        const cam1 = document.querySelector('#cam1')?.value || '';
+        const cam2 = document.querySelector('#cam2')?.value || '';
+        const cam3 = document.querySelector('#cam3')?.value || '';
+        const cam4 = document.querySelector('#cam4')?.value || '';
+        
+        if (cam1 && cam2 && cam3 && cam4) {
+          const isDelirium = (cam1 === '是') && (cam2 === '是') && (cam3 === '是' || cam4 === '是');
+          
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          if (isDelirium) {
+            tag.style = 'background: #fee2e2; color: #991b1b; font-weight: 600;';
+            tag.textContent = '✅ CAM 陽性 - 符合譫妄診斷標準';
+          } else {
+            tag.style = 'background: #d1fae5; color: #065f46; font-weight: 600;';
+            tag.textContent = '❌ CAM 陰性 - 未符合譫妄診斷標準';
+          }
+          camResult.innerHTML = '';
+          camResult.appendChild(tag);
+        } else {
+          camResult.innerHTML = '';
+        }
       }
       
-      // 計算 Braden
-      const bradenTotal = this.$('#bradenTotal');
-      if (bradenTotal) {
-        let t = 0, ok = 0;
-        const bradenInputs = document.querySelectorAll('.braden');
-        bradenInputs.forEach(s => {
-          const v = parseInt(this.nv(s) || '0', 10) || 0;
-          if (v) { t += v; ok++; }
-        });
-        bradenTotal.textContent = t || 0;
+      // ===== Braden 計算 =====
+      const bradenTotal = document.querySelector('#bradenTotal');
+      const bradenResult = document.querySelector('#bradenResult');
+      
+      if (bradenTotal && bradenResult) {
+        let total = 0;
+        let answered = 0;
         
-        const bradenFlags = this.$('#bradenFlags');
-        if (bradenFlags) {
-          bradenFlags.innerHTML = '';
-          if (ok === 6) {
-            if (t <= 12) this.tag(bradenFlags, '高風險（≤12）');
-            else if (t <= 16) this.tag(bradenFlags, '中度風險（13–16）');
-            else this.tag(bradenFlags, '低風險');
+        this.BRADEN_ITEMS.forEach(item => {
+          const checked = document.querySelector(`input[name="braden.${item.k}"]:checked`);
+          if (checked) {
+            answered++;
+            total += parseInt(checked.value);
           }
+        });
+        
+        bradenTotal.textContent = total;
+        
+        // 顯示風險等級
+        if (answered === 6) {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          if (total <= 12) {
+            tag.style = 'background: #fee2e2; color: #991b1b; font-weight: 600;';
+            tag.textContent = '🚨 高風險（≤12 分）- 需密切監測與預防措施';
+          } else if (total <= 16) {
+            tag.style = 'background: #fef3c7; color: #92400e; font-weight: 600;';
+            tag.textContent = '⚠️ 中度風險（13-16 分）- 建議加強預防措施';
+          } else {
+            tag.style = 'background: #d1fae5; color: #065f46; font-weight: 600;';
+            tag.textContent = '✅ 低風險（≥17 分）- 維持常規照護';
+          }
+          bradenResult.innerHTML = '';
+          bradenResult.appendChild(tag);
+        } else {
+          bradenResult.innerHTML = '';
         }
       }
     }

@@ -42,14 +42,13 @@
     <label>床號</label>
     <input id="bed" placeholder="床號">
   </div>
-  <div class="field col-2">
-    <label>性別 <span style="color: #ef4444;">*</span></label>
-    <select id="sex" required>
-      <option value="">-</option>
-      <option>男</option>
-      <option>女</option>
-    </select>
-  </div>
+  ${DropdownBuilder.create({
+    id: 'sex',
+    label: '性別',
+    options: ['男', '女'],
+    required: true,
+    colSpan: 'col-2'
+  })}
   <div class="field col-2">
     <label>出生年月日 <span style="color: #ef4444;">*</span></label>
     <input id="birthDate" type="text" datepicker datepicker-format="yyyy-mm-dd" datepicker-autohide datepicker-buttons datepicker-autoselect-today placeholder="選擇日期" required>
@@ -58,41 +57,27 @@
     <label>年齡</label>
     <input id="age" type="number" readonly placeholder="自動計算" style="background: var(--surface); color: var(--muted);">
   </div>
-  <div class="field col-3">
-    <label>教育程度</label>
-    <select id="edu" required>
-      <option value="">-</option>
-      <option>不識字</option>
-      <option>識字未就學</option>
-      <option>國小</option>
-      <option>國中</option>
-      <option>高中職</option>
-      <option>大專以上</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>婚姻狀態</label>
-    <select id="marital" required>
-      <option value="">-</option>
-      <option>已婚</option>
-      <option>未婚</option>
-      <option>喪偶</option>
-      <option>離婚</option>
-      <option>其他</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>宗教信仰</label>
-    <select id="religion" required>
-      <option value="">-</option>
-      <option>無</option>
-      <option>佛教</option>
-      <option>道教</option>
-      <option>基督教</option>
-      <option>天主教</option>
-      <option>其他</option>
-    </select>
-  </div>
+  ${DropdownBuilder.create({
+    id: 'edu',
+    label: '教育程度',
+    options: ['不識字', '識字未就學', '國小', '國中', '高中職', '大專以上'],
+    required: true,
+    colSpan: 'col-3'
+  })}
+  ${DropdownBuilder.create({
+    id: 'marital',
+    label: '婚姻狀態',
+    options: ['已婚', '未婚', '喪偶', '離婚', '其他'],
+    required: true,
+    colSpan: 'col-3'
+  })}
+  ${DropdownBuilder.create({
+    id: 'religion',
+    label: '宗教信仰',
+    options: ['無', '佛教', '道教', '基督教', '天主教', '其他'],
+    required: true,
+    colSpan: 'col-3'
+  })}
 </div>
 
 <!-- ========================================
@@ -110,48 +95,36 @@
   </div>
 
   <!-- 居住詳情 -->
-  <div class="field col-3">
-    <label>居住狀況</label>
-    <select id="living" required>
-      <option value="">-</option>
-      <option>獨居</option>
-      <option>與配偶同住</option>
-      <option>與子女同住</option>
-      <option>與家人同住</option>
-      <option>安養機構</option>
-      <option>其他</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>居住樓層</label>
-    <select id="floor" required>
-      <option value="">-</option>
-      <option>一樓</option>
-      <option>二樓以上（有電梯）</option>
-      <option>二樓以上（無電梯）</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>工作狀態</label>
-    <select id="job" required>
-      <option value="">-</option>
-      <option>已退休</option>
-      <option>家管</option>
-      <option>目前有工作</option>
-      <option>待業中</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>經濟狀況</label>
-    <select id="economy" required>
-      <option value="">-</option>
-      <option>富裕</option>
-      <option>小康</option>
-      <option>普通</option>
-      <option>困難</option>
-      <option>低收入戶</option>
-    </select>
-  </div>
+  ${DropdownBuilder.createMultiple([
+    {
+      id: 'living',
+      label: '居住狀況',
+      options: ['獨居', '與配偶同住', '與子女同住', '與家人同住', '安養機構', '其他'],
+      required: true,
+      colSpan: 'col-3'
+    },
+    {
+      id: 'floor',
+      label: '居住樓層',
+      options: ['一樓', '二樓以上（有電梯）', '二樓以上（無電梯）'],
+      required: true,
+      colSpan: 'col-3'
+    },
+    {
+      id: 'job',
+      label: '工作狀態',
+      options: ['已退休', '家管', '目前有工作', '待業中'],
+      required: true,
+      colSpan: 'col-3'
+    },
+    {
+      id: 'economy',
+      label: '經濟狀況',
+      options: ['富裕', '小康', '普通', '困難', '低收入戶'],
+      required: true,
+      colSpan: 'col-3'
+    }
+  ])}
 </div>
 
 <!-- ========================================
@@ -162,40 +135,29 @@
 </h3>
 
 <div class="form">
-  <div class="field col-3">
-    <label>主要照顧者</label>
-    <select id="caregiver" required>
-      <option value="">-</option>
-      <option>配偶</option>
-      <option>子女</option>
-      <option>其他家人</option>
-      <option>外籍看護</option>
-      <option>本籍看護</option>
-      <option>無固定照顧者</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>醫療決策代理人</label>
-    <select id="decision" required>
-      <option value="">-</option>
-      <option>本人</option>
-      <option>配偶</option>
-      <option>子女</option>
-      <option>其他家人</option>
-      <option>機構人員</option>
-      <option>其他</option>
-    </select>
-  </div>
-  <div class="field col-3">
-    <label>預立醫療決定書 (AD)</label>
-    <select id="ad" required>
-      <option value="">-</option>
-      <option>有（已簽署）</option>
-      <option>無</option>
-      <option>不清楚</option>
-      <option>無法評估</option>
-    </select>
-  </div>
+  ${DropdownBuilder.createMultiple([
+    {
+      id: 'caregiver',
+      label: '主要照顧者',
+      options: ['配偶', '子女', '其他家人', '外籍看護', '本籍看護', '無固定照顧者'],
+      required: true,
+      colSpan: 'col-3'
+    },
+    {
+      id: 'decision',
+      label: '醫療決策代理人',
+      options: ['本人', '配偶', '子女', '其他家人', '機構人員', '其他'],
+      required: true,
+      colSpan: 'col-3'
+    },
+    {
+      id: 'ad',
+      label: '預立醫療決定書 (AD)',
+      options: ['有（已簽署）', '無', '不清楚', '無法評估'],
+      required: true,
+      colSpan: 'col-3'
+    }
+  ])}
 </div>
 
 <!-- ========================================
@@ -262,7 +224,7 @@
 </div>
 
 <!-- 提示訊息 -->
-${InfoBoxBuilder.info(
+${MessageBoxBuilder.info(
   `<strong>💡 系統自動計算說明：</strong><br>
   • <strong>年齡</strong>：根據出生日期自動計算<br>
   • <strong>BMI</strong>：體重(kg) ÷ 身高²(m²)<br>
@@ -321,8 +283,8 @@ ${InfoBoxBuilder.info(
       }
 
       // 啟用自動跳到下一欄功能
-      if (window.FormAutoFocus) {
-        window.FormAutoFocus.enableForForm(0, {
+      if (window.AutoNextField) {
+        window.AutoNextField.enableForForm(0, {
           delay: 100,
           autoExpand: true,  // 啟用自動展開選單
           debug: true,       // 啟用除錯訊息以確認運作

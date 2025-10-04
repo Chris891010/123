@@ -1,5 +1,5 @@
 // CGA 表單模組 6: MoCA
-// 自動生成，請勿手動編輯
+// 蒙特利爾認知評估
 
 (function() {
   'use strict';
@@ -32,51 +32,116 @@
     nv(el) { return el ? el.value.trim() : ''; }
 
     generateHTML() {
-      return `<div class="sec"><h3>MoCA（0–30） <span class="badge">總分：<span id="mocaTotal">0</span>/30</span></h3>
+      return `
+${MessageBoxBuilder.info(`
+  <strong>📋 量表說明：蒙特利爾認知評估（MoCA）</strong><br>
+  MoCA 是一個簡短的認知篩檢工具，用於檢測輕度認知功能障礙。<br>
+  <strong>評分範圍：</strong>0-30 分｜<strong>建議切點：</strong>≤25 分為認知障礙<br>
+  <strong>教育程度校正：</strong>教育年限 ≤12 年者加 1 分
+`)}
+
+<div class="sec">
+  <h3>MoCA（0–30） <span class="badge">總分：<span id="mocaTotal">0</span>/30</span></h3>
+  
   <div class="form">
-    <div class="col-12"><b>視空/執行（5）</b></div>
-    <div class="field"><label>連線</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>立方體</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>時鐘–外框</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>時鐘–數字</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>時鐘–指針</label><select class="moca visu" data-max="1"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>命名（3）</b></div>
-    <div class="field"><label>動物 1</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>動物 2</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>動物 3</label><select class="moca name"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>注意力（6）</b></div>
-    <div class="field"><label>順背</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>倒背</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>Vigilance</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>減七 1</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>減七 2</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>減七 3</label><select class="moca attn"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>語言（3）</b></div>
-    <div class="field"><label>覆誦 1</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>覆誦 2</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>語詞流暢</label><select class="moca lang"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>抽象（2）</b></div>
-    <div class="field"><label>相似 1</label><select class="moca abst"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>相似 2</label><select class="moca abst"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="col-12"><b>延遲回憶（0–5）</b></div>
-    <div class="field"><label>五詞</label><select id="mocaRecall"><option></option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-
-    <div class="col-12"><b>定向（6）</b></div>
-    <div class="field"><label>日期</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>月份</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>年份</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>星期</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>地點</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-    <div class="field"><label>城市</label><select class="moca ori"><option></option><option>0</option><option>1</option></select></div>
-
-    <div class="field"><label>教育加分（≤12 年 +1）</label><input id="eduBonus" readonly></div>
+    <div class="col-12"><b>視空間與執行功能（5 分）</b></div>
+    ${DropdownBuilder.createScore({label: '連線測驗', max: 1, className: 'moca visu', dataMax: '1'})}
+    ${DropdownBuilder.createScore({label: '立方體繪製', max: 1, className: 'moca visu', dataMax: '1'})}
+    ${DropdownBuilder.createScore({label: '時鐘–外框', max: 1, className: 'moca visu', dataMax: '1'})}
+    ${DropdownBuilder.createScore({label: '時鐘–數字', max: 1, className: 'moca visu', dataMax: '1'})}
+    ${DropdownBuilder.createScore({label: '時鐘–指針', max: 1, className: 'moca visu', dataMax: '1'})}
   </div>
-</div>`;
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>命名（3 分）</b></div>
+    ${DropdownBuilder.createScore({label: '動物 1（獅子）', max: 1, className: 'moca name'})}
+    ${DropdownBuilder.createScore({label: '動物 2（犀牛）', max: 1, className: 'moca name'})}
+    ${DropdownBuilder.createScore({label: '動物 3（駱駝）', max: 1, className: 'moca name'})}
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>注意力（6 分）</b></div>
+    ${DropdownBuilder.createScore({label: '數字順背', max: 1, className: 'moca attn'})}
+    ${DropdownBuilder.createScore({label: '數字倒背', max: 1, className: 'moca attn'})}
+    ${DropdownBuilder.createScore({label: 'Vigilance（警覺）', max: 1, className: 'moca attn'})}
+    ${DropdownBuilder.createScore({label: '減七 1（93）', max: 1, className: 'moca attn'})}
+    ${DropdownBuilder.createScore({label: '減七 2（86）', max: 1, className: 'moca attn'})}
+    ${DropdownBuilder.createScore({label: '減七 3（79）', max: 1, className: 'moca attn'})}
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>語言（3 分）</b></div>
+    ${DropdownBuilder.createScore({label: '覆誦句子 1', max: 1, className: 'moca lang'})}
+    ${DropdownBuilder.createScore({label: '覆誦句子 2', max: 1, className: 'moca lang'})}
+    ${DropdownBuilder.createScore({label: '語詞流暢性', max: 1, className: 'moca lang'})}
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>抽象思考（2 分）</b></div>
+    ${DropdownBuilder.createScore({label: '相似性 1（火車-腳踏車）', max: 1, className: 'moca abst'})}
+    ${DropdownBuilder.createScore({label: '相似性 2（手錶-尺）', max: 1, className: 'moca abst'})}
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>延遲回憶（5 分）</b></div>
+    <div class="field col-6">
+      <label>回憶詞彙數（臉、絲、教堂、雛菊、紅）</label>
+      ${DropdownBuilder.createScore({id: 'mocaRecall', max: 5})}
+    </div>
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>定向（6 分）</b></div>
+    ${DropdownBuilder.createScore({label: '日期', max: 1, className: 'moca ori'})}
+    ${DropdownBuilder.createScore({label: '月份', max: 1, className: 'moca ori'})}
+    ${DropdownBuilder.createScore({label: '年份', max: 1, className: 'moca ori'})}
+    ${DropdownBuilder.createScore({label: '星期', max: 1, className: 'moca ori'})}
+    ${DropdownBuilder.createScore({label: '地點', max: 1, className: 'moca ori'})}
+    ${DropdownBuilder.createScore({label: '城市', max: 1, className: 'moca ori'})}
+  </div>
+
+  <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <div class="form">
+    <div class="col-12"><b>教育程度校正</b></div>
+    <div class="field col-6"><label>教育加分（≤12 年 +1）</label><input id="eduBonus" readonly></div>
+  </div>
+</div>
+
+${MessageBoxBuilder.success(`
+  <strong>✅ 評估結果解讀：</strong><br>
+  <strong>26-30 分：</strong>正常認知功能<br>
+  <strong>18-25 分：</strong>輕度認知障礙<br>
+  <strong>10-17 分：</strong>中度認知障礙<br>
+  <strong>＜10 分：</strong>嚴重認知障礙
+`)}
+`;
+    }
+
+    initialize() {
+      // 使用 AutoNextField 啟用自動跳轉功能
+      // Form 06 是第 6 個頁面（索引為 5）
+      if (window.AutoNextField) {
+        window.AutoNextField.enableForForm(5, {
+          delay: 100,
+          autoExpand: true,  // 啟用自動展開下拉選單
+          debug: false,
+          initDelay: 300
+        });
+        console.log('✅ Form 06 自動跳轉已啟用');
+      }
     }
   }
 

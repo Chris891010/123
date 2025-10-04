@@ -46,7 +46,7 @@
 </h3>
 
 <!-- 量表說明 -->
-${InfoBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
+${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
   • 評估基本日常生活自我照顧能力<br>
   • 總分範圍：0-100 分，分數越高表示功能越好<br>
   • <strong>分級標準：</strong>100 分=完全獨立 / 91-99=輕度依賴 / 61-90=中度依賴 / 21-60=重度依賴 / 0-20=完全依賴`)}
@@ -71,16 +71,16 @@ ${InfoBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
       const container = this.$('#adlBody');
       if (!container) return;
       
-      // 使用 CardRadioBuilder 建立卡片式佈局
-      if (window.CardRadioBuilder) {
-        const builder = new CardRadioBuilder({
+      // 使用 ChoiceCardBuilder 建立卡片式佈局
+      if (window.ChoiceCardBuilder) {
+        const builder = new ChoiceCardBuilder({
           columns: 2,
           gap: '1.5rem',
           showScore: true
         });
         builder.build(this.BARTHEL, 'adl', container);
       } else {
-        console.error('CardRadioBuilder 未載入');
+        console.error('ChoiceCardBuilder 未載入');
       }
       
       console.log('✅ ADL 表單已初始化');

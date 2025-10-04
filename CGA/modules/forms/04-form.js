@@ -30,7 +30,7 @@
 </h3>
 
 <!-- 量表說明 -->
-${InfoBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
+${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
   • 評估較複雜的日常生活功能，如購物、理財、交通等<br>
   • 每項 1 分代表獨立完成，0 分代表需要協助<br>
   • 總分範圍：0-8 分（男性可為 0-5 分）<br>
@@ -65,16 +65,16 @@ ${InfoBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
       const grid = this.$('#iadlGrid');
       if (!grid) return;
       
-      // 使用 CardRadioBuilder 建立卡片式佈局
-      if (window.CardRadioBuilder) {
-        const builder = new CardRadioBuilder({
+      // 使用 ChoiceCardBuilder 建立卡片式佈局
+      if (window.ChoiceCardBuilder) {
+        const builder = new ChoiceCardBuilder({
           columns: 2,
           gap: '1.5rem',
           showScore: true
         });
         builder.build(this.IADL_ITEMS, 'iadl', grid);
       } else {
-        console.error('CardRadioBuilder 未載入');
+        console.error('ChoiceCardBuilder 未載入');
       }
       
       console.log('✅ IADL 表單已初始化');

@@ -211,12 +211,6 @@
     margin: 1.5rem 0;
     background: var(--card-bg);
     box-shadow: 0 2px 8px var(--shadow);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .sec:hover {
-    box-shadow: 0 4px 16px var(--shadow-lg);
-    transform: translateY(-2px);
   }
 
   .sec h3 {
@@ -531,16 +525,19 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <!-- Datepicker 初始化模組（包含中文化功能） -->
-<script src="../tools/datepicker-init.js"></script>
+<script src="../tools/date-picker-helper.js"></script>
 
-<!-- 表單自動跳到下一欄工具 -->
-<script src="../tools/form-auto-focus.js"></script>
+<!-- 自動跳到下一欄工具 -->
+<script src="../tools/auto-next-field.js"></script>
 
-<!-- 卡片式單選按鈕建構器 -->
-<script src="../tools/card-radio-builder.js"></script>
+<!-- 選擇題卡片建構器 -->
+<script src="../tools/choice-card-builder.js"></script>
 
-<!-- 漸層說明框建構器 -->
-<script src="../tools/info-box-builder.js"></script>
+<!-- 下拉選單建構器 -->
+<script src="../tools/dropdown-builder.js"></script>
+
+<!-- 訊息框建構器 -->
+<script src="../tools/message-box-builder.js"></script>
 
 <!-- CGA 表單模組載入器（必須在主腳本之前載入） -->
 <script src="cga-module-loader.js"></script>
@@ -737,6 +734,9 @@
     }
     if (window.CGAForm04 && typeof window.CGAForm04.initialize === 'function') {
       window.CGAForm04.initialize();
+    }
+    if (window.CGAForm06 && typeof window.CGAForm06.initialize === 'function') {
+      window.CGAForm06.initialize();
     }
     if (window.CGAForm07 && typeof window.CGAForm07.initialize === 'function') {
       window.CGAForm07.initialize();

@@ -33,7 +33,7 @@
   </h4>
   
   <!-- 版權警告 -->
-  ${InfoBoxBuilder.warning(`<div style="display: flex; align-items: start; gap: 0.75rem;">
+  ${MessageBoxBuilder.warning(`<div style="display: flex; align-items: start; gap: 0.75rem;">
       <span style="font-size: 1.5rem;">⚠️</span>
       <div>
         <strong style="font-size: 1rem; display: block; margin-bottom: 0.5rem;">版權聲明</strong>
@@ -51,7 +51,7 @@
     
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <!-- 官方 PDF 連結 -->
-      ${InfoBoxBuilder.link('https://cgatoolkit.ca/Uploads/ContentDocuments/MMSE.pdf', `<span style="font-size: 1.5rem;">🔗</span>
+      ${MessageBoxBuilder.link('https://cgatoolkit.ca/Uploads/ContentDocuments/MMSE.pdf', `<span style="font-size: 1.5rem;">🔗</span>
         <div style="flex: 1;">
           <div style="font-weight: 700; color: var(--brand); margin-bottom: 0.25rem;">
             MMSE 評估表單 (PDF)
@@ -63,7 +63,7 @@
         <span style="color: var(--brand); font-size: 1.25rem;">→</span>`)}
       
       <!-- 說明文字 -->
-      ${InfoBoxBuilder.info(`<strong>💡 使用提示：</strong><br>
+      ${MessageBoxBuilder.info(`<strong>💡 使用提示：</strong><br>
         • 點擊上方連結可查看完整 MMSE 評估表單<br>
         • 總分範圍：0–30 分<br>
         • 評估面向：定向力、記憶力、注意力、語言、視覺空間能力<br>

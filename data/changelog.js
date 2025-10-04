@@ -7,7 +7,7 @@
 window.CHANGELOG_DATA = {
   "metadata": {
     "title": "跌倒管理系統 - 開發日誌",
-    "lastUpdated": "2025-10-01 - 15:30:00",
+    "lastUpdated": "2025-10-01 - 17:30:00",
     "version": "1.4.0"
   },
   "releases": [
@@ -19,8 +19,9 @@ window.CHANGELOG_DATA = {
         "🎨 ADL 重新設計UI/UX",
         "🎨 IADL重新設計UI/UX",
         "🎨 index及CGA統一使用模組化生成背景、標題、按鈕、分隔線等樣式",
-        "🎨 統一使用模組化生成器 InfoBoxBuilder 和 CardRadioBuilder 來建立說明框和卡片式單選按鈕"
-
+        "🎨 統一使用模組化生成下拉選單、選擇器、提示訊息、日期選擇器、自動換欄",
+        "🎨 MoCA重新設計UI/UX",
+        "🎨 GDS-5重新設計UI/UX",
       ]
     },
         {
@@ -125,7 +126,8 @@ window.CHANGELOG_DATA = {
       "完善CGA功能",
       "CGA 基本資料填寫病歷號碼自動帶入資料",
       "IADL 性別自動切換計分模式",
-      "模組化以方便維護及修改"
+      "模組化以方便維護及修改",
+      "MoCA 教育程度修改",
     ],
   }
 };
