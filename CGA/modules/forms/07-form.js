@@ -20,10 +20,10 @@
       
       // Braden 壓傷量表詳細選項（6 個向度，每個 1-4 分）
       this.BRADEN_OPTIONS = [
-        {s: 1, txt: '1 分 - 完全受限/非常潮濕/臥床/完全不能移動/攝取不足/問題'},
-        {s: 2, txt: '2 分 - 非常受限/常常潮濕/限於椅子/非常受限/可能不足/潛在問題'},
-        {s: 3, txt: '3 分 - 輕微受限/偶爾潮濕/偶爾走動/輕微受限/足夠/無明顯問題'},
-        {s: 4, txt: '4 分 - 無受限/很少潮濕/經常走動/無受限/非常好/無問題'}
+        {s: 1, txt: '完全受限/非常潮濕/臥床/完全不能移動/攝取不足/問題'},
+        {s: 2, txt: '非常受限/常常潮濕/限於椅子/非常受限/可能不足/潛在問題'},
+        {s: 3, txt: '輕微受限/偶爾潮濕/偶爾走動/輕微受限/足夠/無明顯問題'},
+        {s: 4, txt: '無受限/很少潮濕/經常走動/無受限/非常好/無問題'}
       ];
       
       this.BRADEN_ITEMS = [
@@ -99,14 +99,14 @@
       
       // 初始化 GDS-5（使用 ChoiceCardBuilder，單欄，不顯示分數）
       const gds5Body = document.querySelector('#gds5Body');
-      if (gds5Body) {
+      if (gds5Body && !gds5Body.hasChildNodes()) {
         const builder = new ChoiceCardBuilder({columns: 1, gap: '1rem', showScore: false});
         builder.build(this.GDS5, 'gds', gds5Body);
       }
       
       // 初始化 Braden（使用 ChoiceCardBuilder，雙欄，顯示分數）
       const bradenBody = document.querySelector('#bradenBody');
-      if (bradenBody) {
+      if (bradenBody && !bradenBody.hasChildNodes()) {
         const bradenItems = this.BRADEN_ITEMS.map(item => ({
           k: item.k,
           t: item.t,
@@ -115,6 +115,15 @@
         
         const builder = new ChoiceCardBuilder({columns: 2, gap: '1.5rem', showScore: true});
         builder.build(bradenItems, 'braden', bradenBody);
+      }
+      
+      // 啟用自動跳到下一欄功能
+      if (window.AutoNextField) {
+        window.AutoNextField.enableForForm(6, {
+          delay: 100,
+          autoExpand: true
+        });
+        console.log('✅ Form 07 自動跳轉已啟用');
       }
       
       console.log('✅ GDS-5 / CAM / Braden 已初始化');
@@ -203,7 +212,14 @@
           const checked = document.querySelector(`input[name="braden.${item.k}"]:checked`);
           if (checked) {
             answered++;
-            total += parseInt(checked.value);
+            const score = parseInt(checked.value);
+            total += score;
+            
+            // 更新個別項目的分數顯示
+            const scoreEl = document.querySelector(`#braden_${item.k}`);
+            if (scoreEl) {
+              scoreEl.textContent = score;
+            }
           }
         });
         

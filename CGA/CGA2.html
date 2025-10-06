@@ -13,15 +13,17 @@
     }
   })();
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
-<link href="../styles/datepicker-theme.css" rel="stylesheet">
 
-<!-- 共用樣式模組 -->
+<!-- 字體（本地優先，CDN 備援） -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- 共用樣式模組（基礎優先） -->
 <link href="../styles/theme-variables.css" rel="stylesheet">
-<link href="../styles/base.css" rel="stylesheet">
+<link href="../styles/base.css?v=2024100501" rel="stylesheet">
 <link href="../styles/buttons.css" rel="stylesheet">
-<link href="../styles/forms.css" rel="stylesheet">
+    <link href="../styles/forms.css?v=2024100507" rel="stylesheet"><!-- Flowbite (本地化完整版) -->
+<link href="../styles/flowbite.min.css" rel="stylesheet">
+<link href="../styles/datepicker-theme.css" rel="stylesheet">
 
 <style>
 /* #region CGA2.html 專屬樣式 */
@@ -334,18 +336,23 @@
   .tool a {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    align-items: center;
+    gap: 0.75rem;
     text-decoration: none;
     color: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.5rem 0.6rem;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
     background: var(--surface);
+    transition: all 0.2s ease;
+    font-size: 0.9375rem;
   }
 
   .tool a:hover {
     background: var(--brand-50);
     border-color: var(--brand);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .pop {
@@ -505,27 +512,96 @@
 
   <!-- RIGHT：工具 -->
   <aside class="panel helper">
-    <h2>工具 & 連結</h2>
-    <div class="card" id="tipBox"><div class="pop">依步驟顯示要點。</div></div>
+    <h2>🔗 工具與資源</h2>
+    
+    <!-- 量表網站 -->
     <div class="card">
-      <h3>量表網站</h3>
-      <div class="tool"><a href="https://www.mocatest.org/" target="_blank" rel="noopener">MoCA<span>官方</span></a></div>
-      <div class="tool"><a href="https://www.parinc.com/Products/Pkey/238" target="_blank" rel="noopener">MMSE<span>PAR</span></a></div>
-      <div class="tool"><a href="https://mini-cog.com" target="_blank" rel="noopener">Mini-Cog<span>指南</span></a></div>
-      <div class="tool"><a href="https://www.icudelirium.org/medical-professionals/delirium/monitoring-delirium/cam-icudelirium" target="_blank" rel="noopener">CAM<span>譫妄</span></a></div>
-      <div class="tool"><a href="https://www.stanford.edu/~yesavage/GDS.html" target="_blank" rel="noopener">GDS<span>老年憂鬱</span></a></div>
-      <div class="tool"><a href="https://www.mna-elderly.com" target="_blank" rel="noopener">MNA-SF<span>營養</span></a></div>
-      <div class="tool"><a href="https://www.cdc.gov/steadi/pdf/TUG_Test-print.pdf" target="_blank" rel="noopener">TUG<span>步態</span></a></div>
-      <div class="tool"><a href="https://www.mdcalc.com/calc/3916/braden-scale-pressure-ulcer-risk" target="_blank" rel="noopener">Braden<span>壓傷</span></a></div>
+      <h3 style="font-size: 1rem; font-weight: 700; color: var(--brand); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--line);">
+        📚 量表官方網站
+      </h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <!-- 認知評估工具 -->
+        <div style="margin-bottom: 0.75rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            🧠 認知評估
+          </div>
+          <div class="tool">
+            <a href="https://www.mocatest.org/" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">MoCA</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">官方網站</span>
+            </a>
+          </div>
+          <div class="tool">
+            <a href="https://www.parinc.com/Products/Pkey/238" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">MMSE</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">PAR Inc</span>
+            </a>
+          </div>
+          <div class="tool">
+            <a href="https://mini-cog.com" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">Mini-Cog</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">使用指南</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 精神心理工具 -->
+        <div style="margin-bottom: 0.75rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            🧘 精神狀態
+          </div>
+          <div class="tool">
+            <a href="https://www.icudelirium.org/medical-professionals/delirium/monitoring-delirium/cam-icudelirium" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">CAM</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">譫妄評估</span>
+            </a>
+          </div>
+          <div class="tool">
+            <a href="https://www.stanford.edu/~yesavage/GDS.html" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">GDS</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">老年憂鬱</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 功能與風險工具 -->
+        <div>
+          <div style="font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            ⚕️ 功能評估
+          </div>
+          <div class="tool">
+            <a href="https://www.mna-elderly.com" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">MNA-SF</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">營養篩檢</span>
+            </a>
+          </div>
+          <div class="tool">
+            <a href="https://www.cdc.gov/steadi/pdf/TUG_Test-print.pdf" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">TUG</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">步態平衡</span>
+            </a>
+          </div>
+          <div class="tool">
+            <a href="https://www.mdcalc.com/calc/3916/braden-scale-pressure-ulcer-risk" target="_blank" rel="noopener">
+              <span style="font-weight: 600;">Braden</span>
+              <span style="font-size: 0.8125rem; color: var(--muted); background: var(--surface-secondary); padding: 0.125rem 0.5rem; border-radius: 4px;">壓傷風險</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </aside>
 </main>
 
-<!-- Flowbite JS -->
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+<!-- Flowbite JS (本地化) -->
+<script src="../tools/flowbite.min.js"></script>
 
 <!-- Datepicker 初始化模組（包含中文化功能） -->
 <script src="../tools/date-picker-helper.js"></script>
+
+<!-- 事件總線 - 模組間通訊 -->
+<script src="../tools/event-bus.js"></script>
 
 <!-- 自動跳到下一欄工具 -->
 <script src="../tools/auto-next-field.js"></script>
@@ -544,27 +620,42 @@
 
 <script>
 (() => {
-  const pages=[...document.querySelectorAll('.page')];
-  let step=0;
-  const stepbar=document.getElementById('stepbar');
-  function renderSteps(){
-    stepbar.innerHTML='';
-    pages.forEach((p,i)=>{
-      const b=document.createElement('button'); b.className='step'+(i===step?' active':''); b.textContent=(i+1)+'. '+p.dataset.title;
-      b.onclick=()=>show(i); stepbar.appendChild(b);
+  // ========================================
+  // 全域變數
+  // ========================================
+  const pages = [...document.querySelectorAll('.page')];
+  let step = 0;
+  const stepbar = document.getElementById('stepbar');
+  
+  // 使用 Form 02 提供的管理器工廠方法
+  let fam, fall;
+
+  // ========================================
+  // 頁面導航
+  // ========================================
+  function renderSteps() {
+    stepbar.innerHTML = '';
+    pages.forEach((p, i) => {
+      const b = document.createElement('button');
+      b.className = 'step' + (i === step ? ' active' : '');
+      b.textContent = (i + 1) + '. ' + p.dataset.title;
+      b.onclick = () => show(i);
+      stepbar.appendChild(b);
     });
-    document.getElementById('stepLabel').textContent=`第 ${step+1}/${pages.length} 步：${pages[step].dataset.title}`;
+    document.getElementById('stepLabel').textContent = 
+      `第 ${step + 1}/${pages.length} 步：${pages[step].dataset.title}`;
   }
-  async function show(i){
-    if(i<0||i>=pages.length) return;
+
+  async function show(i) {
+    if (i < 0 || i >= pages.length) return;
     
     console.log(`📍 切換到頁面 ${i + 1}：${pages[i].dataset.title}`);
     
     // 切換顯示（模組已預先載入）
-    pages.forEach((p,idx)=>p.classList.toggle('show',idx===i));
-    step=i; 
-    renderSteps(); 
-    window.scrollTo({top:0,behavior:'smooth'});
+    pages.forEach((p, idx) => p.classList.toggle('show', idx === i));
+    step = i;
+    renderSteps();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     // 每次切換頁面時綁定事件和重新計算
     bindAllEvents();
@@ -572,251 +663,285 @@
     
     console.log(`✅ 頁面切換完成`);
   }
-  document.getElementById('prev').onclick=()=>show(step-1);
-  document.getElementById('next').onclick=()=>show(step+1);
 
-  // ==== Util
-  const $=(s,root=document)=>root.querySelector(s);
-  const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
-  const nv=(el)=> (el?.value??'').trim();
-  const num=(el)=>{ const v=parseFloat(nv(el)); return Number.isFinite(v)?v:null; };
-  const tag=(wrap,txt)=>{ const t=document.createElement('span'); t.className='tag'; t.textContent=txt; wrap.appendChild(t); };
+  document.getElementById('prev').onclick = () => show(step - 1);
+  document.getElementById('next').onclick = () => show(step + 1);
 
-  // ==== BMI/IBW
-  function syncAnthro(){
-    const h=num($('#ht')), w=num($('#wt'));
-    if(h&&w){ const m=h/100, bmi=w/(m*m), ibw=22*m*m; $('#bmi').value=bmi.toFixed(1); $('#ibw').value=ibw.toFixed(1); $('#ibwDiff').value=(w-ibw).toFixed(1); }
-    else { $('#bmi').value=''; $('#ibw').value=''; $('#ibwDiff').value=''; }
-    // 自動填充 MNA BMI 項目
-    if (window.CGAForm08 && typeof window.CGAForm08.autoMNA_BMI === 'function') {
-      window.CGAForm08.autoMNA_BMI();
-    }
-  }
-  function bindAnthroEvents(){
-    const ht = $('#ht'), wt = $('#wt');
-    if(ht && wt) {
-      ['input','change'].forEach(ev=>{
-        ht.addEventListener(ev,syncAnthro);
-        wt.addEventListener(ev,syncAnthro);
-      });
-    }
-  }
+  // ========================================
+  // 工具函數
+  // ========================================
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+  const nv = (el) => (el?.value ?? '').trim();
+  const num = (el) => {
+    const v = parseFloat(nv(el));
+    return Number.isFinite(v) ? v : null;
+  };
+  const tag = (wrap, txt) => {
+    const t = document.createElement('span');
+    t.className = 'tag';
+    t.textContent = txt;
+    wrap.appendChild(t);
+  };
 
-  // ==== Family
-  const fam={rows:[]};
-  function bucket(role){ if(role==='父親'||role==='母親')return'Parent'; if(role==='配偶')return'Spouse'; if(role==='兄弟姊妹')return'Sibling'; if(role==='子女')return'Child'; return'Other'; }
-  function renderFam(){
-    const map={Parent:'#rowParent',Spouse:'#rowSpouse',Sibling:'#rowSibling',Child:'#rowChild',Other:'#rowOther'};
-    // 檢查元素是否存在（表單可能尚未載入）
-    const firstElement = $(Object.values(map)[0]);
-    if (!firstElement) return; // 表單未載入時跳過
-    
-    Object.values(map).forEach(s=>{
-      const el = $(s);
-      if (el) el.innerHTML = '';
-    });
-    fam.rows.forEach((m,i)=>{
-      const pill=document.createElement('span'); pill.className='tag'; pill.innerHTML=`${m.name||'（未名）'}・${m.sex||'?'}・${m.age||'?'}・${m.status||''} <small>${m.role}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`;
-      const target = $(map[bucket(m.role)]);
-      if (target) target.appendChild(pill);
-    });
-    $$('#famRows span[data-i]').forEach(x=>x.onclick=()=>{ fam.rows.splice(+x.dataset.i,1); renderFam(); });
-  }
-  // addFam 事件綁定移至 bindAllEvents()
-
-  // ==== Fall log
-  const fall={list:[]};
-  function renderFall(){ 
-    const box=$('#fallList'); 
-    if (!box) return; // 表單未載入時跳過
-    box.innerHTML=''; 
-    fall.list.forEach((e,i)=>{ 
-      const pill=document.createElement('span'); 
-      pill.className='tag'; 
-      pill.innerHTML=`${e.date||''}・${e.place||''}・${e.context||''}・${e.outcome||''} <small>${e.note||''}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`; 
-      box.appendChild(pill); 
-    }); 
-    $$('#fallList span[data-i]').forEach(x=>x.onclick=()=>{ fam.rows.splice(+x.dataset.i,1); renderFall(); }); 
-  }
-  // addFall 事件綁定移至 bindAllEvents()
-
-  // ==== 摘要 / 標籤
-  function recomputeAll(){
-    syncAnthro(); 
-    
-    // 使用模組的 compute 方法（已重構的模組）
-    if (window.CGAForm03 && typeof window.CGAForm03.compute === 'function') {
-      window.CGAForm03.compute();
-    }
-    if (window.CGAForm04 && typeof window.CGAForm04.compute === 'function') {
-      window.CGAForm04.compute();
-    }
-    if (window.CGAForm05 && typeof window.CGAForm05.compute === 'function') {
-      window.CGAForm05.compute();
-    }
-    if (window.CGAForm06 && typeof window.CGAForm06.compute === 'function') {
-      window.CGAForm06.compute();
-    }
-    if (window.CGAForm07 && typeof window.CGAForm07.compute === 'function') {
-      window.CGAForm07.compute();
-    }
-    if (window.CGAForm08 && typeof window.CGAForm08.compute === 'function') {
-      window.CGAForm08.compute();
-    }
-    if (window.CGAForm09 && typeof window.CGAForm09.compute === 'function') {
-      window.CGAForm09.compute();
-    }
-    if (window.CGAForm10 && typeof window.CGAForm10.compute === 'function') {
-      window.CGAForm10.compute();
-    }
-    if (window.CGAForm12 && typeof window.CGAForm12.compute === 'function') {
-      window.CGAForm12.compute();
-    }
-    if (window.CGAForm13 && typeof window.CGAForm13.compute === 'function') {
-      window.CGAForm13.compute();
+  // ========================================
+  // 資料摘要與計算
+  // ========================================
+  function recomputeAll() {
+    // 調用 Form 01 的 BMI 計算
+    if (window.CGAForm01 && typeof window.CGAForm01.syncAnthro === 'function') {
+      window.CGAForm01.syncAnthro();
     }
     
-    // 標籤
-    const box=$('#riskTags'); 
-    if (!box) return; // 摘要頁未載入時跳過
-    box.innerHTML='';
-    const gds=+$('#gdsTotal').textContent||0; if(gds>=2) tag(box,'GDS-5 ≥2');
-    const cam=nv($('#camResult')); if(cam==='譫妄') tag(box,'CAM 譫妄');
-    const br=+$('#bradenTotal').textContent||0; if(br && br<=12) tag(box,'Braden 高風險');
-    const mna=+$('#mnaTotal').textContent||0; if(mna<=7) tag(box,'MNA-SF 營養不良'); else if(mna<=11) tag(box,'MNA-SF 風險');
-    const chs=+$('#chsTotal').textContent||0; if(chs>=3) tag(box,'CHS 衰弱'); else if(chs>=1) tag(box,'CHS 前衰弱');
-    const morse=+$('#morseTotal').textContent||0; if(morse>=46) tag(box,'Morse ≥46 高跌倒風險');
-    const mmse=+$('#mmseTotal').textContent||0; if(mmse && mmse<=23) tag(box,'MMSE ≤23');
-    const moca=+$('#mocaTotal').textContent||0; if(moca && moca<26) tag(box,'MoCA <26');
-    const adl=+$('#adlTotal').textContent||0; if(adl<=60) tag(box,'ADL ≤60');
-    const cci=+$('#cciTotal').textContent||0; if(cci>=5) tag(box,'CCI ≥5');
-    // 摘要
-    const nm=nv($('#pname'))||'個案', age=nv($('#age'))||'?', sex=nv($('#sex'))||'';
-    const sum=`${nm}（${age}歲${sex}）。ADL ${adl}/100；IADL ${$('#iadlTotal').textContent}/${$('#iadlMax').textContent}；Mini-Cog ${$('#miniTotal').value||'NA'}/5（${nv($('#miniBinary'))||'NA'}）；MMSE ${mmse||'NA'}/30；MoCA ${moca||'NA'}/30；GDS-5 ${gds}/5；MNA-SF ${mna}/14；步速 ${nv($('#gaitSpeed'))||'NA'} m/s；TUG ${nv($('#tug'))||'NA'} s；握力最大 ${nv($('#gripMax'))||'NA'} kg；CFS ${nv($('#cfs'))||'NA'}；STRATIFY ${$('#stratifyTotal').textContent}；Morse ${morse}；EQ-VAS ${nv($('#eqVASVal'))||'NA'}；CCI ${cci}；出院：${nv($('#dcDest'))||'NA'}。`;
-    $('#summary').value=sum;
+    // 調用各模組的計算方法
+    const modules = [
+      'CGAForm03', 'CGAForm04', 'CGAForm05', 'CGAForm06',
+      'CGAForm07', 'CGAForm08', 'CGAForm09', 'CGAForm10',
+      'CGAForm11', 'CGAForm12', 'CGAForm13'
+    ];
+    
+    modules.forEach(moduleName => {
+      if (window[moduleName] && typeof window[moduleName].compute === 'function') {
+        window[moduleName].compute();
+      }
+    });
+    
+    // 標籤（只在摘要頁存在時執行）
+    const box = $('#riskTags');
+    if (!box) return;
+    
+    box.innerHTML = '';
+    
+    // 安全讀取元素（避免 null 錯誤）
+    const safeText = (selector) => {
+      const el = $(selector);
+      return el ? (el.textContent || '0') : '0';
+    };
+    
+    // 風險標籤
+    const gds = +safeText('#gdsTotal');
+    if (gds >= 2) tag(box, 'GDS-5 ≥2');
+    
+    const cam = nv($('#camResult'));
+    if (cam === '譫妄') tag(box, 'CAM 譫妄');
+    
+    const br = +safeText('#bradenTotal');
+    if (br && br <= 12) tag(box, 'Braden 高風險');
+    
+    const mna = +safeText('#mnaTotal');
+    if (mna <= 7) tag(box, 'MNA-SF 營養不良');
+    else if (mna <= 11) tag(box, 'MNA-SF 風險');
+    
+    const chs = +safeText('#chsTotal');
+    if (chs >= 3) tag(box, 'CHS 衰弱');
+    else if (chs >= 1) tag(box, 'CHS 前衰弱');
+    
+    const morse = +safeText('#morseTotal');
+    if (morse >= 46) tag(box, 'Morse ≥46 高跌倒風險');
+    
+    const mmse = +safeText('#mmseTotal');
+    if (mmse && mmse <= 23) tag(box, 'MMSE ≤23');
+    
+    const moca = +safeText('#mocaTotal');
+    if (moca && moca < 26) tag(box, 'MoCA <26');
+    
+    const adl = +safeText('#adlTotal');
+    if (adl <= 60) tag(box, 'ADL ≤60');
+    
+    const cci = +safeText('#cciTotal');
+    if (cci >= 5) tag(box, 'CCI ≥5');
+    
+    // 摘要文字
+    const nm = nv($('#pname')) || '個案';
+    const age = nv($('#age')) || '?';
+    const sex = nv($('#sex')) || '';
+    const iadlTotal = safeText('#iadlTotal');
+    const iadlMax = safeText('#iadlMax');
+    const stratifyTotal = safeText('#stratifyTotal');
+    
+    const sum = `${nm}（${age}歲${sex}）。ADL ${adl}/100；IADL ${iadlTotal}/${iadlMax}；Mini-Cog ${$('#miniTotal')?.value || 'NA'}/5（${nv($('#miniBinary')) || 'NA'}）；MMSE ${mmse || 'NA'}/30；MoCA ${moca || 'NA'}/30；GDS-5 ${gds}/5；MNA-SF ${mna}/14；步速 ${nv($('#gaitSpeed')) || 'NA'} m/s；TUG ${nv($('#tug')) || 'NA'} s；握力最大 ${nv($('#gripMax')) || 'NA'} kg；CFS ${nv($('#cfs')) || 'NA'}；STRATIFY ${stratifyTotal}；Morse ${morse}；EQ-VAS ${nv($('#eqVASVal')) || 'NA'}；CCI ${cci}；出院：${nv($('#dcDest')) || 'NA'}。`;
+    
+    const summaryEl = $('#summary');
+    if (summaryEl) summaryEl.value = sum;
   }
 
-  // ==== Storage / Export
-  function snapshot(){
-    const data={};
-    $$('input,select,textarea').forEach(el=>{
-      const key=el.id||el.name||el.getAttribute('data-k'); if(!key) return;
-      if(el.type==='radio'){ if(el.checked) data[key]=el.value; }
-      else if(el.type==='checkbox'){ data[key]=el.checked; }
-      else data[key]=el.value;
+  // ========================================
+  // 資料儲存與匯出
+  // ========================================
+  function snapshot() {
+    const data = {};
+    
+    $$('input, select, textarea').forEach(el => {
+      const key = el.id || el.name || el.getAttribute('data-k');
+      if (!key) return;
+      
+      if (el.type === 'radio') {
+        if (el.checked) data[key] = el.value;
+      } else if (el.type === 'checkbox') {
+        data[key] = el.checked;
+      } else {
+        data[key] = el.value;
+      }
     });
-    data['fam']=JSON.stringify(fam.rows); data['falls']=JSON.stringify(fall.list);
+    
+    data['fam'] = JSON.stringify(fam.rows);
+    data['falls'] = JSON.stringify(fall.list);
+    
     return data;
   }
-  function loadshot(obj){
-    $$('input,select,textarea').forEach(el=>{
-      const key=el.id||el.name||el.getAttribute('data-k'); if(!(key in obj)) return;
-      if(el.type==='checkbox') el.checked=!!obj[key];
-      else if(el.type==='radio') { if(el.value==obj[key]) el.checked=true; }
-      else el.value=obj[key];
+
+  function loadshot(obj) {
+    $$('input, select, textarea').forEach(el => {
+      const key = el.id || el.name || el.getAttribute('data-k');
+      if (!(key in obj)) return;
+      
+      if (el.type === 'checkbox') {
+        el.checked = !!obj[key];
+      } else if (el.type === 'radio') {
+        if (el.value == obj[key]) el.checked = true;
+      } else {
+        el.value = obj[key];
+      }
     });
-    try{ fam.rows=JSON.parse(obj.fam||'[]'); }catch{}
-    try{ fall.list=JSON.parse(obj.falls||'[]'); }catch{}
-    renderFam(); renderFall(); recomputeAll();
+    
+    try {
+      fam.rows = JSON.parse(obj.fam || '[]');
+    } catch {}
+    
+    try {
+      fall.list = JSON.parse(obj.falls || '[]');
+    } catch {}
+    
+    fam.render();
+    fall.render();
+    recomputeAll();
   }
-  
-  // ==== 統一事件綁定函數
-  let eventsBindingInitialized = false;
-  
+
+  // ========================================
+  // 統一事件綁定
+  // ========================================
   function bindAllEvents() {
-    // 初始化所有動態表單（調用模組的 initialize 方法）
-    // 只初始化已載入的模組
-    if (window.CGAForm01 && typeof window.CGAForm01.initialize === 'function') {
-      window.CGAForm01.initialize();
-    }
-    if (window.CGAForm03 && typeof window.CGAForm03.initialize === 'function') {
-      window.CGAForm03.initialize();
-    }
-    if (window.CGAForm04 && typeof window.CGAForm04.initialize === 'function') {
-      window.CGAForm04.initialize();
-    }
-    if (window.CGAForm06 && typeof window.CGAForm06.initialize === 'function') {
-      window.CGAForm06.initialize();
-    }
-    if (window.CGAForm07 && typeof window.CGAForm07.initialize === 'function') {
-      window.CGAForm07.initialize();
-    }
-    if (window.CGAForm08 && typeof window.CGAForm08.initialize === 'function') {
-      window.CGAForm08.initialize();
-    }
-    if (window.CGAForm10 && typeof window.CGAForm10.initialize === 'function') {
-      window.CGAForm10.initialize();
-    }
-    if (window.CGAForm11 && typeof window.CGAForm11.initialize === 'function') {
-      window.CGAForm11.initialize();
-    }
-    if (window.CGAForm13 && typeof window.CGAForm13.initialize === 'function') {
-      window.CGAForm13.initialize();
+    // 初始化所有已載入的動態表單模組
+    const formModules = [
+      'CGAForm01', 'CGAForm02', 'CGAForm03', 'CGAForm04',
+      'CGAForm06', 'CGAForm07', 'CGAForm08', 'CGAForm09', 'CGAForm10',
+      'CGAForm11', 'CGAForm13', 'CGAForm14', 'CGAForm15'
+    ];
+    
+    formModules.forEach(moduleName => {
+      if (window[moduleName] && typeof window[moduleName].initialize === 'function') {
+        window[moduleName].initialize();
+      }
+    });
+  }
+  
+  // ========================================
+  // 事件訂閱 - 監聽模組發送的事件
+  // ========================================
+  function subscribeToEvents() {
+    if (!window.CGAEventBus) {
+      console.warn('⚠️ 事件總線尚未初始化');
+      return;
     }
     
-    // 基本資料頁的事件
-    bindAnthroEvents();
+    // 訂閱家系圖新增事件
+    window.CGAEventBus.on('family:add', (data) => {
+      if (!data.role) return alert('請選角色');
+      
+      fam.rows.push(data);
+      fam.render();
+      
+      // 通知模組清空表單
+      window.CGAEventBus.emit('family:added', { success: true });
+    });
     
-    // 家系圖和跌倒事件
-    const addFam = $('#addFam');
-    if (addFam) {
-      addFam.onclick = () => {
-        const m={role:nv($('#famRole')),name:nv($('#famName')),sex:nv($('#famSex')),age:nv($('#famAge')),status:nv($('#famStatus')),dx:nv($('#famDx'))};
-        if(!m.role) return alert('請選角色'); fam.rows.push(m);
-        ['famRole','famName','famSex','famAge','famStatus','famDx'].forEach(id=>$('#'+id).value=''); renderFam();
-      };
-    }
+    // 訂閱跌倒記錄新增事件
+    window.CGAEventBus.on('fall:add', (data) => {
+      if (!data.date && !data.place) return alert('請至少填 日期或地點');
+      
+      fall.list.push(data);
+      fall.render();
+      
+      // 通知模組清空表單
+      window.CGAEventBus.emit('fall:added', { success: true });
+    });
     
-    const addFall = $('#addFall');
-    if (addFall) {
-      addFall.onclick = () => { 
-        const e={date:nv($('#feDate')),place:nv($('#fePlace')),context:nv($('#feCtx')),outcome:nv($('#feOut')),note:nv($('#feNote'))}; 
-        if(!e.date && !e.place) return alert('請至少填 日期或地點'); 
-        fall.list.push(e); 
-        ['feDate','fePlace','feCtx','feOut','feNote'].forEach(id=>$('#'+id).value=''); 
-        renderFall(); 
-      };
-    }
+    // 訂閱重新計算事件
+    window.CGAEventBus.on('summary:recalc', () => {
+      recomputeAll();
+    });
     
-    // 摘要頁的事件（這些按鈕只綁定一次）
-    if (!eventsBindingInitialized) {
-      const recalc = $('#recalc');
-      if (recalc) recalc.onclick = recomputeAll;
-      
-      const save = $('#save');
-      if (save) save.onclick = () => { localStorage.setItem('cga_full', JSON.stringify(snapshot())); alert('已儲存'); };
-      
-      const load = $('#load');
-      if (load) load.onclick = () => { const raw=localStorage.getItem('cga_full'); if(!raw) return alert('尚無資料'); loadshot(JSON.parse(raw)); };
-      
-      const clear = $('#clear');
-      if (clear) clear.onclick = () => { if(confirm('清除所有內容？')){ localStorage.removeItem('cga_full'); location.reload(); } };
-      
-      const exportJson = $('#exportJson');
-      if (exportJson) exportJson.onclick = () => { const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cga.json'; a.click(); };
-      
-      const exportCsv = $('#exportCsv');
-      if (exportCsv) exportCsv.onclick = () => { const obj=snapshot(); const keys=Object.keys(obj); const row=keys.map(k=>JSON.stringify(obj[k]??'')).join(','); const csv=keys.join(',')+'\n'+row+'\n'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='cga.csv'; a.click(); };
-      
-      // IADL 男性跳過選項
-      const iadlMaleSkip = $('#iadlMaleSkip');
-      if (iadlMaleSkip) iadlMaleSkip.onchange = () => {
-        if (window.CGAForm04 && typeof window.CGAForm04.compute === 'function') {
-          window.CGAForm04.compute();
-        }
-      };
-      
-      eventsBindingInitialized = true;
-    }
+    // 訂閱儲存事件
+    window.CGAEventBus.on('summary:save', () => {
+      localStorage.setItem('cga_full', JSON.stringify(snapshot()));
+      alert('✅ 已儲存');
+    });
+    
+    // 訂閱載入事件
+    window.CGAEventBus.on('summary:load', () => {
+      const raw = localStorage.getItem('cga_full');
+      if (!raw) return alert('⚠️ 尚無資料');
+      loadshot(JSON.parse(raw));
+      alert('✅ 已載入');
+    });
+    
+    // 訂閱清除事件
+    window.CGAEventBus.on('summary:clear', () => {
+      if (confirm('⚠️ 清除所有內容？')) {
+        localStorage.removeItem('cga_full');
+        localStorage.removeItem('cga_autosave');
+        location.reload();
+      }
+    });
+    
+    // 訂閱匯出 JSON 事件
+    window.CGAEventBus.on('summary:exportJson', () => {
+      const blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `cga_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    });
+    
+    // 訂閱匯出 CSV 事件
+    window.CGAEventBus.on('summary:exportCsv', () => {
+      const obj = snapshot();
+      const keys = Object.keys(obj);
+      const row = keys.map(k => JSON.stringify(obj[k] ?? '')).join(',');
+      const csv = keys.join(',') + '\n' + row + '\n';
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = `cga_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+    });
+    
+    console.log('✅ 事件訂閱完成');
   }
 
-  // ==== Wiring（全域事件）
-  document.addEventListener('change',recomputeAll,true);
-  document.addEventListener('input',recomputeAll,true);
+  // ========================================
+  // 全域事件監聽
+  // ========================================
+  document.addEventListener('change', recomputeAll, true);
+  document.addEventListener('input', recomputeAll, true);
 
-  // 初始化（預先載入所有表單模組）
+  // ========================================
+  // 應用程式初始化
+  // ========================================
   (async function init() {
-    renderSteps(); renderFam(); renderFall();
+    renderSteps();
+    
+    // 初始化家系圖和跌倒記錄管理器（使用 Form 02 提供的工廠方法）
+    if (window.CGAForm02) {
+      fam = window.CGAForm02.constructor.createFamilyManager();
+      fall = window.CGAForm02.constructor.createFallManager();
+    } else {
+      // 如果模組尚未載入，使用臨時物件
+      fam = { rows: [], render: () => {} };
+      fall = { list: [], render: () => {} };
+    }
+    
+    // 訂閱事件（在模組載入前）
+    subscribeToEvents();
     
     // 確保 CGAModuleLoader 已載入
     if (!window.CGAModuleLoader) {
@@ -851,10 +976,69 @@
     bindAllEvents();
     recomputeAll();
     
-    console.log('✅ 初始化完成');
+    // 自動恢復暫存資料
+    const autoSaved = localStorage.getItem('cga_autosave');
+    if (autoSaved) {
+      try {
+        loadshot(JSON.parse(autoSaved));
+        console.log('✅ 已自動恢復暫存資料');
+      } catch (e) {
+        console.error('❌ 恢復暫存資料失敗:', e);
+      }
+    }
+    
+    // 建立自動暫存提示元素（右下角）
+    const autoSaveToast = document.createElement('div');
+    autoSaveToast.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 0.75rem 1rem;
+      background: var(--brand);
+      color: white;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 9999;
+    `;
+    autoSaveToast.textContent = '💾 已自動暫存';
+    document.body.appendChild(autoSaveToast);
+    
+    // 自動暫存功能（防抖 2 秒）
+    let autoSaveTimer = null;
+    let toastTimer = null;
+    function autoSave() {
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        try {
+          localStorage.setItem('cga_autosave', JSON.stringify(snapshot()));
+          
+          // 顯示提示（1.5 秒後自動消失）
+          autoSaveToast.style.opacity = '1';
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            autoSaveToast.style.opacity = '0';
+          }, 1500);
+        } catch (e) {
+          console.error('❌ 自動暫存失敗:', e);
+        }
+      }, 2000);
+    }
+    
+    // 監聽所有表單變更
+    document.addEventListener('input', autoSave, true);
+    document.addEventListener('change', autoSave, true);
+    
+    console.log('✅ 初始化完成（已啟用自動暫存）');
   })();
 
-  // ==== 主題切換功能（與 index.html 共享設定）
+  // ========================================
+  // 主題切換功能
+  // ========================================
   const themeToggle = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
   const htmlElement = document.documentElement;

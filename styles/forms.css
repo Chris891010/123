@@ -1,6 +1,7 @@
 /* ========================================
    表單控件樣式（共用）
    適用於所有頁面
+   版本：v2024100507
    ======================================== */
 
 /* 標籤 */
@@ -53,11 +54,43 @@ textarea:focus {
 }
 
 /* 唯讀輸入框 */
-input[readonly] {
+input[readonly],
+input[type="number"][readonly],
+input[type="text"][readonly] {
   background: var(--surface);
   color: var(--muted);
-  cursor: not-allowed;
-  border-style: dashed;
+  cursor: text;
+  border: 2px dashed var(--line);
+  opacity: 0.7;
+  user-select: text;
+}
+
+input[readonly]:hover,
+input[type="number"][readonly]:hover,
+input[type="text"][readonly]:hover {
+  opacity: 0.85;
+  border-color: var(--muted);
+  box-shadow: none;
+}
+
+input[readonly]:focus,
+input[type="number"][readonly]:focus,
+input[type="text"][readonly]:focus {
+  outline: none;
+  border-color: var(--muted);
+  box-shadow: none;
+  transform: none;
+}
+
+/* 唯讀輸入框的選取樣式 - 顯示反白效果 */
+input[readonly]::selection {
+  background: rgba(29, 78, 216, 0.2);
+  color: var(--ink);
+}
+
+input[readonly]::-moz-selection {
+  background: rgba(29, 78, 216, 0.2);
+  color: var(--ink);
 }
 
 /* 日期輸入框 - 整個區域都可點擊 */
@@ -135,4 +168,15 @@ select option:not([value=""]) {
   .col-8 {
     grid-column: span 12;
   }
+}
+
+/* ========================================
+   Datepicker 樣式調整
+   ======================================== */
+
+/* 確保 datepicker 輸入框與其他輸入框對齊 */
+.field input[datepicker] {
+  display: block;
+  width: 100%;
+  margin: 0;
 }

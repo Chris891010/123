@@ -83,19 +83,19 @@
     <label>疫苗接種紀錄</label>
     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="v_flu" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="v_flu" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>流感疫苗（最近一年）</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="v_pcv" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="v_pcv" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>肺炎鏈球菌疫苗</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="v_covid" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="v_covid" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>COVID-19 疫苗</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="v_tdap" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="v_tdap" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>破傷風 (Td/Tdap)</span>
       </label>
     </div>
@@ -114,27 +114,27 @@
     <label>疾病史選項</label>
     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_none" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_none" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>無重大疾病史</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_ca" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_ca" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>惡性腫瘤</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_ca_meta" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_ca_meta" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>伴遠端轉移</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_auto" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_auto" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>免疫風濕疾病</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_hiv" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_hiv" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>HIV / AIDS</span>
       </label>
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-        <input type="checkbox" id="hx_deform" style="width: auto; cursor: pointer;">
+        <input type="checkbox" id="hx_deform" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--brand); flex-shrink: 0;">
         <span>疾病致畸形/殘障</span>
       </label>
     </div>
@@ -394,6 +394,187 @@
 </div>
 
 <div id="fallList" style="margin-top: 1.5rem;"></div>`;
+    }
+
+    initialize() {
+      // 使用 AutoNextField 啟用自動跳轉功能
+      if (window.AutoNextField) {
+        window.AutoNextField.enableForForm(1, {
+          delay: 100,
+          autoExpand: true
+        });
+        console.log('✅ Form 02 自動跳轉已啟用');
+      }
+      
+      // 綁定家系圖和跌倒記錄事件（透過事件總線）
+      this.bindFamilyEvents();
+      this.bindFallEvents();
+    }
+    
+    /**
+     * 家系圖新增事件
+     */
+    bindFamilyEvents() {
+      const addFam = document.getElementById('addFam');
+      if (!addFam) return;
+      
+      // 避免重複綁定
+      if (addFam.onclick) return;
+      
+      addFam.onclick = () => {
+        const $ = (s) => document.querySelector(s);
+        const nv = (el) => (el?.value ?? '').trim();
+        
+        const data = {
+          role: nv($('#famRole')),
+          name: nv($('#famName')),
+          sex: nv($('#famSex')),
+          age: nv($('#famAge')),
+          status: nv($('#famStatus')),
+          dx: nv($('#famDx'))
+        };
+        
+        // 發送事件到主應用程式
+        if (window.CGAEventBus) {
+          window.CGAEventBus.emit('family:add', data);
+          
+          // 監聽成功後清空表單
+          window.CGAEventBus.once('family:added', () => {
+            ['famRole', 'famName', 'famSex', 'famAge', 'famStatus', 'famDx'].forEach(id => {
+              const el = $('#' + id);
+              if (el) el.value = '';
+            });
+          });
+        }
+      };
+    }
+    
+    /**
+     * 跌倒記錄新增事件
+     */
+    bindFallEvents() {
+      const addFall = document.getElementById('addFall');
+      if (!addFall) return;
+      
+      // 避免重複綁定
+      if (addFall.onclick) return;
+      
+      addFall.onclick = () => {
+        const $ = (s) => document.querySelector(s);
+        const nv = (el) => (el?.value ?? '').trim();
+        
+        const data = {
+          date: nv($('#feDate')),
+          place: nv($('#fePlace')),
+          context: nv($('#feCtx')),
+          outcome: nv($('#feOut')),
+          note: nv($('#feNote'))
+        };
+        
+        // 發送事件到主應用程式
+        if (window.CGAEventBus) {
+          window.CGAEventBus.emit('fall:add', data);
+          
+          // 監聽成功後清空表單
+          window.CGAEventBus.once('fall:added', () => {
+            ['feDate', 'fePlace', 'feCtx', 'feOut', 'feNote'].forEach(id => {
+              const el = $('#' + id);
+              if (el) el.value = '';
+            });
+          });
+        }
+      };
+    }
+    
+    /**
+     * 提供家系圖數據管理工廠方法（供主應用程式初始化）
+     */
+    static createFamilyManager() {
+      return {
+        rows: [],
+        
+        bucket(role) {
+          if (role === '父親' || role === '母親') return 'Parent';
+          if (role === '配偶') return 'Spouse';
+          if (role === '兄弟姊妹') return 'Sibling';
+          if (role === '子女') return 'Child';
+          return 'Other';
+        },
+        
+        render() {
+          const $ = (s) => document.querySelector(s);
+          const $$ = (s) => Array.from(document.querySelectorAll(s));
+          
+          const map = {
+            Parent: '#rowParent',
+            Spouse: '#rowSpouse',
+            Sibling: '#rowSibling',
+            Child: '#rowChild',
+            Other: '#rowOther'
+          };
+          
+          // 檢查元素是否存在
+          const firstElement = $(Object.values(map)[0]);
+          if (!firstElement) return;
+          
+          // 清空所有容器
+          Object.values(map).forEach(s => {
+            const el = $(s);
+            if (el) el.innerHTML = '';
+          });
+          
+          // 渲染家系圖成員
+          this.rows.forEach((m, i) => {
+            const pill = document.createElement('span');
+            pill.className = 'tag';
+            pill.innerHTML = `${m.name || '（未名）'}・${m.sex || '?'}・${m.age || '?'}・${m.status || ''} <small>${m.role}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`;
+            
+            const target = $(map[this.bucket(m.role)]);
+            if (target) target.appendChild(pill);
+          });
+          
+          // 綁定刪除事件
+          $$('#famRows span[data-i]').forEach(x => {
+            x.onclick = () => {
+              this.rows.splice(+x.dataset.i, 1);
+              this.render();
+            };
+          });
+        }
+      };
+    }
+    
+    /**
+     * 提供跌倒記錄數據管理工廠方法（供主應用程式初始化）
+     */
+    static createFallManager() {
+      return {
+        list: [],
+        
+        render() {
+          const $ = (s) => document.querySelector(s);
+          const $$ = (s) => Array.from(document.querySelectorAll(s));
+          const box = $('#fallList');
+          if (!box) return;
+          
+          box.innerHTML = '';
+          
+          this.list.forEach((e, i) => {
+            const pill = document.createElement('span');
+            pill.className = 'tag';
+            pill.innerHTML = `${e.date || ''}・${e.place || ''}・${e.context || ''}・${e.outcome || ''} <small>${e.note || ''}</small> <span style="color:#b91c1c;cursor:pointer" data-i="${i}">×</span>`;
+            box.appendChild(pill);
+          });
+          
+          // 綁定刪除事件
+          $$('#fallList span[data-i]').forEach(x => {
+            x.onclick = () => {
+              this.list.splice(+x.dataset.i, 1);
+              this.render();
+            };
+          });
+        }
+      };
     }
   }
 

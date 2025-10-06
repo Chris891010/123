@@ -55,7 +55,7 @@
   </div>
   <div class="field col-2">
     <label>年齡</label>
-    <input id="age" type="number" readonly placeholder="自動計算" style="background: var(--surface); color: var(--muted);">
+    <input id="age" type="text" readonly placeholder="自動計算">
   </div>
   ${DropdownBuilder.create({
     id: 'edu',
@@ -211,15 +211,15 @@
   <!-- 計算值（唯讀） -->
   <div class="field col-2">
     <label>BMI</label>
-    <input id="bmi" readonly placeholder="自動計算" style="background: var(--surface); color: var(--muted);">
+    <input id="bmi" type="text" readonly placeholder="自動計算">
   </div>
   <div class="field col-2">
     <label>理想體重 (IBW)</label>
-    <input id="ibw" readonly placeholder="自動計算" style="background: var(--surface); color: var(--muted);">
+    <input id="ibw" type="text" readonly placeholder="自動計算">
   </div>
   <div class="field col-2">
     <label>與 IBW 差異</label>
-    <input id="ibwDiff" readonly placeholder="自動計算" style="background: var(--surface); color: var(--muted);">
+    <input id="ibwDiff" type="text" readonly placeholder="自動計算">
   </div>
 </div>
 
@@ -286,9 +286,68 @@ ${MessageBoxBuilder.info(
       if (window.AutoNextField) {
         window.AutoNextField.enableForForm(0, {
           delay: 100,
-          autoExpand: true,  // 啟用自動展開選單
-          debug: true,       // 啟用除錯訊息以確認運作
-          initDelay: 300
+          autoExpand: true
+        });
+      }
+      
+      // 綁定 BMI/IBW 計算事件
+      this.bindAnthroEvents();
+    }
+    
+    /**
+     * BMI/IBW 計算
+     */
+    syncAnthro() {
+      const $ = (s) => document.querySelector(s);
+      const num = (el) => {
+        const v = parseFloat((el?.value ?? '').trim());
+        return Number.isFinite(v) ? v : null;
+      };
+      
+      const h = num($('#ht'));
+      const w = num($('#wt'));
+      
+      if (h && w) {
+        const m = h / 100;
+        const bmi = w / (m * m);
+        const ibw = 22 * m * m;
+        
+        $('#bmi').value = bmi.toFixed(1);
+        $('#ibw').value = ibw.toFixed(1);
+        $('#ibwDiff').value = (w - ibw).toFixed(1);
+      } else {
+        $('#bmi').value = '';
+        $('#ibw').value = '';
+        $('#ibwDiff').value = '';
+      }
+      
+      // 自動填充 MNA BMI 項目
+      if (window.CGAForm08 && typeof window.CGAForm08.autoMNA_BMI === 'function') {
+        window.CGAForm08.autoMNA_BMI();
+      }
+      
+      // 發送事件通知其他模組
+      if (window.CGAEventBus) {
+        window.CGAEventBus.emit('anthro:changed', {
+          height: h,
+          weight: w,
+          bmi: h && w ? (w / (h / 100) ** 2) : null
+        });
+      }
+    }
+    
+    /**
+     * 綁定身高體重輸入事件
+     */
+    bindAnthroEvents() {
+      const $ = (s) => document.querySelector(s);
+      const ht = $('#ht');
+      const wt = $('#wt');
+      
+      if (ht && wt) {
+        ['input', 'change'].forEach(ev => {
+          ht.addEventListener(ev, () => this.syncAnthro());
+          wt.addEventListener(ev, () => this.syncAnthro());
         });
       }
     }

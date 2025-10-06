@@ -71,6 +71,12 @@ ${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
       const container = this.$('#adlBody');
       if (!container) return;
       
+      // 如果已經建立過，不要重複建立（避免清空選擇）
+      if (container.hasChildNodes()) {
+        console.log('✅ ADL 表單已存在，跳過重複初始化');
+        return;
+      }
+      
       // 使用 ChoiceCardBuilder 建立卡片式佈局
       if (window.ChoiceCardBuilder) {
         const builder = new ChoiceCardBuilder({

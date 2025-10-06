@@ -8,12 +8,22 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  user-select: none;
-  -webkit-user-select: none;
+}
+
+/* 一般文字內容允許選取（但不改變游標） */
+p,
+span,
+div,
+h1, h2, h3, h4, h5, h6,
+label,
+li,
+td, th {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 /* 可輸入的元素允許文字選取和文字游標 */
-input:not([type="button"]):not([type="submit"]):not([type="reset"]),
+input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([readonly]),
 textarea {
   user-select: text;
   -webkit-user-select: text;

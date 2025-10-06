@@ -61,9 +61,18 @@ ${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
 </div>`;
     }
 
+    /**
+     * 初始化表單
+     */
     initialize() {
       const grid = this.$('#iadlGrid');
       if (!grid) return;
+      
+      // 如果已經建立過，不要重複建立（避免清空選擇）
+      if (grid.hasChildNodes()) {
+        console.log('✅ IADL 表單已存在，跳過重複初始化');
+        return;
+      }
       
       // 使用 ChoiceCardBuilder 建立卡片式佈局
       if (window.ChoiceCardBuilder) {
@@ -77,9 +86,20 @@ ${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
         console.error('ChoiceCardBuilder 未載入');
       }
       
+      // 綁定男性跳過選項的事件
+      const iadlMaleSkip = this.$('#iadlMaleSkip');
+      if (iadlMaleSkip) {
+        iadlMaleSkip.onchange = () => {
+          this.compute();
+        };
+      }
+      
       console.log('✅ IADL 表單已初始化');
     }
 
+    /**
+     * 計算 IADL 分數
+     */
     compute() {
       const maleSkip = this.$('#iadlMaleSkip') && (this.$('#iadlMaleSkip').checked || this.nv(this.$('#sex')) === '男');
       let t = 0, den = 0;
@@ -132,7 +152,10 @@ ${MessageBoxBuilder.info(`<strong>📋 量表說明：</strong><br>
         }
       }
     }
-
+    
+    /**
+     * 輔助方法
+     */
     $(sel) { return document.querySelector(sel); }
     nv(el) { return el ? el.value.trim() : ''; }
     tag(parent, txt) {

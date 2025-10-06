@@ -132,13 +132,10 @@ ${MessageBoxBuilder.success(`
 
     initialize() {
       // 使用 AutoNextField 啟用自動跳轉功能
-      // Form 06 是第 6 個頁面（索引為 5）
       if (window.AutoNextField) {
         window.AutoNextField.enableForForm(5, {
           delay: 100,
-          autoExpand: true,  // 啟用自動展開下拉選單
-          debug: false,
-          initDelay: 300
+          autoExpand: true
         });
         console.log('✅ Form 06 自動跳轉已啟用');
       }
