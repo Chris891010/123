@@ -369,7 +369,7 @@
 <div class="form">
   <div class="field col-3">
     <label>日期</label>
-    <input id="feDate" type="date">
+    <input id="feDate" type="text" class="datepicker-input" placeholder="選擇日期">
   </div>
   <div class="field col-3">
     <label>地點</label>
@@ -404,6 +404,12 @@
           autoExpand: true
         });
         console.log('✅ Form 02 自動跳轉已啟用');
+      }
+      
+      // 使用 DatepickerHelper 初始化日期選擇器
+      if (window.DatepickerHelper) {
+        DatepickerHelper.init(['feDate']);
+        console.log('✅ Form 02 日期選擇器已初始化');
       }
       
       // 綁定家系圖和跌倒記錄事件（透過事件總線）
