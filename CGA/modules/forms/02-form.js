@@ -369,7 +369,7 @@
 <div class="form">
   <div class="field col-3">
     <label>日期</label>
-    <input id="feDate" type="text" class="datepicker-input" placeholder="選擇日期">
+    <input id="feDate" type="text" datepicker datepicker-format="yyyy-mm-dd" datepicker-autohide datepicker-buttons datepicker-autoselect-today placeholder="選擇日期">
   </div>
   <div class="field col-3">
     <label>地點</label>
